@@ -14,6 +14,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { AdminInventariosTab } from './AdminInventariosTab';
+import { formatCurrencyBRL, formatPercentage } from '../lib/format';
 
 interface AdminStockProps {
   products: Product[];
@@ -321,20 +322,20 @@ export const AdminStock: React.FC<AdminStockProps> = ({
 
                         <td className="py-3 px-4 text-right">
                           {p.costPrice !== undefined && p.costPrice > 0 ? (
-                            `R$ ${p.costPrice.toFixed(2)}`
+                            <span className="font-semibold text-neutral-700 tabular-nums">{formatCurrencyBRL(p.costPrice)}</span>
                           ) : (
                             <span className="text-amber-700 italic text-[11px]">Sem custo</span>
                           )}
                         </td>
 
                         <td className="py-3 px-4 text-right font-bold text-emerald-800">
-                          R$ {(p.salePrice || 0).toFixed(2)}
+                          <span className="tabular-nums">{formatCurrencyBRL(p.salePrice)}</span>
                         </td>
 
                         <td className="py-3 px-4 text-right font-medium">
                           {margin !== null ? (
                             <span className={margin > 35 ? 'text-emerald-700' : 'text-neutral-700'}>
-                              {(margin || 0).toFixed(1)}%
+                              {formatPercentage(margin)}
                             </span>
                           ) : (
                             '-'

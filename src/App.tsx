@@ -1034,8 +1034,6 @@ export default function App() {
         activeModuleTitle={MODULE_TITLES[activeTab] || 'FarmaVida'}
         activeShiftStatus={activeShiftStatus}
         onToggleShift={activeShift ? () => setActiveTab('meu_turno') : handleStartShift}
-        onSwitchUser={handleSwitchUser}
-        availableUsers={users}
         isOnline={isOnline}
         onRefreshData={refreshAllData}
         isRefreshing={isRefreshing}

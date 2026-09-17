@@ -7,6 +7,7 @@ interface RestrictedAccessViewProps {
   moduleName: string;
   onNavigateToBalcao: () => void;
   onNavigateToTurno: () => void;
+  /** Mantido apenas para compatibilidade temporária com os chamadores antigos. */
   onSwitchToAdmin?: () => void;
 }
 
@@ -15,7 +16,6 @@ export const RestrictedAccessView: React.FC<RestrictedAccessViewProps> = ({
   moduleName,
   onNavigateToBalcao,
   onNavigateToTurno,
-  onSwitchToAdmin,
 }) => {
   return (
     <div className="max-w-2xl mx-auto px-4 py-16 text-center space-y-6">
@@ -68,16 +68,11 @@ export const RestrictedAccessView: React.FC<RestrictedAccessViewProps> = ({
           <span>Ver Meu Turno</span>
         </button>
 
-        {onSwitchToAdmin && (
-          <button
-            onClick={onSwitchToAdmin}
-            className="px-4 py-2.5 bg-amber-50 text-amber-900 border border-amber-200 font-semibold text-xs rounded-xl hover:bg-amber-100 transition-colors flex items-center gap-1.5"
-            title="Alternar para perfil de administrador para testar"
-          >
-            <span>Alternar para Perfil Admin</span>
-          </button>
-        )}
       </div>
+
+      <p className="text-xs text-neutral-500">
+        Para acessar a gestão, encerre esta sessão e entre com o usuário administrador e o PIN correspondente.
+      </p>
     </div>
   );
 };

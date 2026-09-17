@@ -32,6 +32,7 @@ import {
   Monitor,
   KeyRound
 } from 'lucide-react';
+import { formatCurrencyBRL } from '../lib/format';
 
 interface ColaboradorWorkspaceProps {
   currentUser: User;
@@ -750,7 +751,7 @@ export const ColaboradorWorkspace: React.FC<ColaboradorWorkspaceProps> = ({
 
                     <div className="mt-3 pt-2.5 border-t border-neutral-100 flex items-center justify-between">
                       <div className="text-base font-bold text-emerald-800">
-                        R$ {(p.salePrice || 0).toFixed(2)}
+                        {formatCurrencyBRL(p.salePrice)}
                       </div>
 
                       <button
@@ -870,7 +871,7 @@ export const ColaboradorWorkspace: React.FC<ColaboradorWorkspaceProps> = ({
                         <div className="flex-1">
                           <div className="font-bold text-neutral-900 text-sm">{item.productName}</div>
                           <div className="text-[11px] text-neutral-500 mt-0.5">
-                            {item.presentation || item.category} • R$ {item.unitPrice.toFixed(2)}/un
+                            {item.presentation || item.category} • {formatCurrencyBRL(item.unitPrice)}/un
                           </div>
                         </div>
                         <button
@@ -953,11 +954,11 @@ export const ColaboradorWorkspace: React.FC<ColaboradorWorkspaceProps> = ({
                         {/* Item Total */}
                         <div className="text-right">
                           <div className="font-black text-emerald-900 text-sm">
-                            R$ {item.total.toFixed(2)}
+                            {formatCurrencyBRL(item.total)}
                           </div>
                           {item.discountAmount > 0 && (
                             <div className="text-[10px] text-amber-700 font-medium">
-                              desc. -R$ {item.discountAmount.toFixed(2)}
+                              desc. -{formatCurrencyBRL(item.discountAmount)}
                             </div>
                           )}
                         </div>
@@ -981,17 +982,17 @@ export const ColaboradorWorkspace: React.FC<ColaboradorWorkspaceProps> = ({
               <div className="bg-neutral-50/90 p-3.5 rounded-xl border border-neutral-200 space-y-1 text-xs">
                 <div className="flex justify-between text-neutral-600">
                   <span className="font-medium">Subtotal da Compra:</span>
-                  <span className="font-semibold text-neutral-800">R$ {subtotal.toFixed(2)}</span>
+                  <span className="font-semibold text-emerald-800 tabular-nums">{formatCurrencyBRL(subtotal)}</span>
                 </div>
                 {totalDiscount > 0 && (
                   <div className="flex justify-between text-amber-700 font-semibold">
                     <span>Desconto Concedido:</span>
-                    <span>- R$ {totalDiscount.toFixed(2)}</span>
+                    <span>- {formatCurrencyBRL(totalDiscount)}</span>
                   </div>
                 )}
                 <div className="flex justify-between items-baseline pt-2 border-t border-neutral-200">
                   <span className="text-xs font-bold uppercase tracking-wider text-neutral-700">Total a Pagar:</span>
-                  <span className="text-xl font-black text-emerald-800 tracking-tight">R$ {totalToPay.toFixed(2)}</span>
+                  <span className="text-xl font-black text-emerald-800 tracking-tight tabular-nums">{formatCurrencyBRL(totalToPay)}</span>
                 </div>
               </div>
 
@@ -1000,7 +1001,7 @@ export const ColaboradorWorkspace: React.FC<ColaboradorWorkspaceProps> = ({
                 <div className="flex items-center justify-between text-xs font-semibold text-neutral-800">
                   <span>Formas de Pagamento</span>
                   <span className={remainingBalance > 0 ? 'text-amber-700 font-bold' : 'text-emerald-700 font-bold'}>
-                    {remainingBalance > 0 ? `Restante: R$ ${remainingBalance.toFixed(2)}` : 'Total 100% Liquidado'}
+                    {remainingBalance > 0 ? `Restante: ${formatCurrencyBRL(remainingBalance)}` : 'Total 100% Liquidado'}
                   </span>
                 </div>
 
@@ -1012,10 +1013,10 @@ export const ColaboradorWorkspace: React.FC<ColaboradorWorkspaceProps> = ({
                   >
                     <div className="flex items-center gap-2">
                       <span className="font-bold capitalize text-emerald-900">{p.method.replace('_', ' ')}:</span>
-                      <span className="font-black text-neutral-900">R$ {(p.amount || 0).toFixed(2)}</span>
+                      <span className="font-black text-emerald-800 tabular-nums">{formatCurrencyBRL(p.amount)}</span>
                       {p.tenderedAmount !== undefined && (
                         <span className="text-emerald-700 text-[11px] font-medium">
-                          (Entregue R$ {Number(p.tenderedAmount || 0).toFixed(2)} • Troco R$ {(p.changeAmount || 0).toFixed(2)})
+                          (Entregue {formatCurrencyBRL(p.tenderedAmount)} • Troco {formatCurrencyBRL(p.changeAmount)})
                         </span>
                       )}
                       {p.reference && <span className="text-neutral-400 text-[10px]">[{p.reference}]</span>}
@@ -1075,7 +1076,7 @@ export const ColaboradorWorkspace: React.FC<ColaboradorWorkspaceProps> = ({
                         <div className="flex justify-between items-baseline">
                           <span className="text-xs font-bold text-neutral-700">Total a Pagar em Dinheiro:</span>
                           <span className="text-lg font-black text-emerald-800">
-                            R$ {(Number(paymentAmountInput) || remainingBalance).toFixed(2)}
+                            {formatCurrencyBRL(Number(paymentAmountInput) || remainingBalance)}
                           </span>
                         </div>
 
@@ -1132,7 +1133,7 @@ export const ColaboradorWorkspace: React.FC<ColaboradorWorkspaceProps> = ({
                               <span className="text-[11px] text-emerald-800 font-medium">Entregar ao consumidor</span>
                             </div>
                             <span className="text-2xl sm:text-3xl font-black text-emerald-950 tracking-tight">
-                              R$ {(Number(cashTenderedInput) - (Number(paymentAmountInput) || remainingBalance)).toFixed(2)}
+                              {formatCurrencyBRL(Number(cashTenderedInput) - (Number(paymentAmountInput) || remainingBalance))}
                             </span>
                           </div>
                         )}
@@ -1154,7 +1155,7 @@ export const ColaboradorWorkspace: React.FC<ColaboradorWorkspaceProps> = ({
                         <div className="flex justify-between items-baseline">
                           <span className="text-xs font-bold text-neutral-700">Total a Receber no Pix:</span>
                           <span className="text-lg font-black text-teal-800">
-                            R$ {(Number(paymentAmountInput) || remainingBalance).toFixed(2)}
+                            {formatCurrencyBRL(Number(paymentAmountInput) || remainingBalance)}
                           </span>
                         </div>
 
@@ -1192,7 +1193,7 @@ export const ColaboradorWorkspace: React.FC<ColaboradorWorkspaceProps> = ({
                             Total a Passar na Maquininha ({activePaymentMethod === 'cartao_debito' ? 'Débito' : 'Crédito'}):
                           </span>
                           <span className="text-lg font-black text-blue-800">
-                            R$ {(Number(paymentAmountInput) || remainingBalance).toFixed(2)}
+                            {formatCurrencyBRL(Number(paymentAmountInput) || remainingBalance)}
                           </span>
                         </div>
 

@@ -1082,7 +1082,7 @@ export class FirestoreDataService {
               quantity: item.quantity,
               previousStock: prevStock,
               newStock,
-              reason: `Cancelamento da venda ${sale.saleNumber || sale.id}: ${reason}`,
+              reason: `Cancelamento da venda ${sale.code || sale.id}: ${reason}`,
               referenceId: sale.id,
               authorId: authContext.employeeId,
               authorName: authContext.name,
@@ -1114,7 +1114,7 @@ export class FirestoreDataService {
           entity: 'VENDAS',
           entityType: 'sale',
           entityId: sale.id,
-          details: `Venda ${sale.saleNumber || sale.id} cancelada. Motivo: ${reason}`,
+          details: `Venda ${sale.code || sale.id} cancelada. Motivo: ${reason}`,
           timestamp: now,
         };
         transaction.set(auditRef, auditLog);

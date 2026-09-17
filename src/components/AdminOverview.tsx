@@ -14,6 +14,7 @@ import {
   FileSpreadsheet, 
   Receipt 
 } from 'lucide-react';
+import { formatCurrencyBRL, formatPercentage } from '../lib/format';
 
 interface AdminOverviewProps {
   sales: Sale[];
@@ -38,10 +39,15 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
   onRunAiAnalysis,
   isAnalyzing,
 }) => {
+  const asFiniteNumber = (value: unknown) => {
+    const numberValue = typeof value === 'number' ? value : Number(value);
+    return Number.isFinite(numberValue) ? numberValue : 0;
+  };
+
   // Financial metrics
-  const totalRevenue = sales.reduce((acc, s) => acc + s.total, 0);
-  const totalSubtotal = sales.reduce((acc, s) => acc + s.subtotal, 0);
-  const totalDiscount = sales.reduce((acc, s) => acc + s.totalDiscount, 0);
+  const totalRevenue = sales.reduce((acc, s) => acc + asFiniteNumber(s.total), 0);
+  const totalSubtotal = sales.reduce((acc, s) => acc + asFiniteNumber(s.subtotal), 0);
+  const totalDiscount = sales.reduce((acc, s) => acc + asFiniteNumber(s.totalDiscount), 0);
   const salesCount = sales.length;
   const averageTicket = salesCount > 0 ? totalRevenue / salesCount : 0;
   const averageDiscountPercent = totalSubtotal > 0 ? (totalDiscount / totalSubtotal) * 100 : 0;
@@ -52,9 +58,10 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
 
   for (const s of sales) {
     for (const it of (s.items || [])) {
-      if (it.unitCost !== undefined && it.unitCost > 0) {
-        revenueWithCost += it.total;
-        costOfRevenueWithCost += it.unitCost * it.quantity;
+      const unitCost = asFiniteNumber(it.unitCost);
+      if (unitCost > 0) {
+        revenueWithCost += asFiniteNumber(it.total);
+        costOfRevenueWithCost += unitCost * asFiniteNumber(it.quantity);
       }
     }
   }
@@ -112,8 +119,8 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
               <DollarSign className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-bold text-neutral-900">
-            R$ {totalRevenue.toFixed(2)}
+          <div className="text-2xl font-bold text-emerald-800 tabular-nums">
+            {formatCurrencyBRL(totalRevenue)}
           </div>
           <div className="flex items-center gap-1 text-[11px] text-neutral-500">
             <span>Volume:</span>
@@ -132,8 +139,8 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
               <ShoppingBag className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-bold text-neutral-900">
-            R$ {averageTicket.toFixed(2)}
+          <div className="text-2xl font-bold text-emerald-800 tabular-nums">
+            {formatCurrencyBRL(averageTicket)}
           </div>
           <div className="text-[11px] text-neutral-500">
             Média de valor por cupom de atendimento
@@ -151,11 +158,11 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
               <Percent className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-bold text-amber-900">
-            R$ {totalDiscount.toFixed(2)}
+          <div className="text-2xl font-bold text-amber-900 tabular-nums">
+            {formatCurrencyBRL(totalDiscount)}
           </div>
           <div className="text-[11px] text-neutral-500">
-            Taxa média: <strong className="text-neutral-800">{averageDiscountPercent.toFixed(1)}% do subtotal</strong>
+            Taxa média: <strong className="text-neutral-800">{formatPercentage(averageDiscountPercent)} do subtotal</strong>
           </div>
         </div>
 
@@ -171,10 +178,10 @@ export const AdminOverview: React.FC<AdminOverviewProps> = ({
             </div>
           </div>
           <div className="text-2xl font-bold text-teal-900">
-            {grossMarginPercent !== null ? `${grossMarginPercent.toFixed(1)}%` : 'Indisponível'}
+            {grossMarginPercent !== null ? formatPercentage(grossMarginPercent) : 'Indisponível'}
           </div>
           <div className="text-[11px] text-neutral-500 leading-tight">
-            Cobertura de custo: <strong className="text-neutral-800">{costCoveragePercent.toFixed(1)}%</strong> da receita
+            Cobertura de custo: <strong className="text-neutral-800">{formatPercentage(costCoveragePercent)}</strong> da receita
             {costCoveragePercent < 100 && (
               <span className="block text-[10px] text-amber-700">Alguns itens sem custo de aquisição</span>
             )}

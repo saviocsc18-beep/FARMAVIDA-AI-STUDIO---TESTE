@@ -23,8 +23,6 @@ export interface NavbarProps {
   activeModuleTitle: string;
   activeShiftStatus: 'em_andamento' | 'pausado' | 'sem_turno';
   onToggleShift: () => void;
-  onSwitchUser: (user: User) => void;
-  availableUsers: User[];
   isOnline: boolean;
   onRefreshData: () => void;
   isRefreshing: boolean;
@@ -47,8 +45,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   activeModuleTitle,
   activeShiftStatus,
   onToggleShift,
-  onSwitchUser,
-  availableUsers,
   isOnline,
   onRefreshData,
   isRefreshing,
@@ -231,7 +227,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <HelpCircle className="w-4 h-4 text-emerald-300" />
           </button>
 
-          {/* User Profile & Quick Switcher */}
+          {/* User profile. A troca de atendente exige PIN no fluxo próprio. */}
           <div className="flex items-center gap-1.5 bg-emerald-900/80 pl-2 pr-1 py-1 rounded-lg border border-emerald-800/80 text-xs">
             <UserCircle2 className="w-3.5 h-3.5 text-emerald-300 shrink-0" />
             <span className="font-semibold text-white max-w-[80px] sm:max-w-[110px] truncate">
@@ -246,22 +242,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               {isAdmin ? 'Admin' : 'Balcão'}
             </span>
 
-            <select
-              value={currentUser.id}
-              onChange={(e) => {
-                const found = availableUsers.find((u) => u.id === e.target.value);
-                if (found) onSwitchUser(found);
-              }}
-              className="bg-emerald-950 text-emerald-100 text-[11px] rounded px-1 py-0.5 border border-emerald-700/60 focus:outline-none focus:border-emerald-400 cursor-pointer"
-              aria-label="Alternar perfil de usuário"
-              title="Trocar usuário ativo"
-            >
-              {availableUsers.map((u) => (
-                <option key={u.id} value={u.id} className="bg-neutral-900 text-white">
-                  {u.name.split(' ')[0]} ({u.role === 'admin' ? 'Admin' : 'Balcão'})
-                </option>
-              ))}
-            </select>
           </div>
 
           {/* Real Refresh/Sync Button */}

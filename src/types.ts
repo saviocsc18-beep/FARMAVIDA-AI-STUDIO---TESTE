@@ -169,6 +169,10 @@ export interface Sale {
   fiscalReference?: string; // Número do cupom fiscal do sistema satélite
   fiscalNotes?: string;
   status: 'concluida' | 'cancelada' | 'devolvida_parcial';
+  cancelledAt?: string;
+  cancelledByUserId?: string;
+  cancelledByUserName?: string;
+  cancelReason?: string;
   history: {
     timestamp: string;
     userId: string;
