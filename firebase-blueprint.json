@@ -1,0 +1,129 @@
+{
+  "entities": {
+    "Organization": {
+      "title": "Organization",
+      "description": "Rede farmacêutica multi-tenancy ready",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "tradeName": { "type": "string" },
+        "cnpj": { "type": "string" },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "active"]
+    },
+    "Store": {
+      "title": "Store",
+      "description": "Unidade ou filial da drogaria",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "organizationId": { "type": "string" },
+        "name": { "type": "string" },
+        "tradeName": { "type": "string" },
+        "cnpj": { "type": "string" },
+        "address": { "type": "string" },
+        "phone": { "type": "string" },
+        "active": { "type": "boolean" }
+      },
+      "required": ["id", "name", "active"]
+    },
+    "User": {
+      "title": "User",
+      "description": "Colaborador ou Administrador do FarmaVida",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "organizationId": { "type": "string" },
+        "storeId": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "colaborador"] },
+        "roleTitle": { "type": "string" },
+        "active": { "type": "boolean" },
+        "pinHash": { "type": "string" }
+      },
+      "required": ["id", "name", "role", "active"]
+    },
+    "Terminal": {
+      "title": "Terminal",
+      "description": "Terminal físico registrado (PDV)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "organizationId": { "type": "string" },
+        "storeId": { "type": "string" },
+        "name": { "type": "string" },
+        "active": { "type": "boolean" },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "name", "active"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Item do estoque farmacêutico",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "storeId": { "type": "string" },
+        "code": { "type": "string" },
+        "ean": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "costPrice": { "type": "number" },
+        "salePrice": { "type": "number" },
+        "currentStock": { "type": "number" },
+        "minStock": { "type": "number" },
+        "active": { "type": "boolean" }
+      },
+      "required": ["id", "name", "salePrice", "currentStock", "active"]
+    },
+    "Sale": {
+      "title": "Sale",
+      "description": "Venda realizada no PDV",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "storeId": { "type": "string" },
+        "terminalId": { "type": "string" },
+        "cashRegisterId": { "type": "string" },
+        "operatorId": { "type": "string" },
+        "operatorName": { "type": "string" },
+        "total": { "type": "number" },
+        "status": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["id", "storeId", "total", "status", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/organizations/{organizationId}": {
+      "schema": "Organization",
+      "description": "Dados da organização"
+    },
+    "/organizations/{organizationId}/users/{userId}": {
+      "schema": "User",
+      "description": "Usuários e colaboradores"
+    },
+    "/organizations/{organizationId}/stores/{storeId}": {
+      "schema": "Store",
+      "description": "Unidades da drogaria"
+    },
+    "/organizations/{organizationId}/stores/{storeId}/terminals/{terminalId}": {
+      "schema": "Terminal",
+      "description": "Terminais PDV da filial"
+    },
+    "/organizations/{organizationId}/stores/{storeId}/products/{productId}": {
+      "schema": "Product",
+      "description": "Catálogo e estoque da loja"
+    },
+    "/organizations/{organizationId}/stores/{storeId}/sales/{saleId}": {
+      "schema": "Sale",
+      "description": "Histórico de vendas registradas"
+    }
+  }
+}

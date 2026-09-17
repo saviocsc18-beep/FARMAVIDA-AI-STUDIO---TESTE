@@ -1,0 +1,4033 @@
+{
+  "stores": [
+    {
+      "id": "store_matriz",
+      "name": "FarmaVida - Drogaria Matriz",
+      "tradeName": "Drogaria FarmaVida",
+      "cnpj": "12.345.678/0001-90",
+      "address": "Av. Central da Saúde, 450 - Centro",
+      "phone": "(11) 3456-7890",
+      "active": true,
+      "settings": {
+        "maxDiscountWithoutAuthPercent": 12,
+        "defaultPaymentMethods": [
+          "dinheiro",
+          "pix",
+          "cartao_debito",
+          "cartao_credito"
+        ],
+        "enableLotTracking": true
+      }
+    }
+  ],
+  "users": [
+    {
+      "id": "usr_admin",
+      "name": "Dr. Roberto Mendes",
+      "email": "roberto@farmavida.com.br",
+      "role": "admin",
+      "roleTitle": "Farmacêutico Gestor / Proprietário",
+      "storeId": "store_matriz",
+      "active": true,
+      "pin": "1234",
+      "phone": "(11) 98765-4321"
+    },
+    {
+      "id": "usr_colab1",
+      "name": "Camila Santos",
+      "email": "camila.balcao@farmavida.com.br",
+      "role": "colaborador",
+      "roleTitle": "Balconista Pleno",
+      "storeId": "store_matriz",
+      "active": true,
+      "pin": "1111",
+      "phone": "(11) 97654-3210"
+    },
+    {
+      "id": "usr_colab2",
+      "name": "Lucas Ferreira",
+      "email": "lucas.atendimento@farmavida.com.br",
+      "role": "colaborador",
+      "roleTitle": "Balconista & Caixa",
+      "storeId": "store_matriz",
+      "active": true,
+      "pin": "2222",
+      "phone": "(11) 96543-2109"
+    }
+  ],
+  "shifts": [
+    {
+      "id": "shift_1789488098180",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "storeId": "store_matriz",
+      "date": "2026-09-15",
+      "startedAt": "2026-09-15T16:01:38.180Z",
+      "status": "em_andamento",
+      "breaks": []
+    },
+    {
+      "id": "shift_1789488098147",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "storeId": "store_matriz",
+      "date": "2026-09-15",
+      "startedAt": "2026-09-15T16:01:38.147Z",
+      "status": "encerrado",
+      "breaks": [],
+      "endedAt": "2026-09-15T16:01:38.173Z",
+      "notes": "Fim de turno teste"
+    },
+    {
+      "id": "shift_1789487366796",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "storeId": "store_matriz",
+      "date": "2026-09-15",
+      "startedAt": "2026-09-15T15:49:26.796Z",
+      "status": "encerrado",
+      "breaks": [],
+      "endedAt": "2026-09-15T15:49:26.804Z"
+    },
+    {
+      "id": "shift_1789487366792",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "storeId": "store_matriz",
+      "date": "2026-09-15",
+      "startedAt": "2026-09-15T15:49:26.792Z",
+      "status": "encerrado",
+      "breaks": [],
+      "endedAt": "2026-09-15T15:49:26.813Z"
+    },
+    {
+      "id": "shift_1789487366777",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "storeId": "store_matriz",
+      "date": "2026-09-15",
+      "startedAt": "2026-09-15T15:49:26.777Z",
+      "status": "encerrado",
+      "breaks": [
+        {
+          "startedAt": "2026-09-15T15:49:26.781Z",
+          "reason": "Almoço",
+          "endedAt": "2026-09-15T15:49:26.783Z"
+        }
+      ],
+      "endedAt": "2026-09-15T15:49:26.786Z"
+    },
+    {
+      "id": "shift_1789487366769",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "storeId": "store_matriz",
+      "date": "2026-09-15",
+      "startedAt": "2026-09-15T15:49:26.769Z",
+      "status": "encerrado",
+      "breaks": [],
+      "endedAt": "2026-09-15T15:49:26.773Z",
+      "notes": "Sem caixa operado"
+    },
+    {
+      "id": "shift_1789487366757",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "storeId": "store_matriz",
+      "date": "2026-09-15",
+      "startedAt": "2026-09-15T15:49:26.757Z",
+      "status": "encerrado",
+      "breaks": [],
+      "endedAt": "2026-09-15T15:49:26.763Z"
+    },
+    {
+      "id": "shift_1789487366694",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "storeId": "store_matriz",
+      "date": "2026-09-15",
+      "startedAt": "2026-09-15T15:49:26.694Z",
+      "status": "encerrado",
+      "breaks": [],
+      "endedAt": "2026-09-15T15:49:26.723Z",
+      "notes": "Expediente concluído com sucesso"
+    },
+    {
+      "id": "shift_1789487342253",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "storeId": "store_matriz",
+      "date": "2026-09-15",
+      "startedAt": "2026-09-15T15:49:02.253Z",
+      "status": "encerrado",
+      "breaks": [],
+      "endedAt": "2026-09-15T15:49:02.262Z"
+    },
+    {
+      "id": "shift_1789487342250",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "storeId": "store_matriz",
+      "date": "2026-09-15",
+      "startedAt": "2026-09-15T15:49:02.250Z",
+      "status": "encerrado",
+      "breaks": [],
+      "endedAt": "2026-09-15T15:49:02.272Z"
+    },
+    {
+      "id": "shift_1789487342231",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "storeId": "store_matriz",
+      "date": "2026-09-15",
+      "startedAt": "2026-09-15T15:49:02.231Z",
+      "status": "encerrado",
+      "breaks": [
+        {
+          "startedAt": "2026-09-15T15:49:02.236Z",
+          "reason": "Almoço",
+          "endedAt": "2026-09-15T15:49:02.240Z"
+        }
+      ],
+      "endedAt": "2026-09-15T15:49:02.243Z"
+    },
+    {
+      "id": "shift_1789487342224",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "storeId": "store_matriz",
+      "date": "2026-09-15",
+      "startedAt": "2026-09-15T15:49:02.224Z",
+      "status": "encerrado",
+      "breaks": [],
+      "endedAt": "2026-09-15T15:49:02.227Z",
+      "notes": "Sem caixa operado"
+    },
+    {
+      "id": "shift_1789487342211",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "storeId": "store_matriz",
+      "date": "2026-09-15",
+      "startedAt": "2026-09-15T15:49:02.211Z",
+      "status": "encerrado",
+      "breaks": [],
+      "endedAt": "2026-09-15T15:49:02.217Z"
+    },
+    {
+      "id": "shift_1789487342173",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "storeId": "store_matriz",
+      "date": "2026-09-15",
+      "startedAt": "2026-09-15T15:49:02.173Z",
+      "status": "encerrado",
+      "breaks": [],
+      "endedAt": "2026-09-15T15:49:02.200Z",
+      "notes": "Expediente concluído com sucesso"
+    },
+    {
+      "id": "shift_1789487328031",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "storeId": "store_matriz",
+      "date": "2026-09-15",
+      "startedAt": "2026-09-15T15:48:48.031Z",
+      "status": "encerrado",
+      "breaks": [],
+      "endedAt": "2026-09-15T15:49:02.166Z"
+    },
+    {
+      "id": "shift_1789487328015",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "storeId": "store_matriz",
+      "date": "2026-09-15",
+      "startedAt": "2026-09-15T15:48:48.015Z",
+      "status": "encerrado",
+      "breaks": [
+        {
+          "startedAt": "2026-09-15T15:48:48.020Z",
+          "reason": "Almoço",
+          "endedAt": "2026-09-15T15:48:48.023Z"
+        }
+      ],
+      "endedAt": "2026-09-15T15:48:48.026Z"
+    },
+    {
+      "id": "shift_1789487328004",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "storeId": "store_matriz",
+      "date": "2026-09-15",
+      "startedAt": "2026-09-15T15:48:48.004Z",
+      "status": "encerrado",
+      "breaks": [],
+      "endedAt": "2026-09-15T15:48:48.008Z",
+      "notes": "Sem caixa operado"
+    },
+    {
+      "id": "shift_1789487327991",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "storeId": "store_matriz",
+      "date": "2026-09-15",
+      "startedAt": "2026-09-15T15:48:47.991Z",
+      "status": "encerrado",
+      "breaks": [],
+      "endedAt": "2026-09-15T15:48:47.998Z"
+    },
+    {
+      "id": "shift_1789487327950",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "storeId": "store_matriz",
+      "date": "2026-09-15",
+      "startedAt": "2026-09-15T15:48:47.950Z",
+      "status": "encerrado",
+      "breaks": [],
+      "endedAt": "2026-09-15T15:48:47.981Z",
+      "notes": "Expediente concluído com sucesso"
+    },
+    {
+      "id": "shift_1789487304180",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "storeId": "store_matriz",
+      "date": "2026-09-15",
+      "startedAt": "2026-09-15T15:48:24.180Z",
+      "status": "encerrado",
+      "breaks": [],
+      "endedAt": "2026-09-15T16:01:38.131Z",
+      "notes": "Reset inicial da suite"
+    },
+    {
+      "id": "shift_1789487304132",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "storeId": "store_matriz",
+      "date": "2026-09-15",
+      "startedAt": "2026-09-15T15:48:24.132Z",
+      "status": "encerrado",
+      "breaks": [],
+      "endedAt": "2026-09-15T15:48:24.171Z",
+      "notes": "Expediente concluído com sucesso"
+    },
+    {
+      "id": "shift_1789487290394",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "storeId": "store_matriz",
+      "date": "2026-09-15",
+      "startedAt": "2026-09-15T15:48:10.394Z",
+      "status": "encerrado",
+      "breaks": [],
+      "endedAt": "2026-09-15T15:48:10.404Z"
+    },
+    {
+      "id": "shift_1789487290366",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "storeId": "store_matriz",
+      "date": "2026-09-15",
+      "startedAt": "2026-09-15T15:48:10.366Z",
+      "status": "encerrado",
+      "breaks": [],
+      "endedAt": "2026-09-15T15:48:10.391Z",
+      "notes": "Expediente concluído com sucesso"
+    },
+    {
+      "id": "shift_1789486726812",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "storeId": "store_matriz",
+      "date": "2026-09-15",
+      "startedAt": "2026-09-15T15:38:46.812Z",
+      "status": "encerrado",
+      "breaks": [],
+      "endedAt": "2026-09-15T15:48:10.361Z"
+    }
+  ],
+  "products": [
+    {
+      "id": "prod_1",
+      "storeId": "store_matriz",
+      "code": "MED-001",
+      "ean": "7891058001234",
+      "name": "Dipirona Monoidratada",
+      "presentation": "500mg - Caixa c/ 20 comp",
+      "category": "Genéricos",
+      "unit": "CX",
+      "costPrice": 4.2,
+      "salePrice": 10.5,
+      "currentStock": 23,
+      "minStock": 25,
+      "maxStock": 100,
+      "safetyDays": 5,
+      "active": true,
+      "updatedAt": "2026-09-15T16:01:38.218Z",
+      "batch": "L-2401",
+      "expirationDate": "2027-08-30"
+    },
+    {
+      "id": "prod_2",
+      "storeId": "store_matriz",
+      "code": "MED-002",
+      "ean": "7896004705541",
+      "name": "Amoxicilina + Clavulanato",
+      "presentation": "875mg + 125mg - 14 comp",
+      "category": "Antibióticos & Referência",
+      "unit": "CX",
+      "costPrice": 38.5,
+      "salePrice": 72.9,
+      "currentStock": 12,
+      "minStock": 10,
+      "maxStock": 35,
+      "safetyDays": 7,
+      "active": true,
+      "updatedAt": "2026-09-15T14:27:30.886Z",
+      "batch": "L-2409",
+      "expirationDate": "2026-11-15"
+    },
+    {
+      "id": "prod_3",
+      "storeId": "store_matriz",
+      "code": "MED-003",
+      "ean": "7891268102319",
+      "name": "Losartana Potássica",
+      "presentation": "50mg - 30 comp",
+      "category": "Genéricos",
+      "unit": "CX",
+      "costPrice": 2.8,
+      "salePrice": 7.9,
+      "currentStock": 6,
+      "minStock": 20,
+      "maxStock": 80,
+      "safetyDays": 5,
+      "active": true,
+      "updatedAt": "2026-09-15T14:27:30.886Z",
+      "batch": "L-2399",
+      "expirationDate": "2027-04-10"
+    },
+    {
+      "id": "prod_4",
+      "storeId": "store_matriz",
+      "code": "PER-001",
+      "ean": "7891150043210",
+      "name": "Protetor Solar Anthelios FPS 60",
+      "presentation": "Toque Seco 50g",
+      "category": "Dermocosméticos & Higiene",
+      "unit": "UN",
+      "costPrice": 58,
+      "salePrice": 99.9,
+      "currentStock": 8,
+      "minStock": 8,
+      "maxStock": 24,
+      "safetyDays": 10,
+      "active": true,
+      "updatedAt": "2026-09-15T14:27:30.886Z",
+      "batch": "B-771",
+      "expirationDate": "2027-12-01"
+    },
+    {
+      "id": "prod_5",
+      "storeId": "store_matriz",
+      "code": "VIT-001",
+      "ean": "7898040319082",
+      "name": "Vitamina C + Zinco Efervescente",
+      "presentation": "10 comp efervescentes",
+      "category": "Vitaminas & Suplementos",
+      "unit": "TUBO",
+      "costPrice": 9.5,
+      "salePrice": 21.9,
+      "currentStock": 18,
+      "minStock": 15,
+      "maxStock": 50,
+      "safetyDays": 6,
+      "active": true,
+      "updatedAt": "2026-09-15T14:27:30.886Z",
+      "batch": "L-882",
+      "expirationDate": "2026-10-30"
+    },
+    {
+      "id": "prod_6",
+      "storeId": "store_matriz",
+      "code": "MED-004",
+      "ean": "7896714201123",
+      "name": "Omeprazol",
+      "presentation": "20mg - 28 cápsulas",
+      "category": "Genéricos",
+      "unit": "CX",
+      "costPrice": 5.1,
+      "salePrice": 14.9,
+      "currentStock": 32,
+      "minStock": 20,
+      "maxStock": 70,
+      "safetyDays": 5,
+      "active": true,
+      "updatedAt": "2026-09-15T14:27:30.886Z",
+      "batch": "L-911",
+      "expirationDate": "2027-05-18"
+    }
+  ],
+  "stockMovements": [
+    {
+      "id": "sm_1789488098218_g1x2",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "venda",
+      "quantity": -1,
+      "previousStock": 24,
+      "newStock": 23,
+      "reason": "Venda balcão VDA-2026-0027",
+      "authorId": "usr_colab1",
+      "authorName": "Camila Santos",
+      "referenceId": "VDA-2026-0027",
+      "timestamp": "2026-09-15T16:01:38.218Z"
+    },
+    {
+      "id": "sm_1789488098206_4w5c",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "venda",
+      "quantity": -1,
+      "previousStock": 25,
+      "newStock": 24,
+      "reason": "Venda balcão VDA-2026-0026",
+      "authorId": "usr_colab1",
+      "authorName": "Camila Santos",
+      "referenceId": "VDA-2026-0026",
+      "timestamp": "2026-09-15T16:01:38.206Z"
+    },
+    {
+      "id": "sm_1789488098198_ckuw",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "venda",
+      "quantity": -1,
+      "previousStock": 26,
+      "newStock": 25,
+      "reason": "Venda balcão VDA-2026-0025",
+      "authorId": "usr_colab1",
+      "authorName": "Camila Santos",
+      "referenceId": "VDA-2026-0025",
+      "timestamp": "2026-09-15T16:01:38.198Z"
+    },
+    {
+      "id": "sm_1789488098191_bihc",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "venda",
+      "quantity": -1,
+      "previousStock": 27,
+      "newStock": 26,
+      "reason": "Venda balcão VDA-2026-0024",
+      "authorId": "usr_colab1",
+      "authorName": "Camila Santos",
+      "referenceId": "VDA-2026-0024",
+      "timestamp": "2026-09-15T16:01:38.191Z"
+    },
+    {
+      "id": "sm_1789488098162_1bvo",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "venda",
+      "quantity": -2,
+      "previousStock": 29,
+      "newStock": 27,
+      "reason": "Venda balcão VDA-2026-0023",
+      "authorId": "usr_colab2",
+      "authorName": "Lucas Ferreira",
+      "referenceId": "VDA-2026-0023",
+      "timestamp": "2026-09-15T16:01:38.162Z"
+    },
+    {
+      "id": "sm_1789488080957_ndsl",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "venda",
+      "quantity": -1,
+      "previousStock": 30,
+      "newStock": 29,
+      "reason": "Venda balcão VDA-2026-0022",
+      "authorId": "usr_colab2",
+      "authorName": "Lucas Ferreira",
+      "referenceId": "VDA-2026-0022",
+      "timestamp": "2026-09-15T16:01:20.957Z"
+    },
+    {
+      "id": "sm_1789488080951_sw8m",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "venda",
+      "quantity": -1,
+      "previousStock": 31,
+      "newStock": 30,
+      "reason": "Venda balcão VDA-2026-0021",
+      "authorId": "usr_colab2",
+      "authorName": "Lucas Ferreira",
+      "referenceId": "VDA-2026-0021",
+      "timestamp": "2026-09-15T16:01:20.951Z"
+    },
+    {
+      "id": "sm_1789488080944_rrwh",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "venda",
+      "quantity": -1,
+      "previousStock": 32,
+      "newStock": 31,
+      "reason": "Venda balcão VDA-2026-0020",
+      "authorId": "usr_colab2",
+      "authorName": "Lucas Ferreira",
+      "referenceId": "VDA-2026-0020",
+      "timestamp": "2026-09-15T16:01:20.944Z"
+    },
+    {
+      "id": "sm_1789488080937_7ejv",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "venda",
+      "quantity": -1,
+      "previousStock": 33,
+      "newStock": 32,
+      "reason": "Venda balcão VDA-2026-0019",
+      "authorId": "usr_colab2",
+      "authorName": "Lucas Ferreira",
+      "referenceId": "VDA-2026-0019",
+      "timestamp": "2026-09-15T16:01:20.937Z"
+    },
+    {
+      "id": "sm_1789488037484_6fuv",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "venda",
+      "quantity": -1,
+      "previousStock": 34,
+      "newStock": 33,
+      "reason": "Venda balcão VDA-2026-0018",
+      "authorId": "usr_colab2",
+      "authorName": "Lucas Ferreira",
+      "referenceId": "VDA-2026-0018",
+      "timestamp": "2026-09-15T16:00:37.484Z"
+    },
+    {
+      "id": "sm_1789488029226_pev3",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "venda",
+      "quantity": -1,
+      "previousStock": 35,
+      "newStock": 34,
+      "reason": "Venda balcão VDA-2026-0017",
+      "authorId": "usr_colab2",
+      "authorName": "Lucas Ferreira",
+      "referenceId": "VDA-2026-0017",
+      "timestamp": "2026-09-15T16:00:29.226Z"
+    },
+    {
+      "id": "sm_1789488029221_v23i",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "venda",
+      "quantity": -1,
+      "previousStock": 36,
+      "newStock": 35,
+      "reason": "Venda balcão VDA-2026-0016",
+      "authorId": "usr_colab2",
+      "authorName": "Lucas Ferreira",
+      "referenceId": "VDA-2026-0016",
+      "timestamp": "2026-09-15T16:00:29.221Z"
+    },
+    {
+      "id": "sm_1789488029214_wlga",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "venda",
+      "quantity": -1,
+      "previousStock": 37,
+      "newStock": 36,
+      "reason": "Venda balcão VDA-2026-0015",
+      "authorId": "usr_colab2",
+      "authorName": "Lucas Ferreira",
+      "referenceId": "VDA-2026-0015",
+      "timestamp": "2026-09-15T16:00:29.214Z"
+    },
+    {
+      "id": "sm_1789488029206_morv",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "venda",
+      "quantity": -1,
+      "previousStock": 38,
+      "newStock": 37,
+      "reason": "Venda balcão VDA-2026-0014",
+      "authorId": "usr_colab2",
+      "authorName": "Lucas Ferreira",
+      "referenceId": "VDA-2026-0014",
+      "timestamp": "2026-09-15T16:00:29.206Z"
+    },
+    {
+      "id": "sm_1789488011473_vqcz",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "venda",
+      "quantity": -1,
+      "previousStock": 39,
+      "newStock": 38,
+      "reason": "Venda balcão VDA-2026-0013",
+      "authorId": "usr_colab2",
+      "authorName": "Lucas Ferreira",
+      "referenceId": "VDA-2026-0013",
+      "timestamp": "2026-09-15T16:00:11.473Z"
+    },
+    {
+      "id": "sm_1789488011468_mpv4",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "venda",
+      "quantity": -1,
+      "previousStock": 40,
+      "newStock": 39,
+      "reason": "Venda balcão VDA-2026-0012",
+      "authorId": "usr_colab2",
+      "authorName": "Lucas Ferreira",
+      "referenceId": "VDA-2026-0012",
+      "timestamp": "2026-09-15T16:00:11.468Z"
+    },
+    {
+      "id": "sm_1789488011460_551i",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "venda",
+      "quantity": -1,
+      "previousStock": 41,
+      "newStock": 40,
+      "reason": "Venda balcão VDA-2026-0011",
+      "authorId": "usr_colab2",
+      "authorName": "Lucas Ferreira",
+      "referenceId": "VDA-2026-0011",
+      "timestamp": "2026-09-15T16:00:11.460Z"
+    },
+    {
+      "id": "sm_1789488011447_h4l1",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "venda",
+      "quantity": -1,
+      "previousStock": 42,
+      "newStock": 41,
+      "reason": "Venda balcão VDA-2026-0010",
+      "authorId": "usr_colab2",
+      "authorName": "Lucas Ferreira",
+      "referenceId": "VDA-2026-0010",
+      "timestamp": "2026-09-15T16:00:11.447Z"
+    },
+    {
+      "id": "sm_1789486773063_tk7",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "venda",
+      "quantity": -1,
+      "previousStock": 43,
+      "newStock": 42,
+      "reason": "Venda balcão VDA-2026-0009",
+      "authorId": "usr_colab1",
+      "authorName": "Camila Santos",
+      "referenceId": "VDA-2026-0009",
+      "timestamp": "2026-09-15T15:39:33.063Z"
+    },
+    {
+      "id": "sm_1789486773047_qyx",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "venda",
+      "quantity": -1,
+      "previousStock": 44,
+      "newStock": 43,
+      "reason": "Venda balcão VDA-2026-0008",
+      "authorId": "usr_colab1",
+      "authorName": "Camila Santos",
+      "referenceId": "VDA-2026-0008",
+      "timestamp": "2026-09-15T15:39:33.047Z"
+    },
+    {
+      "id": "sm_1789486773034_0tx",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "venda",
+      "quantity": -1,
+      "previousStock": 45,
+      "newStock": 44,
+      "reason": "Venda balcão VDA-2026-0007",
+      "authorId": "usr_colab1",
+      "authorName": "Camila Santos",
+      "referenceId": "VDA-2026-0007",
+      "timestamp": "2026-09-15T15:39:33.034Z"
+    },
+    {
+      "id": "sm_1789486773022_1sk",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "venda",
+      "quantity": -1,
+      "previousStock": 46,
+      "newStock": 45,
+      "reason": "Venda balcão VDA-2026-0006",
+      "authorId": "usr_colab1",
+      "authorName": "Camila Santos",
+      "referenceId": "VDA-2026-0006",
+      "timestamp": "2026-09-15T15:39:33.022Z"
+    },
+    {
+      "id": "sm_1789486773010_1wx",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "venda",
+      "quantity": -1,
+      "previousStock": 47,
+      "newStock": 46,
+      "reason": "Venda balcão VDA-2026-0005",
+      "authorId": "usr_colab1",
+      "authorName": "Camila Santos",
+      "referenceId": "VDA-2026-0005",
+      "timestamp": "2026-09-15T15:39:33.010Z"
+    },
+    {
+      "id": "sm_1789486772985_qnx",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "venda",
+      "quantity": -1,
+      "previousStock": 48,
+      "newStock": 47,
+      "reason": "Venda balcão VDA-2026-0004",
+      "authorId": "usr_colab1",
+      "authorName": "Camila Santos",
+      "referenceId": "VDA-2026-0004",
+      "timestamp": "2026-09-15T15:39:32.985Z"
+    },
+    {
+      "id": "sm_init_1",
+      "storeId": "store_matriz",
+      "productId": "prod_1",
+      "productName": "Dipirona Monoidratada",
+      "productCode": "MED-001",
+      "type": "saldo_inicial",
+      "quantity": 50,
+      "previousStock": 0,
+      "newStock": 50,
+      "reason": "Inventário inicial homologado de corte",
+      "authorId": "usr_admin",
+      "authorName": "Dr. Roberto Mendes",
+      "timestamp": "2026-09-14T14:27:30.886Z"
+    },
+    {
+      "id": "sm_init_2",
+      "storeId": "store_matriz",
+      "productId": "prod_3",
+      "productName": "Losartana Potássica",
+      "productCode": "MED-003",
+      "type": "saldo_inicial",
+      "quantity": 8,
+      "previousStock": 0,
+      "newStock": 8,
+      "reason": "Inventário inicial homologado de corte",
+      "authorId": "usr_admin",
+      "authorName": "Dr. Roberto Mendes",
+      "timestamp": "2026-09-14T14:27:30.886Z"
+    }
+  ],
+  "sales": [
+    {
+      "id": "sale_1789488098218_trci0",
+      "code": "VDA-2026-0027",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T16:01:38.218Z",
+      "sellerId": "usr_colab1",
+      "sellerName": "Camila Santos",
+      "operatorId": "usr_colab1",
+      "operatorName": "Camila Santos",
+      "workShiftId": "shift_1789488098180",
+      "cashRegisterId": "cx_1789488098184_bsafd",
+      "terminal": "Caixa Balcão 01",
+      "items": [
+        {
+          "productId": "prod_1",
+          "quantity": 1,
+          "unitPrice": 10.5,
+          "unitCost": 4.2
+        }
+      ],
+      "subtotal": 10.5,
+      "totalDiscount": 0,
+      "total": 10.5,
+      "payments": [
+        {
+          "method": "dinheiro",
+          "amount": 10.5
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T16:01:38.218Z",
+          "userId": "usr_colab1",
+          "userName": "Camila Santos",
+          "action": "Venda finalizada no balcão (Recibo Não Fiscal)"
+        }
+      ],
+      "idempotencyKey": "test_idemp_1789488098217"
+    },
+    {
+      "id": "sale_1789488098206_muov7",
+      "code": "VDA-2026-0026",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T16:01:38.206Z",
+      "sellerId": "usr_colab1",
+      "sellerName": "Camila Santos",
+      "operatorId": "usr_colab1",
+      "operatorName": "Camila Santos",
+      "workShiftId": "shift_1789488098180",
+      "cashRegisterId": "cx_1789488098184_bsafd",
+      "terminal": "Caixa Balcão 01",
+      "items": [
+        {
+          "productId": "prod_1",
+          "quantity": 1,
+          "unitPrice": 10.5,
+          "unitCost": 4.2
+        }
+      ],
+      "subtotal": 10.5,
+      "totalDiscount": 0,
+      "total": 10.5,
+      "payments": [
+        {
+          "method": "cartao_credito",
+          "amount": 10.5
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T16:01:38.206Z",
+          "userId": "usr_colab1",
+          "userName": "Camila Santos",
+          "action": "Venda finalizada no balcão (Recibo Não Fiscal)"
+        }
+      ]
+    },
+    {
+      "id": "sale_1789488098198_rnmay",
+      "code": "VDA-2026-0025",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T16:01:38.198Z",
+      "sellerId": "usr_colab1",
+      "sellerName": "Camila Santos",
+      "operatorId": "usr_colab1",
+      "operatorName": "Camila Santos",
+      "workShiftId": "shift_1789488098180",
+      "cashRegisterId": "cx_1789488098184_bsafd",
+      "terminal": "Caixa Balcão 01",
+      "items": [
+        {
+          "productId": "prod_1",
+          "quantity": 1,
+          "unitPrice": 10.5,
+          "unitCost": 4.2
+        }
+      ],
+      "subtotal": 10.5,
+      "totalDiscount": 0,
+      "total": 10.5,
+      "payments": [
+        {
+          "method": "pix",
+          "amount": 10.5
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T16:01:38.198Z",
+          "userId": "usr_colab1",
+          "userName": "Camila Santos",
+          "action": "Venda finalizada no balcão (Recibo Não Fiscal)"
+        }
+      ]
+    },
+    {
+      "id": "sale_1789488098191_48b7n",
+      "code": "VDA-2026-0024",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T16:01:38.191Z",
+      "sellerId": "usr_colab1",
+      "sellerName": "Camila Santos",
+      "operatorId": "usr_colab1",
+      "operatorName": "Camila Santos",
+      "workShiftId": "shift_1789488098180",
+      "cashRegisterId": "cx_1789488098184_bsafd",
+      "terminal": "Caixa Balcão 01",
+      "items": [
+        {
+          "productId": "prod_1",
+          "quantity": 1,
+          "unitPrice": 10.5,
+          "unitCost": 4.2
+        }
+      ],
+      "subtotal": 10.5,
+      "totalDiscount": 0,
+      "total": 10.5,
+      "payments": [
+        {
+          "method": "dinheiro",
+          "amount": 10.5
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T16:01:38.191Z",
+          "userId": "usr_colab1",
+          "userName": "Camila Santos",
+          "action": "Venda finalizada no balcão (Recibo Não Fiscal)"
+        }
+      ]
+    },
+    {
+      "id": "sale_1789488098162_qt78r",
+      "code": "VDA-2026-0023",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T16:01:38.162Z",
+      "sellerId": "usr_colab2",
+      "sellerName": "Lucas Ferreira",
+      "operatorId": "usr_colab2",
+      "operatorName": "Lucas Ferreira",
+      "workShiftId": "shift_1789488098147",
+      "cashRegisterId": "cx_1789488098157_m38q4",
+      "terminal": "Caixa Balcão 02",
+      "items": [
+        {
+          "productId": "prod_1",
+          "quantity": 2,
+          "unitPrice": 10.5,
+          "unitCost": 4.2
+        }
+      ],
+      "subtotal": 21,
+      "totalDiscount": 0,
+      "total": 21,
+      "payments": [
+        {
+          "method": "dinheiro",
+          "amount": 21
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T16:01:38.162Z",
+          "userId": "usr_colab2",
+          "userName": "Lucas Ferreira",
+          "action": "Venda finalizada no balcão (Recibo Não Fiscal)"
+        }
+      ]
+    },
+    {
+      "id": "sale_1789488080957_r0qls",
+      "code": "VDA-2026-0022",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T16:01:20.957Z",
+      "sellerId": "usr_colab2",
+      "sellerName": "Lucas Ferreira",
+      "operatorId": "usr_colab2",
+      "operatorName": "Lucas Ferreira",
+      "workShiftId": "shift_1789487304180",
+      "cashRegisterId": "cx_hoje",
+      "terminal": "Terminal 01 - Balcão Principal",
+      "items": [
+        {
+          "productId": "prod_1",
+          "quantity": 1,
+          "unitPrice": 10.5,
+          "unitCost": 4.2
+        }
+      ],
+      "subtotal": 10.5,
+      "totalDiscount": 0,
+      "total": 10.5,
+      "payments": [
+        {
+          "method": "pix",
+          "amount": 10.5
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T16:01:20.957Z",
+          "userId": "usr_colab2",
+          "userName": "Lucas Ferreira",
+          "action": "Venda finalizada no balcão (Recibo Não Fiscal)"
+        }
+      ]
+    },
+    {
+      "id": "sale_1789488080951_92q24",
+      "code": "VDA-2026-0021",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T16:01:20.951Z",
+      "sellerId": "usr_colab2",
+      "sellerName": "Lucas Ferreira",
+      "operatorId": "usr_colab2",
+      "operatorName": "Lucas Ferreira",
+      "workShiftId": "shift_1789487304180",
+      "cashRegisterId": "cx_hoje",
+      "terminal": "Terminal 01 - Balcão Principal",
+      "items": [
+        {
+          "productId": "prod_1",
+          "quantity": 1,
+          "unitPrice": 10.5,
+          "unitCost": 4.2
+        }
+      ],
+      "subtotal": 10.5,
+      "totalDiscount": 0,
+      "total": 10.5,
+      "payments": [
+        {
+          "method": "dinheiro",
+          "amount": 10.5
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T16:01:20.951Z",
+          "userId": "usr_colab2",
+          "userName": "Lucas Ferreira",
+          "action": "Venda finalizada no balcão (Recibo Não Fiscal)"
+        }
+      ]
+    },
+    {
+      "id": "sale_1789488080944_4yk39",
+      "code": "VDA-2026-0020",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T16:01:20.944Z",
+      "sellerId": "usr_colab2",
+      "sellerName": "Lucas Ferreira",
+      "operatorId": "usr_colab2",
+      "operatorName": "Lucas Ferreira",
+      "workShiftId": "shift_1789487304180",
+      "cashRegisterId": "cx_hoje",
+      "terminal": "Terminal 01 - Balcão Principal",
+      "items": [
+        {
+          "productId": "prod_1",
+          "quantity": 1,
+          "unitPrice": 10.5,
+          "unitCost": 4.2
+        }
+      ],
+      "subtotal": 10.5,
+      "totalDiscount": 0,
+      "total": 10.5,
+      "payments": [
+        {
+          "method": "cartao_credito",
+          "amount": 10.5
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T16:01:20.944Z",
+          "userId": "usr_colab2",
+          "userName": "Lucas Ferreira",
+          "action": "Venda finalizada no balcão (Recibo Não Fiscal)"
+        }
+      ]
+    },
+    {
+      "id": "sale_1789488080937_oapk3",
+      "code": "VDA-2026-0019",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T16:01:20.937Z",
+      "sellerId": "usr_colab2",
+      "sellerName": "Lucas Ferreira",
+      "operatorId": "usr_colab2",
+      "operatorName": "Lucas Ferreira",
+      "workShiftId": "shift_1789487304180",
+      "cashRegisterId": "cx_hoje",
+      "terminal": "Terminal 01 - Balcão Principal",
+      "items": [
+        {
+          "productId": "prod_1",
+          "quantity": 1,
+          "unitPrice": 10.5,
+          "unitCost": 4.2
+        }
+      ],
+      "subtotal": 10.5,
+      "totalDiscount": 0,
+      "total": 10.5,
+      "payments": [
+        {
+          "method": "dinheiro",
+          "amount": 10.5
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T16:01:20.937Z",
+          "userId": "usr_colab2",
+          "userName": "Lucas Ferreira",
+          "action": "Venda finalizada no balcão (Recibo Não Fiscal)"
+        }
+      ]
+    },
+    {
+      "id": "sale_1789488037484_t258w",
+      "code": "VDA-2026-0018",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T16:00:37.484Z",
+      "sellerId": "usr_colab2",
+      "sellerName": "Lucas Ferreira",
+      "operatorId": "usr_colab2",
+      "operatorName": "Lucas Ferreira",
+      "workShiftId": "shift_1789487304180",
+      "cashRegisterId": "cx_hoje",
+      "terminal": "Terminal 01 - Balcão Principal",
+      "items": [
+        {
+          "productId": "prod_1",
+          "quantity": 1,
+          "unitPrice": 12.5,
+          "unitCost": 4.2
+        }
+      ],
+      "subtotal": 12.5,
+      "totalDiscount": 0,
+      "total": 12.5,
+      "payments": [
+        {
+          "method": "dinheiro",
+          "amount": 12.5
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T16:00:37.484Z",
+          "userId": "usr_colab2",
+          "userName": "Lucas Ferreira",
+          "action": "Venda finalizada no balcão (Recibo Não Fiscal)"
+        }
+      ]
+    },
+    {
+      "id": "sale_1789488029226_fvqxt",
+      "code": "VDA-2026-0017",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T16:00:29.226Z",
+      "sellerId": "usr_colab2",
+      "sellerName": "Lucas Ferreira",
+      "operatorId": "usr_colab2",
+      "operatorName": "Lucas Ferreira",
+      "workShiftId": "shift_1789487304180",
+      "cashRegisterId": "cx_hoje",
+      "terminal": "Terminal 01 - Balcão Principal",
+      "items": [
+        {
+          "productId": "prod_1",
+          "quantity": 1,
+          "unitPrice": 10.5,
+          "unitCost": 4.2
+        }
+      ],
+      "subtotal": 10.5,
+      "totalDiscount": 0,
+      "total": 10.5,
+      "payments": [
+        {
+          "method": "pix",
+          "amount": 10.5
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T16:00:29.226Z",
+          "userId": "usr_colab2",
+          "userName": "Lucas Ferreira",
+          "action": "Venda finalizada no balcão (Recibo Não Fiscal)"
+        }
+      ]
+    },
+    {
+      "id": "sale_1789488029221_ca3ls",
+      "code": "VDA-2026-0016",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T16:00:29.221Z",
+      "sellerId": "usr_colab2",
+      "sellerName": "Lucas Ferreira",
+      "operatorId": "usr_colab2",
+      "operatorName": "Lucas Ferreira",
+      "workShiftId": "shift_1789487304180",
+      "cashRegisterId": "cx_hoje",
+      "terminal": "Terminal 01 - Balcão Principal",
+      "items": [
+        {
+          "productId": "prod_1",
+          "quantity": 1,
+          "unitPrice": 10.5,
+          "unitCost": 4.2
+        }
+      ],
+      "subtotal": 10.5,
+      "totalDiscount": 0,
+      "total": 10.5,
+      "payments": [
+        {
+          "method": "dinheiro",
+          "amount": 10.5
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T16:00:29.221Z",
+          "userId": "usr_colab2",
+          "userName": "Lucas Ferreira",
+          "action": "Venda finalizada no balcão (Recibo Não Fiscal)"
+        }
+      ]
+    },
+    {
+      "id": "sale_1789488029214_dtzgm",
+      "code": "VDA-2026-0015",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T16:00:29.214Z",
+      "sellerId": "usr_colab2",
+      "sellerName": "Lucas Ferreira",
+      "operatorId": "usr_colab2",
+      "operatorName": "Lucas Ferreira",
+      "workShiftId": "shift_1789487304180",
+      "cashRegisterId": "cx_hoje",
+      "terminal": "Terminal 01 - Balcão Principal",
+      "items": [
+        {
+          "productId": "prod_1",
+          "quantity": 1,
+          "unitPrice": 10.5,
+          "unitCost": 4.2
+        }
+      ],
+      "subtotal": 10.5,
+      "totalDiscount": 0,
+      "total": 10.5,
+      "payments": [
+        {
+          "method": "cartao_credito",
+          "amount": 10.5
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T16:00:29.214Z",
+          "userId": "usr_colab2",
+          "userName": "Lucas Ferreira",
+          "action": "Venda finalizada no balcão (Recibo Não Fiscal)"
+        }
+      ]
+    },
+    {
+      "id": "sale_1789488029206_yfisx",
+      "code": "VDA-2026-0014",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T16:00:29.206Z",
+      "sellerId": "usr_colab2",
+      "sellerName": "Lucas Ferreira",
+      "operatorId": "usr_colab2",
+      "operatorName": "Lucas Ferreira",
+      "workShiftId": "shift_1789487304180",
+      "cashRegisterId": "cx_hoje",
+      "terminal": "Terminal 01 - Balcão Principal",
+      "items": [
+        {
+          "productId": "prod_1",
+          "quantity": 1,
+          "unitPrice": 10.5,
+          "unitCost": 4.2
+        }
+      ],
+      "subtotal": 10.5,
+      "totalDiscount": 0,
+      "total": 10.5,
+      "payments": [
+        {
+          "method": "dinheiro",
+          "amount": 10.5
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T16:00:29.206Z",
+          "userId": "usr_colab2",
+          "userName": "Lucas Ferreira",
+          "action": "Venda finalizada no balcão (Recibo Não Fiscal)"
+        }
+      ]
+    },
+    {
+      "id": "sale_1789488011473_ym8vn",
+      "code": "VDA-2026-0013",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T16:00:11.473Z",
+      "sellerId": "usr_colab2",
+      "sellerName": "Lucas Ferreira",
+      "operatorId": "usr_colab2",
+      "operatorName": "Lucas Ferreira",
+      "workShiftId": "shift_1789487304180",
+      "cashRegisterId": "cx_hoje",
+      "terminal": "Terminal 01 - Balcão Principal",
+      "items": [
+        {
+          "productId": "prod_1",
+          "quantity": 1,
+          "unitPrice": 10.5,
+          "unitCost": 4.2
+        }
+      ],
+      "subtotal": 10.5,
+      "totalDiscount": 0,
+      "total": 10.5,
+      "payments": [
+        {
+          "method": "pix",
+          "amount": 10.5
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T16:00:11.473Z",
+          "userId": "usr_colab2",
+          "userName": "Lucas Ferreira",
+          "action": "Venda finalizada no balcão (Recibo Não Fiscal)"
+        }
+      ]
+    },
+    {
+      "id": "sale_1789488011468_b58g6",
+      "code": "VDA-2026-0012",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T16:00:11.468Z",
+      "sellerId": "usr_colab2",
+      "sellerName": "Lucas Ferreira",
+      "operatorId": "usr_colab2",
+      "operatorName": "Lucas Ferreira",
+      "workShiftId": "shift_1789487304180",
+      "cashRegisterId": "cx_hoje",
+      "terminal": "Terminal 01 - Balcão Principal",
+      "items": [
+        {
+          "productId": "prod_1",
+          "quantity": 1,
+          "unitPrice": 10.5,
+          "unitCost": 4.2
+        }
+      ],
+      "subtotal": 10.5,
+      "totalDiscount": 0,
+      "total": 10.5,
+      "payments": [
+        {
+          "method": "dinheiro",
+          "amount": 10.5
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T16:00:11.468Z",
+          "userId": "usr_colab2",
+          "userName": "Lucas Ferreira",
+          "action": "Venda finalizada no balcão (Recibo Não Fiscal)"
+        }
+      ]
+    },
+    {
+      "id": "sale_1789488011460_279y4",
+      "code": "VDA-2026-0011",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T16:00:11.460Z",
+      "sellerId": "usr_colab2",
+      "sellerName": "Lucas Ferreira",
+      "operatorId": "usr_colab2",
+      "operatorName": "Lucas Ferreira",
+      "workShiftId": "shift_1789487304180",
+      "cashRegisterId": "cx_hoje",
+      "terminal": "Terminal 01 - Balcão Principal",
+      "items": [
+        {
+          "productId": "prod_1",
+          "quantity": 1,
+          "unitPrice": 10.5,
+          "unitCost": 4.2
+        }
+      ],
+      "subtotal": 10.5,
+      "totalDiscount": 0,
+      "total": 10.5,
+      "payments": [
+        {
+          "method": "cartao_credito",
+          "amount": 10.5
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T16:00:11.460Z",
+          "userId": "usr_colab2",
+          "userName": "Lucas Ferreira",
+          "action": "Venda finalizada no balcão (Recibo Não Fiscal)"
+        }
+      ]
+    },
+    {
+      "id": "sale_1789488011448_6ajij",
+      "code": "VDA-2026-0010",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T16:00:11.447Z",
+      "sellerId": "usr_colab2",
+      "sellerName": "Lucas Ferreira",
+      "operatorId": "usr_colab2",
+      "operatorName": "Lucas Ferreira",
+      "workShiftId": "shift_1789487304180",
+      "cashRegisterId": "cx_hoje",
+      "terminal": "Terminal 01 - Balcão Principal",
+      "items": [
+        {
+          "productId": "prod_1",
+          "quantity": 1,
+          "unitPrice": 10.5,
+          "unitCost": 4.2
+        }
+      ],
+      "subtotal": 10.5,
+      "totalDiscount": 0,
+      "total": 10.5,
+      "payments": [
+        {
+          "method": "dinheiro",
+          "amount": 10.5
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T16:00:11.447Z",
+          "userId": "usr_colab2",
+          "userName": "Lucas Ferreira",
+          "action": "Venda finalizada no balcão (Recibo Não Fiscal)"
+        }
+      ]
+    },
+    {
+      "id": "sale_1789486773063",
+      "code": "VDA-2026-0009",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T15:39:33.063Z",
+      "sellerId": "usr_colab1",
+      "sellerName": "Camila Santos",
+      "operatorId": "usr_colab1",
+      "operatorName": "Camila Santos",
+      "cashRegisterId": "cx_1789486766059_gqk45",
+      "items": [
+        {
+          "productId": "prod_1",
+          "productName": "Dipirona",
+          "quantity": 1,
+          "unitPrice": 100,
+          "subtotal": 100,
+          "total": 100,
+          "unitCost": 4.2
+        }
+      ],
+      "subtotal": 100,
+      "totalDiscount": 0,
+      "total": 100,
+      "payments": [
+        {
+          "method": "dinheiro",
+          "amount": 30
+        },
+        {
+          "method": "pix",
+          "amount": 30
+        },
+        {
+          "method": "cartao_debito",
+          "amount": 40
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T15:39:33.063Z",
+          "userId": "usr_colab1",
+          "userName": "Camila Santos",
+          "action": "Venda finalizada com sucesso"
+        }
+      ]
+    },
+    {
+      "id": "sale_1789486773048",
+      "code": "VDA-2026-0008",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T15:39:33.047Z",
+      "sellerId": "usr_colab1",
+      "sellerName": "Camila Santos",
+      "operatorId": "usr_colab1",
+      "operatorName": "Camila Santos",
+      "cashRegisterId": "cx_1789486766059_gqk45",
+      "items": [
+        {
+          "productId": "prod_1",
+          "productName": "Dipirona",
+          "quantity": 1,
+          "unitPrice": 100,
+          "subtotal": 100,
+          "total": 100,
+          "unitCost": 4.2
+        }
+      ],
+      "subtotal": 100,
+      "totalDiscount": 0,
+      "total": 100,
+      "payments": [
+        {
+          "method": "dinheiro",
+          "amount": 40
+        },
+        {
+          "method": "pix",
+          "amount": 60
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T15:39:33.047Z",
+          "userId": "usr_colab1",
+          "userName": "Camila Santos",
+          "action": "Venda finalizada com sucesso"
+        }
+      ]
+    },
+    {
+      "id": "sale_1789486773034",
+      "code": "VDA-2026-0007",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T15:39:33.034Z",
+      "sellerId": "usr_colab1",
+      "sellerName": "Camila Santos",
+      "operatorId": "usr_colab1",
+      "operatorName": "Camila Santos",
+      "cashRegisterId": "cx_1789486766059_gqk45",
+      "items": [
+        {
+          "productId": "prod_1",
+          "productName": "Dipirona",
+          "quantity": 1,
+          "unitPrice": 75,
+          "subtotal": 75,
+          "total": 75,
+          "unitCost": 4.2
+        }
+      ],
+      "subtotal": 75,
+      "totalDiscount": 0,
+      "total": 75,
+      "payments": [
+        {
+          "method": "cartao_credito",
+          "amount": 75
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T15:39:33.034Z",
+          "userId": "usr_colab1",
+          "userName": "Camila Santos",
+          "action": "Venda finalizada com sucesso"
+        }
+      ]
+    },
+    {
+      "id": "sale_1789486773022",
+      "code": "VDA-2026-0006",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T15:39:33.022Z",
+      "sellerId": "usr_colab1",
+      "sellerName": "Camila Santos",
+      "operatorId": "usr_colab1",
+      "operatorName": "Camila Santos",
+      "cashRegisterId": "cx_1789486766059_gqk45",
+      "items": [
+        {
+          "productId": "prod_1",
+          "productName": "Dipirona",
+          "quantity": 1,
+          "unitPrice": 50,
+          "subtotal": 50,
+          "total": 50,
+          "unitCost": 4.2
+        }
+      ],
+      "subtotal": 50,
+      "totalDiscount": 0,
+      "total": 50,
+      "payments": [
+        {
+          "method": "cartao_debito",
+          "amount": 50
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T15:39:33.022Z",
+          "userId": "usr_colab1",
+          "userName": "Camila Santos",
+          "action": "Venda finalizada com sucesso"
+        }
+      ]
+    },
+    {
+      "id": "sale_1789486773010",
+      "code": "VDA-2026-0005",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T15:39:33.010Z",
+      "sellerId": "usr_colab1",
+      "sellerName": "Camila Santos",
+      "operatorId": "usr_colab1",
+      "operatorName": "Camila Santos",
+      "cashRegisterId": "cx_1789486766059_gqk45",
+      "items": [
+        {
+          "productId": "prod_1",
+          "productName": "Dipirona",
+          "quantity": 1,
+          "unitPrice": 100,
+          "subtotal": 100,
+          "total": 100,
+          "unitCost": 4.2
+        }
+      ],
+      "subtotal": 100,
+      "totalDiscount": 0,
+      "total": 100,
+      "payments": [
+        {
+          "method": "pix",
+          "amount": 100
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T15:39:33.010Z",
+          "userId": "usr_colab1",
+          "userName": "Camila Santos",
+          "action": "Venda finalizada com sucesso"
+        }
+      ]
+    },
+    {
+      "id": "sale_1789486772985",
+      "code": "VDA-2026-0004",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T15:39:32.985Z",
+      "sellerId": "usr_colab1",
+      "sellerName": "Camila Santos",
+      "operatorId": "usr_colab1",
+      "operatorName": "Camila Santos",
+      "cashRegisterId": "cx_1789486766059_gqk45",
+      "items": [
+        {
+          "productId": "prod_1",
+          "productName": "Dipirona",
+          "quantity": 1,
+          "unitPrice": 100,
+          "subtotal": 100,
+          "total": 100,
+          "unitCost": 4.2
+        }
+      ],
+      "subtotal": 100,
+      "totalDiscount": 0,
+      "total": 100,
+      "payments": [
+        {
+          "method": "dinheiro",
+          "amount": 100
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T15:39:32.985Z",
+          "userId": "usr_colab1",
+          "userName": "Camila Santos",
+          "action": "Venda finalizada com sucesso"
+        }
+      ]
+    },
+    {
+      "id": "sale_101",
+      "code": "VDA-2026-0001",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T08:30:00.000Z",
+      "sellerId": "usr_colab1",
+      "sellerName": "Camila Santos",
+      "operatorId": "usr_colab2",
+      "operatorName": "Lucas Ferreira",
+      "cashRegisterId": "cx_hoje",
+      "customerName": "Dona Maria de Lourdes",
+      "items": [
+        {
+          "productId": "prod_1",
+          "productCode": "MED-001",
+          "productName": "Dipirona Monoidratada",
+          "presentation": "500mg - Caixa c/ 20 comp",
+          "category": "Genéricos",
+          "quantity": 2,
+          "unitPrice": 10.5,
+          "unitCost": 4.2,
+          "discountPercent": 0,
+          "discountAmount": 0,
+          "total": 21
+        }
+      ],
+      "subtotal": 21,
+      "totalDiscount": 0,
+      "total": 21,
+      "payments": [
+        {
+          "method": "dinheiro",
+          "amount": 21,
+          "tenderedAmount": 50,
+          "changeAmount": 29,
+          "confirmed": true
+        }
+      ],
+      "fiscalStatus": "vinculado",
+      "fiscalReference": "NFCe-5501",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T08:30:00.000Z",
+          "userId": "usr_colab2",
+          "userName": "Lucas Ferreira",
+          "action": "Venda finalizada com sucesso"
+        }
+      ],
+      "idempotencyKey": "idemp-0001"
+    },
+    {
+      "id": "sale_102",
+      "code": "VDA-2026-0002",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T09:15:00.000Z",
+      "sellerId": "usr_colab2",
+      "sellerName": "Lucas Ferreira",
+      "operatorId": "usr_colab2",
+      "operatorName": "Lucas Ferreira",
+      "cashRegisterId": "cx_hoje",
+      "customerName": "Carlos Eduardo Ramos",
+      "items": [
+        {
+          "productId": "prod_4",
+          "productCode": "PER-001",
+          "productName": "Protetor Solar Anthelios FPS 60",
+          "presentation": "Toque Seco 50g",
+          "category": "Dermocosméticos & Higiene",
+          "quantity": 1,
+          "unitPrice": 99.9,
+          "unitCost": 58,
+          "discountPercent": 0,
+          "discountAmount": 0,
+          "total": 99.9
+        }
+      ],
+      "subtotal": 99.9,
+      "totalDiscount": 0,
+      "total": 99.9,
+      "payments": [
+        {
+          "method": "pix",
+          "amount": 99.9,
+          "reference": "PIX-E994821",
+          "confirmed": true
+        }
+      ],
+      "fiscalStatus": "pendente_conciliacao",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T09:15:00.000Z",
+          "userId": "usr_colab2",
+          "userName": "Lucas Ferreira",
+          "action": "Venda finalizada com sucesso"
+        }
+      ],
+      "idempotencyKey": "idemp-0002"
+    },
+    {
+      "id": "sale_103",
+      "code": "VDA-2026-0003",
+      "storeId": "store_matriz",
+      "timestamp": "2026-09-15T10:40:00.000Z",
+      "sellerId": "usr_colab1",
+      "sellerName": "Camila Santos",
+      "operatorId": "usr_colab2",
+      "operatorName": "Lucas Ferreira",
+      "cashRegisterId": "cx_hoje",
+      "customerName": "Ana Beatriz Souza",
+      "items": [
+        {
+          "productId": "prod_3",
+          "productCode": "MED-003",
+          "productName": "Losartana Potássica",
+          "presentation": "50mg - 30 comp",
+          "category": "Genéricos",
+          "quantity": 2,
+          "unitPrice": 7.9,
+          "unitCost": 2.8,
+          "discountPercent": 5,
+          "discountAmount": 0.8,
+          "total": 15
+        },
+        {
+          "productId": "prod_2",
+          "productCode": "MED-002",
+          "productName": "Amoxicilina + Clavulanato",
+          "presentation": "875mg + 125mg - 14 comp",
+          "category": "Antibióticos & Referência",
+          "quantity": 1,
+          "unitPrice": 72.9,
+          "unitCost": 38.5,
+          "discountPercent": 0,
+          "discountAmount": 0,
+          "total": 72.9
+        }
+      ],
+      "subtotal": 88.7,
+      "totalDiscount": 0.8,
+      "total": 87.9,
+      "payments": [
+        {
+          "method": "dinheiro",
+          "amount": 15,
+          "tenderedAmount": 20,
+          "changeAmount": 5,
+          "confirmed": true
+        },
+        {
+          "method": "cartao_credito",
+          "amount": 72.9,
+          "reference": "NSU-781923",
+          "confirmed": true
+        }
+      ],
+      "fiscalStatus": "vinculado",
+      "fiscalReference": "NFCe-5502",
+      "status": "concluida",
+      "history": [
+        {
+          "timestamp": "2026-09-15T10:40:00.000Z",
+          "userId": "usr_colab2",
+          "userName": "Lucas Ferreira",
+          "action": "Venda finalizada com pagamento misto (Dinheiro + Cartão Crédito)"
+        }
+      ],
+      "idempotencyKey": "idemp-0003"
+    }
+  ],
+  "cashRegisters": [
+    {
+      "id": "cx_1789488098184_bsafd",
+      "displayCode": "CX-2026-0017",
+      "storeId": "store_matriz",
+      "terminalName": "Caixa Balcão 01",
+      "workShiftId": "shift_1789488098180",
+      "openedBy": "usr_colab1",
+      "openedByName": "Camila Santos",
+      "openedAt": "2026-09-15T16:01:38.184Z",
+      "openingAmount": 100,
+      "cashSales": 21,
+      "pixSales": 10.5,
+      "cardDebitSales": 0,
+      "cardCreditSales": 10.5,
+      "suppliesTotal": 0,
+      "bleedingsTotal": 0,
+      "cashReturnsTotal": 0,
+      "expectedCash": 121,
+      "status": "aberto",
+      "reconciliationStatus": "aberto",
+      "notes": "Abertura de caixa operacional regular"
+    },
+    {
+      "id": "cx_1789488098157_m38q4",
+      "displayCode": "CX-2026-0016",
+      "storeId": "store_matriz",
+      "terminalName": "Caixa Balcão 02",
+      "workShiftId": "shift_1789488098147",
+      "openedBy": "usr_colab2",
+      "openedByName": "Lucas Ferreira",
+      "openedAt": "2026-09-15T16:01:38.157Z",
+      "openingAmount": 150,
+      "cashSales": 21,
+      "pixSales": 0,
+      "cardDebitSales": 0,
+      "cardCreditSales": 0,
+      "suppliesTotal": 0,
+      "bleedingsTotal": 0,
+      "cashReturnsTotal": 0,
+      "expectedCash": 171,
+      "status": "fechado",
+      "reconciliationStatus": "aguardando_conferencia",
+      "notes": "Abertura de caixa operacional regular",
+      "countedCash": 171,
+      "difference": 0,
+      "retainedFloat": 0,
+      "closedBy": "usr_colab2",
+      "closedByName": "Lucas Ferreira",
+      "closedAt": "2026-09-15T16:01:38.167Z",
+      "withdrawnAmount": 0,
+      "closingWithdrawalConfirmed": false
+    },
+    {
+      "id": "cx_1789487366800_v5b3j",
+      "displayCode": "CX-2026-0015",
+      "storeId": "store_matriz",
+      "terminalName": "Terminal Colab 1",
+      "workShiftId": "shift_1789487366792",
+      "openedBy": "usr_colab1",
+      "openedByName": "Camila",
+      "openedAt": "2026-09-15T15:49:26.800Z",
+      "openingAmount": 100,
+      "cashSales": 0,
+      "pixSales": 0,
+      "cardDebitSales": 0,
+      "cardCreditSales": 0,
+      "suppliesTotal": 0,
+      "bleedingsTotal": 0,
+      "cashReturnsTotal": 0,
+      "expectedCash": 100,
+      "status": "fechado",
+      "reconciliationStatus": "aguardando_conferencia",
+      "notes": "Abertura de caixa operacional regular",
+      "countedCash": 100,
+      "difference": 0,
+      "retainedFloat": 0,
+      "closedBy": "usr_colab1",
+      "closedByName": "Camila",
+      "closedAt": "2026-09-15T15:49:26.809Z",
+      "withdrawnAmount": 0,
+      "closingWithdrawalConfirmed": false
+    },
+    {
+      "id": "cx_1789487366703_z7eui",
+      "displayCode": "CX-2026-0014",
+      "storeId": "store_matriz",
+      "terminalName": "Terminal 01 - Balcão Principal",
+      "workShiftId": "shift_1789487366694",
+      "openedBy": "usr_colab1",
+      "openedByName": "Carlos Oliveira",
+      "openedAt": "2026-09-15T15:49:26.703Z",
+      "openingAmount": 150,
+      "cashSales": 0,
+      "pixSales": 0,
+      "cardDebitSales": 0,
+      "cardCreditSales": 0,
+      "suppliesTotal": 0,
+      "bleedingsTotal": 0,
+      "cashReturnsTotal": 0,
+      "expectedCash": 150,
+      "status": "fechado",
+      "reconciliationStatus": "aguardando_conferencia",
+      "notes": "Conferência física 100% batida",
+      "countedCash": 150,
+      "difference": 0,
+      "retainedFloat": 0,
+      "closedBy": "usr_colab1",
+      "closedByName": "Carlos Oliveira",
+      "closedAt": "2026-09-15T15:49:26.715Z",
+      "withdrawnAmount": 0,
+      "closingWithdrawalConfirmed": false
+    },
+    {
+      "id": "cx_1789487342258_99bu7",
+      "displayCode": "CX-2026-0013",
+      "storeId": "store_matriz",
+      "terminalName": "Terminal Colab 1",
+      "workShiftId": "shift_1789487342250",
+      "openedBy": "usr_colab1",
+      "openedByName": "Camila",
+      "openedAt": "2026-09-15T15:49:02.258Z",
+      "openingAmount": 100,
+      "cashSales": 0,
+      "pixSales": 0,
+      "cardDebitSales": 0,
+      "cardCreditSales": 0,
+      "suppliesTotal": 0,
+      "bleedingsTotal": 0,
+      "cashReturnsTotal": 0,
+      "expectedCash": 100,
+      "status": "fechado",
+      "reconciliationStatus": "aguardando_conferencia",
+      "notes": "Abertura de caixa operacional regular",
+      "countedCash": 100,
+      "difference": 0,
+      "retainedFloat": 0,
+      "closedBy": "usr_colab1",
+      "closedByName": "Camila",
+      "closedAt": "2026-09-15T15:49:02.267Z",
+      "withdrawnAmount": 0,
+      "closingWithdrawalConfirmed": false
+    },
+    {
+      "id": "cx_1789487342180_5bf4s",
+      "displayCode": "CX-2026-0012",
+      "storeId": "store_matriz",
+      "terminalName": "Terminal 01 - Balcão Principal",
+      "workShiftId": "shift_1789487342173",
+      "openedBy": "usr_colab1",
+      "openedByName": "Carlos Oliveira",
+      "openedAt": "2026-09-15T15:49:02.180Z",
+      "openingAmount": 150,
+      "cashSales": 0,
+      "pixSales": 0,
+      "cardDebitSales": 0,
+      "cardCreditSales": 0,
+      "suppliesTotal": 0,
+      "bleedingsTotal": 0,
+      "cashReturnsTotal": 0,
+      "expectedCash": 150,
+      "status": "fechado",
+      "reconciliationStatus": "aguardando_conferencia",
+      "notes": "Conferência física 100% batida",
+      "countedCash": 150,
+      "difference": 0,
+      "retainedFloat": 0,
+      "closedBy": "usr_colab1",
+      "closedByName": "Carlos Oliveira",
+      "closedAt": "2026-09-15T15:49:02.192Z",
+      "withdrawnAmount": 0,
+      "closingWithdrawalConfirmed": false
+    },
+    {
+      "id": "cx_1789487328037_ser2n",
+      "displayCode": "CX-2026-0011",
+      "storeId": "store_matriz",
+      "terminalName": "Terminal Colab 1",
+      "workShiftId": "shift_1789487328031",
+      "openedBy": "usr_colab1",
+      "openedByName": "Carlos",
+      "openedAt": "2026-09-15T15:48:48.037Z",
+      "openingAmount": 100,
+      "cashSales": 0,
+      "pixSales": 0,
+      "cardDebitSales": 0,
+      "cardCreditSales": 0,
+      "suppliesTotal": 0,
+      "bleedingsTotal": 0,
+      "cashReturnsTotal": 0,
+      "expectedCash": 100,
+      "status": "fechado",
+      "reconciliationStatus": "aguardando_conferencia",
+      "notes": "Fechamento pré-teste",
+      "countedCash": 100,
+      "difference": 0,
+      "retainedFloat": 0,
+      "closedBy": "usr_colab1",
+      "closedByName": "Carlos",
+      "closedAt": "2026-09-15T15:49:02.160Z",
+      "withdrawnAmount": 0,
+      "closingWithdrawalConfirmed": false
+    },
+    {
+      "id": "cx_1789487327961_c6vvb",
+      "displayCode": "CX-2026-0010",
+      "storeId": "store_matriz",
+      "terminalName": "Terminal 01 - Balcão Principal",
+      "workShiftId": "shift_1789487327950",
+      "openedBy": "usr_colab1",
+      "openedByName": "Carlos Oliveira",
+      "openedAt": "2026-09-15T15:48:47.961Z",
+      "openingAmount": 150,
+      "cashSales": 0,
+      "pixSales": 0,
+      "cardDebitSales": 0,
+      "cardCreditSales": 0,
+      "suppliesTotal": 0,
+      "bleedingsTotal": 0,
+      "cashReturnsTotal": 0,
+      "expectedCash": 150,
+      "status": "fechado",
+      "reconciliationStatus": "aguardando_conferencia",
+      "notes": "Conferência física 100% batida",
+      "countedCash": 150,
+      "difference": 0,
+      "retainedFloat": 0,
+      "closedBy": "usr_colab1",
+      "closedByName": "Carlos Oliveira",
+      "closedAt": "2026-09-15T15:48:47.972Z",
+      "withdrawnAmount": 0,
+      "closingWithdrawalConfirmed": false
+    },
+    {
+      "id": "cx_1789487304144_7cfcd",
+      "displayCode": "CX-2026-0009",
+      "storeId": "store_matriz",
+      "terminalName": "Terminal 01 - Balcão Principal",
+      "workShiftId": "shift_1789487304132",
+      "openedBy": "usr_colab1",
+      "openedByName": "Carlos Oliveira",
+      "openedAt": "2026-09-15T15:48:24.144Z",
+      "openingAmount": 150,
+      "cashSales": 0,
+      "pixSales": 0,
+      "cardDebitSales": 0,
+      "cardCreditSales": 0,
+      "suppliesTotal": 0,
+      "bleedingsTotal": 0,
+      "cashReturnsTotal": 0,
+      "expectedCash": 150,
+      "status": "fechado",
+      "reconciliationStatus": "aguardando_conferencia",
+      "notes": "Conferência física 100% batida",
+      "countedCash": 150,
+      "difference": 0,
+      "retainedFloat": 0,
+      "closedBy": "usr_colab1",
+      "closedByName": "Carlos Oliveira",
+      "closedAt": "2026-09-15T15:48:24.162Z",
+      "withdrawnAmount": 0,
+      "closingWithdrawalConfirmed": false
+    },
+    {
+      "id": "cx_1789487290373_f5x7z",
+      "displayCode": "CX-2026-0008",
+      "storeId": "store_matriz",
+      "terminalName": "Terminal 01 - Balcão Principal",
+      "workShiftId": "shift_1789487290366",
+      "openedBy": "usr_colab1",
+      "openedByName": "Carlos Oliveira",
+      "openedAt": "2026-09-15T15:48:10.373Z",
+      "openingAmount": 150,
+      "cashSales": 0,
+      "pixSales": 0,
+      "cardDebitSales": 0,
+      "cardCreditSales": 0,
+      "suppliesTotal": 0,
+      "bleedingsTotal": 0,
+      "cashReturnsTotal": 0,
+      "expectedCash": 150,
+      "status": "fechado",
+      "reconciliationStatus": "aguardando_conferencia",
+      "notes": "Conferência física 100% batida",
+      "countedCash": 150,
+      "difference": 0,
+      "retainedFloat": 0,
+      "closedBy": "usr_colab1",
+      "closedByName": "Carlos Oliveira",
+      "closedAt": "2026-09-15T15:48:10.384Z",
+      "withdrawnAmount": 0,
+      "closingWithdrawalConfirmed": false
+    },
+    {
+      "id": "cx_1789486861149_ioard",
+      "displayCode": "CX-2026-0007",
+      "storeId": "store_matriz",
+      "terminalName": "Terminal Balcão 01",
+      "workShiftId": "shift_1789486726812",
+      "openedBy": "usr_colab1",
+      "openedByName": "Camila Santos",
+      "openedAt": "2026-09-15T15:41:01.149Z",
+      "openingAmount": 500,
+      "cashSales": 0,
+      "pixSales": 0,
+      "cardDebitSales": 0,
+      "cardCreditSales": 0,
+      "suppliesTotal": 0,
+      "bleedingsTotal": 330,
+      "cashReturnsTotal": 0,
+      "expectedCash": 170,
+      "status": "fechado",
+      "reconciliationStatus": "divergencia",
+      "notes": "Abertura de caixa operacional regular",
+      "countedCash": 480,
+      "difference": -20,
+      "divergenceReason": "Diferença apurada na contagem física de moedas",
+      "retainedFloat": 150,
+      "closedBy": "usr_colab1",
+      "closedByName": "Camila Santos",
+      "closedAt": "2026-09-15T15:41:01.172Z",
+      "withdrawnAmount": 330,
+      "closingWithdrawalConfirmed": true
+    },
+    {
+      "id": "cx_1789486816244_g831e",
+      "displayCode": "CX-2026-0006",
+      "storeId": "store_matriz",
+      "terminalName": "Terminal Balcão 01",
+      "workShiftId": "shift_1789486726812",
+      "openedBy": "usr_colab1",
+      "openedByName": "Camila Santos",
+      "openedAt": "2026-09-15T15:40:16.244Z",
+      "openingAmount": 500,
+      "cashSales": 0,
+      "pixSales": 0,
+      "cardDebitSales": 0,
+      "cardCreditSales": 0,
+      "suppliesTotal": 0,
+      "bleedingsTotal": 330,
+      "cashReturnsTotal": 0,
+      "expectedCash": 170,
+      "status": "fechado",
+      "reconciliationStatus": "divergencia",
+      "notes": "Abertura de caixa operacional regular",
+      "countedCash": 480,
+      "difference": -20,
+      "divergenceReason": "Diferença de troco apurada no encerramento de moedas",
+      "retainedFloat": 150,
+      "closedBy": "usr_colab1",
+      "closedByName": "Camila Santos",
+      "closedAt": "2026-09-15T15:40:16.265Z",
+      "withdrawnAmount": 330,
+      "closingWithdrawalConfirmed": true
+    },
+    {
+      "id": "cx_1789486812318_gp9wa",
+      "displayCode": "CX-2026-0005",
+      "storeId": "store_matriz",
+      "terminalName": "Terminal Balcão 01",
+      "workShiftId": "shift_1789486726812",
+      "openedBy": "usr_colab1",
+      "openedByName": "Camila Santos",
+      "openedAt": "2026-09-15T15:40:12.318Z",
+      "openingAmount": 200,
+      "cashSales": 0,
+      "pixSales": 0,
+      "cardDebitSales": 0,
+      "cardCreditSales": 0,
+      "suppliesTotal": 0,
+      "bleedingsTotal": 120,
+      "cashReturnsTotal": 0,
+      "expectedCash": 80,
+      "status": "fechado",
+      "reconciliationStatus": "divergencia",
+      "notes": "Abertura de caixa operacional regular",
+      "countedCash": 220,
+      "difference": 20,
+      "divergenceReason": "Cliente esqueceu moedas de troco no balcão",
+      "retainedFloat": 100,
+      "closedBy": "usr_colab1",
+      "closedByName": "Camila Santos",
+      "closedAt": "2026-09-15T15:40:12.340Z",
+      "withdrawnAmount": 120,
+      "closingWithdrawalConfirmed": true
+    },
+    {
+      "id": "cx_1789486788020_xjy9i",
+      "displayCode": "CX-2026-0004",
+      "storeId": "store_matriz",
+      "terminalName": "Terminal Balcão 01",
+      "workShiftId": "shift_1789486726812",
+      "openedBy": "usr_colab1",
+      "openedByName": "Camila Santos",
+      "openedAt": "2026-09-15T15:39:48.020Z",
+      "openingAmount": 200,
+      "cashSales": 0,
+      "pixSales": 0,
+      "cardDebitSales": 0,
+      "cardCreditSales": 0,
+      "suppliesTotal": 0,
+      "bleedingsTotal": 120,
+      "cashReturnsTotal": 0,
+      "expectedCash": 80,
+      "status": "fechado",
+      "reconciliationStatus": "divergencia",
+      "notes": "Abertura de caixa operacional regular",
+      "countedCash": 220,
+      "difference": 20,
+      "divergenceReason": "Cliente esqueceu moedas de troco no balcão",
+      "retainedFloat": 100,
+      "closedBy": "usr_colab1",
+      "closedByName": "Camila Santos",
+      "closedAt": "2026-09-15T15:39:48.037Z",
+      "withdrawnAmount": 120,
+      "closingWithdrawalConfirmed": true
+    },
+    {
+      "id": "cx_1789486766059_gqk45",
+      "displayCode": "CX-2026-0003",
+      "storeId": "store_matriz",
+      "terminalName": "Terminal Balcão 01",
+      "workShiftId": "shift_1789486726812",
+      "openedBy": "usr_colab1",
+      "openedByName": "Camila Santos",
+      "openedAt": "2026-09-15T15:39:26.059Z",
+      "openingAmount": 150,
+      "cashSales": 170,
+      "pixSales": 190,
+      "cardDebitSales": 90,
+      "cardCreditSales": 75,
+      "suppliesTotal": 100,
+      "bleedingsTotal": 50,
+      "cashReturnsTotal": 0,
+      "expectedCash": 370,
+      "status": "fechado",
+      "reconciliationStatus": "aguardando_conferencia",
+      "notes": "Abertura de testes QA-MEU-CAIXA",
+      "countedCash": 370,
+      "difference": 0,
+      "retainedFloat": 150,
+      "closedBy": "usr_colab1",
+      "closedByName": "Camila Santos",
+      "closedAt": "2026-09-15T15:39:43.855Z",
+      "withdrawnAmount": 0,
+      "closingWithdrawalConfirmed": false
+    },
+    {
+      "id": "cx_1789486729312_bkntj",
+      "displayCode": "CX-2026-0002",
+      "storeId": "store_matriz",
+      "terminalName": "T1",
+      "workShiftId": "shift_1789486726812",
+      "openedBy": "usr_colab1",
+      "openedByName": "Camila Santos",
+      "openedAt": "2026-09-15T15:38:49.312Z",
+      "openingAmount": 0,
+      "cashSales": 0,
+      "pixSales": 0,
+      "cardDebitSales": 0,
+      "cardCreditSales": 0,
+      "suppliesTotal": 0,
+      "bleedingsTotal": 0,
+      "cashReturnsTotal": 0,
+      "expectedCash": 0,
+      "status": "fechado",
+      "reconciliationStatus": "aguardando_conferencia",
+      "notes": "Abertura de caixa operacional regular",
+      "countedCash": 0,
+      "difference": 0,
+      "retainedFloat": 0,
+      "closedBy": "usr_colab1",
+      "closedByName": "Camila Santos",
+      "closedAt": "2026-09-15T15:39:10.577Z",
+      "withdrawnAmount": 0,
+      "closingWithdrawalConfirmed": false
+    },
+    {
+      "id": "cx_hoje",
+      "storeId": "store_matriz",
+      "terminalName": "Terminal 01 - Balcão Principal",
+      "openedBy": "usr_colab2",
+      "openedByName": "Lucas Ferreira",
+      "openedAt": "2026-09-15T07:55:00.000Z",
+      "openingAmount": 150,
+      "cashSales": 111.5,
+      "pixSales": 131.4,
+      "cardDebitSales": 0,
+      "cardCreditSales": 104.4,
+      "suppliesTotal": 0,
+      "bleedingsTotal": 0,
+      "cashReturnsTotal": 0,
+      "expectedCash": 261.5,
+      "status": "fechado",
+      "notes": "Abertura de turno normal com troco conferido",
+      "countedCash": 261.5,
+      "difference": 0,
+      "divergenceReason": "Reset inicial para execução limpa da suíte",
+      "retainedFloat": 0,
+      "closedBy": "usr_colab2",
+      "closedByName": "Lucas Ferreira",
+      "closedAt": "2026-09-15T16:01:38.126Z",
+      "reconciliationStatus": "aguardando_conferencia",
+      "withdrawnAmount": 0,
+      "closingWithdrawalConfirmed": false
+    }
+  ],
+  "cashMovements": [
+    {
+      "id": "cm_1789486861172_alpnf",
+      "cashRegisterId": "cx_1789486861149_ioard",
+      "storeId": "store_matriz",
+      "type": "sangria",
+      "amount": 330,
+      "reason": "Sangria de fechamento para recolhimento ao cofre",
+      "isClosingWithdrawal": true,
+      "authorizedBy": "usr_colab1",
+      "authorizedByName": "Camila Santos",
+      "timestamp": "2026-09-15T15:41:01.172Z"
+    },
+    {
+      "id": "cm_1789486816265_d84pq",
+      "cashRegisterId": "cx_1789486816244_g831e",
+      "storeId": "store_matriz",
+      "type": "sangria",
+      "amount": 330,
+      "reason": "Sangria de fechamento para recolhimento ao cofre",
+      "isClosingWithdrawal": true,
+      "authorizedBy": "usr_colab1",
+      "authorizedByName": "Camila Santos",
+      "timestamp": "2026-09-15T15:40:16.265Z"
+    },
+    {
+      "id": "cm_1789486812340_g0wa0",
+      "cashRegisterId": "cx_1789486812318_gp9wa",
+      "storeId": "store_matriz",
+      "type": "sangria",
+      "amount": 120,
+      "reason": "Sangria de fechamento para recolhimento ao cofre",
+      "isClosingWithdrawal": true,
+      "authorizedBy": "usr_colab1",
+      "authorizedByName": "Camila Santos",
+      "timestamp": "2026-09-15T15:40:12.340Z"
+    },
+    {
+      "id": "cm_1789486788037_w9osf",
+      "cashRegisterId": "cx_1789486788020_xjy9i",
+      "storeId": "store_matriz",
+      "type": "sangria",
+      "amount": 120,
+      "reason": "Sangria de fechamento para recolhimento ao cofre",
+      "isClosingWithdrawal": true,
+      "authorizedBy": "usr_colab1",
+      "authorizedByName": "Camila Santos",
+      "timestamp": "2026-09-15T15:39:48.037Z"
+    },
+    {
+      "id": "cm_1789486766109_zvcm6",
+      "cashRegisterId": "cx_1789486766059_gqk45",
+      "storeId": "store_matriz",
+      "type": "sangria",
+      "amount": 50,
+      "reason": "Retirada para pagamento emergencial de gás",
+      "isClosingWithdrawal": false,
+      "authorizedBy": "usr_colab1",
+      "authorizedByName": "Camila Santos",
+      "timestamp": "2026-09-15T15:39:26.109Z"
+    },
+    {
+      "id": "cm_1789486766096_1lnoc",
+      "cashRegisterId": "cx_1789486766059_gqk45",
+      "storeId": "store_matriz",
+      "type": "suprimento",
+      "amount": 100,
+      "reason": "Suprimento de troco operacional",
+      "isClosingWithdrawal": false,
+      "authorizedBy": "usr_colab1",
+      "authorizedByName": "Camila Santos",
+      "timestamp": "2026-09-15T15:39:26.096Z"
+    }
+  ],
+  "unmetDemands": [
+    {
+      "id": "dem_1",
+      "storeId": "store_matriz",
+      "productId": "prod_3",
+      "productName": "Losartana Potássica 50mg",
+      "quantityRequested": 3,
+      "reason": "falta_estoque",
+      "attendantId": "usr_colab1",
+      "attendantName": "Camila Santos",
+      "notes": "Cliente procurou 3 caixas para tratamento contínuo, tínhamos poucas unidades",
+      "timestamp": "2026-09-15T09:30:00.000Z",
+      "resolved": false
+    },
+    {
+      "id": "dem_2",
+      "storeId": "store_matriz",
+      "productName": "Fita Microporosa Hipoalergênica 25mm x 4.5m",
+      "quantityRequested": 2,
+      "reason": "produto_nao_trabalhado",
+      "attendantId": "usr_colab2",
+      "attendantName": "Lucas Ferreira",
+      "notes": "Cliente do posto de saúde vizinho pediu com frequência nesta semana",
+      "timestamp": "2026-09-15T11:00:00.000Z",
+      "resolved": false
+    }
+  ],
+  "suppliers": [
+    {
+      "id": "sup_1",
+      "name": "Distribuidora Santa Cruz Farma",
+      "tradeName": "Santa Cruz Medicamentos",
+      "cnpj": "61.123.456/0001-77",
+      "contactName": "Marcos Rezende",
+      "phone": "(11) 3322-1100",
+      "email": "pedidos@santacruzfarma.com.br",
+      "leadTimeDays": 2,
+      "active": true
+    },
+    {
+      "id": "sup_2",
+      "name": "Profarma Distribuidora de Produtos Farmacêuticos",
+      "tradeName": "Profarma",
+      "cnpj": "45.987.654/0001-22",
+      "contactName": "Juliana Paes",
+      "phone": "(11) 3344-5566",
+      "email": "vendas@profarma.com.br",
+      "leadTimeDays": 3,
+      "active": true
+    }
+  ],
+  "purchaseOrders": [
+    {
+      "id": "po_01",
+      "code": "PED-2026-0001",
+      "storeId": "store_matriz",
+      "supplierId": "sup_1",
+      "supplierName": "Santa Cruz Medicamentos",
+      "status": "parcialmente_recebido",
+      "items": [
+        {
+          "productId": "prod_1",
+          "productCode": "MED-001",
+          "productName": "Dipirona Monoidratada 500mg",
+          "quantityOrdered": 40,
+          "quantityReceived": 40,
+          "unitCostEstimated": 4.2,
+          "unitCostReal": 4.15,
+          "totalEstimated": 168
+        },
+        {
+          "productId": "prod_3",
+          "productCode": "MED-003",
+          "productName": "Losartana Potássica 50mg",
+          "quantityOrdered": 50,
+          "quantityReceived": 0,
+          "unitCostEstimated": 2.8,
+          "totalEstimated": 140
+        }
+      ],
+      "totalEstimated": 308,
+      "totalCost": 308,
+      "createdAt": "2026-09-13T14:27:30.886Z",
+      "approvedAt": "2026-09-13T14:27:30.886Z",
+      "approvedBy": "Dr. Roberto Mendes",
+      "notes": "Reposição semanal de genéricos de alta rotação",
+      "receiptsHistory": [
+        {
+          "receiptId": "rec_101",
+          "timestamp": "2026-09-14T14:27:30.886Z",
+          "receivedBy": "usr_admin",
+          "receivedByName": "Dr. Roberto Mendes",
+          "items": [
+            {
+              "productId": "prod_1",
+              "qtyFit": 38,
+              "qtyDamaged": 2,
+              "unitCost": 4.15
+            }
+          ],
+          "notes": "Entregue nota fiscal NF-48291. 2 caixas de Dipirona recusadas por dano na embalagem."
+        }
+      ]
+    }
+  ],
+  "inventories": [],
+  "customers": [
+    {
+      "id": "cust_1",
+      "storeId": "store_matriz",
+      "name": "Dona Maria de Lourdes Silva",
+      "cpf": "123.456.789-00",
+      "phone": "(11) 98888-1122",
+      "address": "Rua das Flores, 120 - Apto 3",
+      "notes": "Uso contínuo de anti-hipertensivo",
+      "createdAt": "2026-09-14T14:27:30.886Z"
+    },
+    {
+      "id": "cust_2",
+      "storeId": "store_matriz",
+      "name": "Carlos Eduardo Ramos",
+      "cpf": "234.567.890-11",
+      "phone": "(11) 97777-3344",
+      "address": "Av. Paulista, 1000",
+      "createdAt": "2026-09-14T14:27:30.886Z"
+    }
+  ],
+  "targets": [
+    {
+      "id": "target_cur",
+      "storeId": "store_matriz",
+      "month": "2026-09",
+      "storeRevenueTarget": 45000,
+      "individualTargets": [
+        {
+          "userId": "usr_colab1",
+          "userName": "Camila Santos",
+          "revenueTarget": 22000,
+          "maxDiscountAllowedPercent": 10
+        },
+        {
+          "userId": "usr_colab2",
+          "userName": "Lucas Ferreira",
+          "revenueTarget": 20000,
+          "maxDiscountAllowedPercent": 10
+        }
+      ],
+      "bonusRules": [
+        {
+          "tierMinPercent": 100,
+          "bonusValueOrPercent": "R$ 400,00",
+          "description": "Atingimento de 100% da meta com descontos médios abaixo de 8%"
+        },
+        {
+          "tierMinPercent": 115,
+          "bonusValueOrPercent": "R$ 750,00",
+          "description": "Superação de meta (115%+) com excelência no mix e faturamento"
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "tsk_1",
+      "storeId": "store_matriz",
+      "title": "Cobrar entrega urgente da Losartana Potássica (Santa Cruz)",
+      "description": "O estoque de Losartana está crítico (apenas 6 cx restantes) e tivemos 3 procuras sem atendimento hoje.",
+      "origin": "estoque",
+      "priority": "urgente",
+      "status": "pendente",
+      "assignedToId": "usr_admin",
+      "assignedToName": "Dr. Roberto Mendes",
+      "createdById": "usr_colab1",
+      "createdByName": "Camila Santos",
+      "dueDate": "2026-09-16",
+      "createdAt": "2026-09-15T14:27:30.886Z"
+    },
+    {
+      "id": "tsk_2",
+      "storeId": "store_matriz",
+      "title": "Cotar Fita Microporosa com distribuidores",
+      "description": "Item muito procurado no balcão por pacientes do posto de saúde vizinho.",
+      "origin": "manual",
+      "priority": "media",
+      "status": "pendente",
+      "assignedToId": "usr_admin",
+      "assignedToName": "Dr. Roberto Mendes",
+      "createdById": "usr_colab2",
+      "createdByName": "Lucas Ferreira",
+      "createdAt": "2026-09-15T14:27:30.886Z"
+    }
+  ],
+  "aiReports": [],
+  "auditLogs": [
+    {
+      "id": "aud_1789488098219_mcdp",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "VENDA_FINALIZADA",
+      "entity": "VENDAS",
+      "entityId": "sale_1789488098218_trci0",
+      "details": "Venda VDA-2026-0027 de R$ 10.50 registrada no caixa Caixa Balcão 01. Turno: shift_1789488098180.",
+      "timestamp": "2026-09-15T16:01:38.219Z"
+    },
+    {
+      "id": "aud_1789488098208_bcv3",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "VENDA_FINALIZADA",
+      "entity": "VENDAS",
+      "entityId": "sale_1789488098206_muov7",
+      "details": "Venda VDA-2026-0026 de R$ 10.50 registrada no caixa Caixa Balcão 01. Turno: shift_1789488098180.",
+      "timestamp": "2026-09-15T16:01:38.208Z"
+    },
+    {
+      "id": "aud_1789488098200_pz9s",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "VENDA_FINALIZADA",
+      "entity": "VENDAS",
+      "entityId": "sale_1789488098198_rnmay",
+      "details": "Venda VDA-2026-0025 de R$ 10.50 registrada no caixa Caixa Balcão 01. Turno: shift_1789488098180.",
+      "timestamp": "2026-09-15T16:01:38.200Z"
+    },
+    {
+      "id": "aud_1789488098193_ov0m",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "VENDA_FINALIZADA",
+      "entity": "VENDAS",
+      "entityId": "sale_1789488098191_48b7n",
+      "details": "Venda VDA-2026-0024 de R$ 10.50 registrada no caixa Caixa Balcão 01. Turno: shift_1789488098180.",
+      "timestamp": "2026-09-15T16:01:38.193Z"
+    },
+    {
+      "id": "aud_1789488098185_fqtr",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "ABERTURA_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789488098184_bsafd",
+      "details": "Caixa CX-2026-0017 (Caixa Balcão 01) aberto com fundo inicial de R$ 100.00",
+      "timestamp": "2026-09-15T16:01:38.185Z"
+    },
+    {
+      "id": "aud_1789488098181_8bk3",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "INICIO_TURNO",
+      "entity": "EQUIPE",
+      "details": "Iniciou expediente de trabalho.",
+      "timestamp": "2026-09-15T16:01:38.181Z"
+    },
+    {
+      "id": "aud_1789488098175_qqoh",
+      "storeId": "store_matriz",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T16:01:38.175Z"
+    },
+    {
+      "id": "aud_1789488098168_ervb",
+      "storeId": "store_matriz",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "action": "FECHAMENTO_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789488098157_m38q4",
+      "details": "Fechamento de caixa CX-2026-0016. Esperado: R$ 171.00, Contado: R$ 171.00, Diferença: R$ 0.00",
+      "timestamp": "2026-09-15T16:01:38.168Z"
+    },
+    {
+      "id": "aud_1789488098164_gs0i",
+      "storeId": "store_matriz",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "action": "VENDA_FINALIZADA",
+      "entity": "VENDAS",
+      "entityId": "sale_1789488098162_qt78r",
+      "details": "Venda VDA-2026-0023 de R$ 21.00 registrada no caixa Caixa Balcão 02. Turno: shift_1789488098147.",
+      "timestamp": "2026-09-15T16:01:38.164Z"
+    },
+    {
+      "id": "aud_1789488098159_8vgr",
+      "storeId": "store_matriz",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "action": "ABERTURA_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789488098157_m38q4",
+      "details": "Caixa CX-2026-0016 (Caixa Balcão 02) aberto com fundo inicial de R$ 150.00",
+      "timestamp": "2026-09-15T16:01:38.159Z"
+    },
+    {
+      "id": "aud_1789488098148_t247",
+      "storeId": "store_matriz",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "action": "INICIO_TURNO",
+      "entity": "EQUIPE",
+      "details": "Iniciou expediente de trabalho.",
+      "timestamp": "2026-09-15T16:01:38.148Z"
+    },
+    {
+      "id": "aud_1789488098133_7z0f",
+      "storeId": "store_matriz",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T16:01:38.133Z"
+    },
+    {
+      "id": "aud_1789488098127_i17t",
+      "storeId": "store_matriz",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "action": "FECHAMENTO_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_hoje",
+      "details": "Fechamento de caixa cx_hoje. Esperado: R$ 261.50, Contado: R$ 261.50, Diferença: R$ 0.00",
+      "timestamp": "2026-09-15T16:01:38.128Z"
+    },
+    {
+      "id": "aud_1789488080958_30uf",
+      "storeId": "store_matriz",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "action": "VENDA_FINALIZADA",
+      "entity": "VENDAS",
+      "entityId": "sale_1789488080957_r0qls",
+      "details": "Venda VDA-2026-0022 de R$ 10.50 registrada no caixa Terminal 01 - Balcão Principal. Turno: shift_1789487304180.",
+      "timestamp": "2026-09-15T16:01:20.958Z"
+    },
+    {
+      "id": "aud_1789488080953_w8do",
+      "storeId": "store_matriz",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "action": "VENDA_FINALIZADA",
+      "entity": "VENDAS",
+      "entityId": "sale_1789488080951_92q24",
+      "details": "Venda VDA-2026-0021 de R$ 10.50 registrada no caixa Terminal 01 - Balcão Principal. Turno: shift_1789487304180.",
+      "timestamp": "2026-09-15T16:01:20.953Z"
+    },
+    {
+      "id": "aud_1789488080946_7m8z",
+      "storeId": "store_matriz",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "action": "VENDA_FINALIZADA",
+      "entity": "VENDAS",
+      "entityId": "sale_1789488080944_4yk39",
+      "details": "Venda VDA-2026-0020 de R$ 10.50 registrada no caixa Terminal 01 - Balcão Principal. Turno: shift_1789487304180.",
+      "timestamp": "2026-09-15T16:01:20.946Z"
+    },
+    {
+      "id": "aud_1789488080939_ndvv",
+      "storeId": "store_matriz",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "action": "VENDA_FINALIZADA",
+      "entity": "VENDAS",
+      "entityId": "sale_1789488080937_oapk3",
+      "details": "Venda VDA-2026-0019 de R$ 10.50 registrada no caixa Terminal 01 - Balcão Principal. Turno: shift_1789487304180.",
+      "timestamp": "2026-09-15T16:01:20.939Z"
+    },
+    {
+      "id": "aud_1789488037486_0623",
+      "storeId": "store_matriz",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "action": "VENDA_FINALIZADA",
+      "entity": "VENDAS",
+      "entityId": "sale_1789488037484_t258w",
+      "details": "Venda VDA-2026-0018 de R$ 12.50 registrada no caixa Terminal 01 - Balcão Principal. Turno: shift_1789487304180.",
+      "timestamp": "2026-09-15T16:00:37.486Z"
+    },
+    {
+      "id": "aud_1789488029227_a75b",
+      "storeId": "store_matriz",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "action": "VENDA_FINALIZADA",
+      "entity": "VENDAS",
+      "entityId": "sale_1789488029226_fvqxt",
+      "details": "Venda VDA-2026-0017 de R$ 10.50 registrada no caixa Terminal 01 - Balcão Principal. Turno: shift_1789487304180.",
+      "timestamp": "2026-09-15T16:00:29.227Z"
+    },
+    {
+      "id": "aud_1789488029223_mfen",
+      "storeId": "store_matriz",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "action": "VENDA_FINALIZADA",
+      "entity": "VENDAS",
+      "entityId": "sale_1789488029221_ca3ls",
+      "details": "Venda VDA-2026-0016 de R$ 10.50 registrada no caixa Terminal 01 - Balcão Principal. Turno: shift_1789487304180.",
+      "timestamp": "2026-09-15T16:00:29.223Z"
+    },
+    {
+      "id": "aud_1789488029215_b99y",
+      "storeId": "store_matriz",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "action": "VENDA_FINALIZADA",
+      "entity": "VENDAS",
+      "entityId": "sale_1789488029214_dtzgm",
+      "details": "Venda VDA-2026-0015 de R$ 10.50 registrada no caixa Terminal 01 - Balcão Principal. Turno: shift_1789487304180.",
+      "timestamp": "2026-09-15T16:00:29.215Z"
+    },
+    {
+      "id": "aud_1789488029208_462a",
+      "storeId": "store_matriz",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "action": "VENDA_FINALIZADA",
+      "entity": "VENDAS",
+      "entityId": "sale_1789488029206_yfisx",
+      "details": "Venda VDA-2026-0014 de R$ 10.50 registrada no caixa Terminal 01 - Balcão Principal. Turno: shift_1789487304180.",
+      "timestamp": "2026-09-15T16:00:29.208Z"
+    },
+    {
+      "id": "aud_1789488011474_5rj4",
+      "storeId": "store_matriz",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "action": "VENDA_FINALIZADA",
+      "entity": "VENDAS",
+      "entityId": "sale_1789488011473_ym8vn",
+      "details": "Venda VDA-2026-0013 de R$ 10.50 registrada no caixa Terminal 01 - Balcão Principal. Turno: shift_1789487304180.",
+      "timestamp": "2026-09-15T16:00:11.474Z"
+    },
+    {
+      "id": "aud_1789488011469_sq1n",
+      "storeId": "store_matriz",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "action": "VENDA_FINALIZADA",
+      "entity": "VENDAS",
+      "entityId": "sale_1789488011468_b58g6",
+      "details": "Venda VDA-2026-0012 de R$ 10.50 registrada no caixa Terminal 01 - Balcão Principal. Turno: shift_1789487304180.",
+      "timestamp": "2026-09-15T16:00:11.469Z"
+    },
+    {
+      "id": "aud_1789488011462_k5m4",
+      "storeId": "store_matriz",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "action": "VENDA_FINALIZADA",
+      "entity": "VENDAS",
+      "entityId": "sale_1789488011460_279y4",
+      "details": "Venda VDA-2026-0011 de R$ 10.50 registrada no caixa Terminal 01 - Balcão Principal. Turno: shift_1789487304180.",
+      "timestamp": "2026-09-15T16:00:11.462Z"
+    },
+    {
+      "id": "aud_1789488011451_3asy",
+      "storeId": "store_matriz",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "action": "VENDA_FINALIZADA",
+      "entity": "VENDAS",
+      "entityId": "sale_1789488011448_6ajij",
+      "details": "Venda VDA-2026-0010 de R$ 10.50 registrada no caixa Terminal 01 - Balcão Principal. Turno: shift_1789487304180.",
+      "timestamp": "2026-09-15T16:00:11.451Z"
+    },
+    {
+      "id": "aud_1789487366814_red0",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:26.814Z"
+    },
+    {
+      "id": "aud_1789487366810_y3m9",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila",
+      "action": "FECHAMENTO_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789487366800_v5b3j",
+      "details": "Fechamento de caixa CX-2026-0015. Esperado: R$ 100.00, Contado: R$ 100.00, Diferença: R$ 0.00",
+      "timestamp": "2026-09-15T15:49:26.810Z"
+    },
+    {
+      "id": "aud_1789487366805_dfvl",
+      "storeId": "store_matriz",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:26.805Z"
+    },
+    {
+      "id": "aud_1789487366801_ravc",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila",
+      "action": "ABERTURA_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789487366800_v5b3j",
+      "details": "Caixa CX-2026-0015 (Terminal Colab 1) aberto com fundo inicial de R$ 100.00",
+      "timestamp": "2026-09-15T15:49:26.801Z"
+    },
+    {
+      "id": "aud_1789487366798_irz7",
+      "storeId": "store_matriz",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "action": "INICIO_TURNO",
+      "entity": "EQUIPE",
+      "details": "Iniciou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:26.798Z"
+    },
+    {
+      "id": "aud_1789487366793_uh7d",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "INICIO_TURNO",
+      "entity": "EQUIPE",
+      "details": "Iniciou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:26.793Z"
+    },
+    {
+      "id": "aud_1789487366787_926l",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:26.787Z"
+    },
+    {
+      "id": "aud_1789487366779_y049",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "INICIO_TURNO",
+      "entity": "EQUIPE",
+      "details": "Iniciou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:26.779Z"
+    },
+    {
+      "id": "aud_1789487366775_29n1",
+      "storeId": "store_matriz",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:26.775Z"
+    },
+    {
+      "id": "aud_1789487366771_mehg",
+      "storeId": "store_matriz",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "action": "INICIO_TURNO",
+      "entity": "EQUIPE",
+      "details": "Iniciou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:26.771Z"
+    },
+    {
+      "id": "aud_1789487366764_vr3f",
+      "storeId": "store_matriz",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:26.764Z"
+    },
+    {
+      "id": "aud_1789487366758_gy9p",
+      "storeId": "store_matriz",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "action": "INICIO_TURNO",
+      "entity": "EQUIPE",
+      "details": "Iniciou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:26.758Z"
+    },
+    {
+      "id": "aud_1789487366740_f6nk",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:26.740Z"
+    },
+    {
+      "id": "aud_1789487366717_j8sf",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Carlos Oliveira",
+      "action": "FECHAMENTO_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789487366703_z7eui",
+      "details": "Fechamento de caixa CX-2026-0014. Esperado: R$ 150.00, Contado: R$ 150.00, Diferença: R$ 0.00",
+      "timestamp": "2026-09-15T15:49:26.717Z"
+    },
+    {
+      "id": "aud_1789487366705_8fcw",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Carlos Oliveira",
+      "action": "ABERTURA_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789487366703_z7eui",
+      "details": "Caixa CX-2026-0014 (Terminal 01 - Balcão Principal) aberto com fundo inicial de R$ 150.00",
+      "timestamp": "2026-09-15T15:49:26.705Z"
+    },
+    {
+      "id": "aud_1789487366695_ql8c",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "INICIO_TURNO",
+      "entity": "EQUIPE",
+      "details": "Iniciou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:26.695Z"
+    },
+    {
+      "id": "aud_1789487342273_6wqf",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:02.273Z"
+    },
+    {
+      "id": "aud_1789487342269_j13v",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila",
+      "action": "FECHAMENTO_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789487342258_99bu7",
+      "details": "Fechamento de caixa CX-2026-0013. Esperado: R$ 100.00, Contado: R$ 100.00, Diferença: R$ 0.00",
+      "timestamp": "2026-09-15T15:49:02.269Z"
+    },
+    {
+      "id": "aud_1789487342263_tx2c",
+      "storeId": "store_matriz",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:02.263Z"
+    },
+    {
+      "id": "aud_1789487342259_4q4e",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila",
+      "action": "ABERTURA_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789487342258_99bu7",
+      "details": "Caixa CX-2026-0013 (Terminal Colab 1) aberto com fundo inicial de R$ 100.00",
+      "timestamp": "2026-09-15T15:49:02.259Z"
+    },
+    {
+      "id": "aud_1789487342255_avbc",
+      "storeId": "store_matriz",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "action": "INICIO_TURNO",
+      "entity": "EQUIPE",
+      "details": "Iniciou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:02.255Z"
+    },
+    {
+      "id": "aud_1789487342251_x0n2",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "INICIO_TURNO",
+      "entity": "EQUIPE",
+      "details": "Iniciou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:02.251Z"
+    },
+    {
+      "id": "aud_1789487342245_zmba",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:02.245Z"
+    },
+    {
+      "id": "aud_1789487342233_z6qh",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "INICIO_TURNO",
+      "entity": "EQUIPE",
+      "details": "Iniciou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:02.233Z"
+    },
+    {
+      "id": "aud_1789487342228_h5y3",
+      "storeId": "store_matriz",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:02.228Z"
+    },
+    {
+      "id": "aud_1789487342225_aers",
+      "storeId": "store_matriz",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "action": "INICIO_TURNO",
+      "entity": "EQUIPE",
+      "details": "Iniciou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:02.225Z"
+    },
+    {
+      "id": "aud_1789487342219_b1kf",
+      "storeId": "store_matriz",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:02.219Z"
+    },
+    {
+      "id": "aud_1789487342212_7kap",
+      "storeId": "store_matriz",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "action": "INICIO_TURNO",
+      "entity": "EQUIPE",
+      "details": "Iniciou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:02.212Z"
+    },
+    {
+      "id": "aud_1789487342201_anbz",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:02.201Z"
+    },
+    {
+      "id": "aud_1789487342194_ius3",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Carlos Oliveira",
+      "action": "FECHAMENTO_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789487342180_5bf4s",
+      "details": "Fechamento de caixa CX-2026-0012. Esperado: R$ 150.00, Contado: R$ 150.00, Diferença: R$ 0.00",
+      "timestamp": "2026-09-15T15:49:02.194Z"
+    },
+    {
+      "id": "aud_1789487342181_j49u",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Carlos Oliveira",
+      "action": "ABERTURA_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789487342180_5bf4s",
+      "details": "Caixa CX-2026-0012 (Terminal 01 - Balcão Principal) aberto com fundo inicial de R$ 150.00",
+      "timestamp": "2026-09-15T15:49:02.181Z"
+    },
+    {
+      "id": "aud_1789487342174_epld",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "INICIO_TURNO",
+      "entity": "EQUIPE",
+      "details": "Iniciou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:02.174Z"
+    },
+    {
+      "id": "aud_1789487342167_ni54",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:49:02.167Z"
+    },
+    {
+      "id": "aud_1789487342162_ddz1",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Carlos",
+      "action": "FECHAMENTO_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789487328037_ser2n",
+      "details": "Fechamento de caixa CX-2026-0011. Esperado: R$ 100.00, Contado: R$ 100.00, Diferença: R$ 0.00",
+      "timestamp": "2026-09-15T15:49:02.162Z"
+    },
+    {
+      "id": "aud_1789487328039_dfs6",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Carlos",
+      "action": "ABERTURA_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789487328037_ser2n",
+      "details": "Caixa CX-2026-0011 (Terminal Colab 1) aberto com fundo inicial de R$ 100.00",
+      "timestamp": "2026-09-15T15:48:48.039Z"
+    },
+    {
+      "id": "aud_1789487328032_ekmf",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "INICIO_TURNO",
+      "entity": "EQUIPE",
+      "details": "Iniciou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:48:48.032Z"
+    },
+    {
+      "id": "aud_1789487328028_ygvq",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:48:48.028Z"
+    },
+    {
+      "id": "aud_1789487328016_ix69",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "INICIO_TURNO",
+      "entity": "EQUIPE",
+      "details": "Iniciou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:48:48.016Z"
+    },
+    {
+      "id": "aud_1789487328011_mqa6",
+      "storeId": "store_matriz",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:48:48.011Z"
+    },
+    {
+      "id": "aud_1789487328005_4y9v",
+      "storeId": "store_matriz",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "action": "INICIO_TURNO",
+      "entity": "EQUIPE",
+      "details": "Iniciou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:48:48.005Z"
+    },
+    {
+      "id": "aud_1789487327999_f87v",
+      "storeId": "store_matriz",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:48:47.999Z"
+    },
+    {
+      "id": "aud_1789487327993_ml0q",
+      "storeId": "store_matriz",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "action": "INICIO_TURNO",
+      "entity": "EQUIPE",
+      "details": "Iniciou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:48:47.993Z"
+    },
+    {
+      "id": "aud_1789487327982_t9zc",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:48:47.982Z"
+    },
+    {
+      "id": "aud_1789487327973_fuvs",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Carlos Oliveira",
+      "action": "FECHAMENTO_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789487327961_c6vvb",
+      "details": "Fechamento de caixa CX-2026-0010. Esperado: R$ 150.00, Contado: R$ 150.00, Diferença: R$ 0.00",
+      "timestamp": "2026-09-15T15:48:47.974Z"
+    },
+    {
+      "id": "aud_1789487327963_msin",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Carlos Oliveira",
+      "action": "ABERTURA_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789487327961_c6vvb",
+      "details": "Caixa CX-2026-0010 (Terminal 01 - Balcão Principal) aberto com fundo inicial de R$ 150.00",
+      "timestamp": "2026-09-15T15:48:47.963Z"
+    },
+    {
+      "id": "aud_1789487327952_m14z",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "INICIO_TURNO",
+      "entity": "EQUIPE",
+      "details": "Iniciou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:48:47.952Z"
+    },
+    {
+      "id": "aud_1789487304181_7k1l",
+      "storeId": "store_matriz",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "action": "INICIO_TURNO",
+      "entity": "EQUIPE",
+      "details": "Iniciou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:48:24.181Z"
+    },
+    {
+      "id": "aud_1789487304173_pzid",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:48:24.173Z"
+    },
+    {
+      "id": "aud_1789487304163_s20z",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Carlos Oliveira",
+      "action": "FECHAMENTO_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789487304144_7cfcd",
+      "details": "Fechamento de caixa CX-2026-0009. Esperado: R$ 150.00, Contado: R$ 150.00, Diferença: R$ 0.00",
+      "timestamp": "2026-09-15T15:48:24.163Z"
+    },
+    {
+      "id": "aud_1789487304145_3g4z",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Carlos Oliveira",
+      "action": "ABERTURA_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789487304144_7cfcd",
+      "details": "Caixa CX-2026-0009 (Terminal 01 - Balcão Principal) aberto com fundo inicial de R$ 150.00",
+      "timestamp": "2026-09-15T15:48:24.145Z"
+    },
+    {
+      "id": "aud_1789487304134_7cam",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "INICIO_TURNO",
+      "entity": "EQUIPE",
+      "details": "Iniciou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:48:24.134Z"
+    },
+    {
+      "id": "aud_1789487290405_qbip",
+      "storeId": "store_matriz",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:48:10.405Z"
+    },
+    {
+      "id": "aud_1789487290401_91h5",
+      "storeId": "store_matriz",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:48:10.401Z"
+    },
+    {
+      "id": "aud_1789487290395_0b28",
+      "storeId": "store_matriz",
+      "userId": "usr_colab2",
+      "userName": "Lucas Ferreira",
+      "action": "INICIO_TURNO",
+      "entity": "EQUIPE",
+      "details": "Iniciou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:48:10.395Z"
+    },
+    {
+      "id": "aud_1789487290392_4lvy",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:48:10.392Z"
+    },
+    {
+      "id": "aud_1789487290385_6mwe",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Carlos Oliveira",
+      "action": "FECHAMENTO_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789487290373_f5x7z",
+      "details": "Fechamento de caixa CX-2026-0008. Esperado: R$ 150.00, Contado: R$ 150.00, Diferença: R$ 0.00",
+      "timestamp": "2026-09-15T15:48:10.385Z"
+    },
+    {
+      "id": "aud_1789487290380_ohcl",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:48:10.380Z"
+    },
+    {
+      "id": "aud_1789487290374_nu2l",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Carlos Oliveira",
+      "action": "ABERTURA_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789487290373_f5x7z",
+      "details": "Caixa CX-2026-0008 (Terminal 01 - Balcão Principal) aberto com fundo inicial de R$ 150.00",
+      "timestamp": "2026-09-15T15:48:10.375Z"
+    },
+    {
+      "id": "aud_1789487290367_4t1w",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "INICIO_TURNO",
+      "entity": "EQUIPE",
+      "details": "Iniciou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:48:10.367Z"
+    },
+    {
+      "id": "aud_1789487290362_paxw",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "FIM_TURNO",
+      "entity": "EQUIPE",
+      "details": "Encerrou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:48:10.362Z"
+    },
+    {
+      "id": "aud_1789486861174_0e9c",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "DIVERGENCIA_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789486861149_ioard",
+      "details": "Divergência registrada no caixa CX-2026-0007: R$ -20.00. Justificativa: Diferença apurada na contagem física de moedas",
+      "timestamp": "2026-09-15T15:41:01.174Z"
+    },
+    {
+      "id": "aud_1789486861174_v98e",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "FECHAMENTO_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789486861149_ioard",
+      "details": "Fechamento de caixa CX-2026-0007. Esperado: R$ 500.00, Contado: R$ 480.00, Diferença: R$ -20.00",
+      "timestamp": "2026-09-15T15:41:01.174Z"
+    },
+    {
+      "id": "aud_1789486861172_owuc",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "SANGRIA_FECHAMENTO",
+      "entity": "CAIXA",
+      "entityId": "cx_1789486861149_ioard",
+      "details": "Sangria de fechamento de R$ 330.00 recolhida para o cofre. Fundo mantido: R$ 150.00",
+      "timestamp": "2026-09-15T15:41:01.172Z"
+    },
+    {
+      "id": "aud_1789486861151_i2b0",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "ABERTURA_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789486861149_ioard",
+      "details": "Caixa CX-2026-0007 (Terminal Balcão 01) aberto com fundo inicial de R$ 500.00",
+      "timestamp": "2026-09-15T15:41:01.151Z"
+    },
+    {
+      "id": "aud_1789486816265_424g",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "SANGRIA_FECHAMENTO",
+      "entity": "CAIXA",
+      "entityId": "cx_1789486816244_g831e",
+      "details": "Sangria de fechamento de R$ 330.00 recolhida para o cofre. Fundo mantido: R$ 150.00",
+      "timestamp": "2026-09-15T15:40:16.265Z"
+    },
+    {
+      "id": "aud_1789486816246_ko9x",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "ABERTURA_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789486816244_g831e",
+      "details": "Caixa CX-2026-0006 (Terminal Balcão 01) aberto com fundo inicial de R$ 500.00",
+      "timestamp": "2026-09-15T15:40:16.246Z"
+    },
+    {
+      "id": "aud_1789486812342_qjkv",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "DIVERGENCIA_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789486812318_gp9wa",
+      "details": "Divergência registrada no caixa CX-2026-0005: R$ 20.00. Justificativa: Cliente esqueceu moedas de troco no balcão",
+      "timestamp": "2026-09-15T15:40:12.342Z"
+    },
+    {
+      "id": "aud_1789486812341_wszj",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "FECHAMENTO_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789486812318_gp9wa",
+      "details": "Fechamento de caixa CX-2026-0005. Esperado: R$ 200.00, Contado: R$ 220.00, Diferença: R$ 20.00",
+      "timestamp": "2026-09-15T15:40:12.341Z"
+    },
+    {
+      "id": "aud_1789486812340_ndwk",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "SANGRIA_FECHAMENTO",
+      "entity": "CAIXA",
+      "entityId": "cx_1789486812318_gp9wa",
+      "details": "Sangria de fechamento de R$ 120.00 recolhida para o cofre. Fundo mantido: R$ 100.00",
+      "timestamp": "2026-09-15T15:40:12.340Z"
+    },
+    {
+      "id": "aud_1789486812319_r04v",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "ABERTURA_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789486812318_gp9wa",
+      "details": "Caixa CX-2026-0005 (Terminal Balcão 01) aberto com fundo inicial de R$ 200.00",
+      "timestamp": "2026-09-15T15:40:12.319Z"
+    },
+    {
+      "id": "aud_1789486788037_pg06",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "SANGRIA_FECHAMENTO",
+      "entity": "CAIXA",
+      "entityId": "cx_1789486788020_xjy9i",
+      "details": "Sangria de fechamento de R$ 120.00 recolhida para o cofre. Fundo mantido: R$ 100.00",
+      "timestamp": "2026-09-15T15:39:48.037Z"
+    },
+    {
+      "id": "aud_1789486788021_r23m",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "ABERTURA_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789486788020_xjy9i",
+      "details": "Caixa CX-2026-0004 (Terminal Balcão 01) aberto com fundo inicial de R$ 200.00",
+      "timestamp": "2026-09-15T15:39:48.021Z"
+    },
+    {
+      "id": "aud_1789486783856_zy2o",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "FECHAMENTO_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789486766059_gqk45",
+      "details": "Fechamento de caixa CX-2026-0003. Esperado: R$ 370.00, Contado: R$ 370.00, Diferença: R$ 0.00",
+      "timestamp": "2026-09-15T15:39:43.856Z"
+    },
+    {
+      "id": "aud_1789486773064_0wgc",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "VENDA_FINALIZADA",
+      "entity": "VENDAS",
+      "entityId": "sale_1789486773063",
+      "details": "Venda VDA-2026-0009 de R$ 100.00 registrada.",
+      "timestamp": "2026-09-15T15:39:33.064Z"
+    },
+    {
+      "id": "aud_1789486773050_t9pi",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "VENDA_FINALIZADA",
+      "entity": "VENDAS",
+      "entityId": "sale_1789486773048",
+      "details": "Venda VDA-2026-0008 de R$ 100.00 registrada.",
+      "timestamp": "2026-09-15T15:39:33.050Z"
+    },
+    {
+      "id": "aud_1789486773035_qz7k",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "VENDA_FINALIZADA",
+      "entity": "VENDAS",
+      "entityId": "sale_1789486773034",
+      "details": "Venda VDA-2026-0007 de R$ 75.00 registrada.",
+      "timestamp": "2026-09-15T15:39:33.035Z"
+    },
+    {
+      "id": "aud_1789486773023_yqba",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "VENDA_FINALIZADA",
+      "entity": "VENDAS",
+      "entityId": "sale_1789486773022",
+      "details": "Venda VDA-2026-0006 de R$ 50.00 registrada.",
+      "timestamp": "2026-09-15T15:39:33.023Z"
+    },
+    {
+      "id": "aud_1789486773012_dnul",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "VENDA_FINALIZADA",
+      "entity": "VENDAS",
+      "entityId": "sale_1789486773010",
+      "details": "Venda VDA-2026-0005 de R$ 100.00 registrada.",
+      "timestamp": "2026-09-15T15:39:33.012Z"
+    },
+    {
+      "id": "aud_1789486772986_nmxc",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "VENDA_FINALIZADA",
+      "entity": "VENDAS",
+      "entityId": "sale_1789486772985",
+      "details": "Venda VDA-2026-0004 de R$ 100.00 registrada.",
+      "timestamp": "2026-09-15T15:39:32.986Z"
+    },
+    {
+      "id": "aud_1789486766111_dfo0",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "SANGRIA_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cm_1789486766109_zvcm6",
+      "details": "Sangria de R$ 50.00. Motivo: Retirada para pagamento emergencial de gás",
+      "timestamp": "2026-09-15T15:39:26.111Z"
+    },
+    {
+      "id": "aud_1789486766098_6co3",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "SUPRIMENTO_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cm_1789486766096_1lnoc",
+      "details": "Suprimento de R$ 100.00. Motivo: Suprimento de troco operacional",
+      "timestamp": "2026-09-15T15:39:26.098Z"
+    },
+    {
+      "id": "aud_1789486766061_6qq1",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "ABERTURA_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789486766059_gqk45",
+      "details": "Caixa CX-2026-0003 (Terminal Balcão 01) aberto com fundo inicial de R$ 150.00",
+      "timestamp": "2026-09-15T15:39:26.061Z"
+    },
+    {
+      "id": "aud_1789486750578_uk3y",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "FECHAMENTO_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789486729312_bkntj",
+      "details": "Fechamento de caixa CX-2026-0002. Esperado: R$ 0.00, Contado: R$ 0.00, Diferença: R$ 0.00",
+      "timestamp": "2026-09-15T15:39:10.578Z"
+    },
+    {
+      "id": "aud_1789486729314_9h67",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "ABERTURA_CAIXA",
+      "entity": "CAIXA",
+      "entityId": "cx_1789486729312_bkntj",
+      "details": "Caixa CX-2026-0002 (T1) aberto com fundo inicial de R$ 0.00",
+      "timestamp": "2026-09-15T15:38:49.314Z"
+    },
+    {
+      "id": "aud_1789486726814_tblr",
+      "storeId": "store_matriz",
+      "userId": "usr_colab1",
+      "userName": "Camila Santos",
+      "action": "INICIO_TURNO",
+      "entity": "EQUIPE",
+      "details": "Iniciou expediente de trabalho.",
+      "timestamp": "2026-09-15T15:38:46.814Z"
+    },
+    {
+      "id": "aud_init",
+      "storeId": "store_matriz",
+      "userId": "usr_admin",
+      "userName": "Dr. Roberto Mendes",
+      "action": "INICIALIZACAO_SISTEMA",
+      "entity": "SISTEMA",
+      "details": "Banco de dados operacional FarmaVida inicializado com dados consistentes da loja.",
+      "timestamp": "2026-09-14T14:27:30.886Z"
+    }
+  ],
+  "approvals": [
+    {
+      "id": "appr_01",
+      "storeId": "store_matriz",
+      "type": "desconto_excedente",
+      "title": "Desconto de 18% em Amoxicilina + Clavulanato",
+      "description": "Cliente dona Maria solicitou desconto de R$ 13,12 para fechar a receita médica mensal.",
+      "reason": "Equiparação de preço com concorrente local para cliente fidelizada.",
+      "requestedByUserId": "usr_colab1",
+      "requestedByUserName": "Camila Santos",
+      "createdAt": "2026-09-15T13:38:37.863Z",
+      "status": "pendente",
+      "previousValue": "12% (Limite Padrão)",
+      "newValue": "18% (R$ 13,12)",
+      "financialImpact": 13.12,
+      "relatedEntityType": "sale"
+    },
+    {
+      "id": "appr_02",
+      "storeId": "store_matriz",
+      "type": "troca_preco",
+      "title": "Ajuste de Preço de Venda: Dipirona 500mg",
+      "description": "Proposta de alteração de preço unitário de R$ 10,50 para R$ 9,90 no balcão.",
+      "reason": "Ajuste promocional de balcão para estímulo de vendas.",
+      "requestedByUserId": "usr_colab2",
+      "requestedByUserName": "Lucas Ferreira",
+      "createdAt": "2026-09-15T11:38:37.863Z",
+      "status": "pendente",
+      "previousValue": "R$ 10,50",
+      "newValue": "R$ 9,90",
+      "financialImpact": 0.6,
+      "relatedEntityId": "prod_1",
+      "relatedEntityType": "product"
+    }
+  ]
+}

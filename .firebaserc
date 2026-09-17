@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "gen-lang-client-0130643182",
+    "staging": "gen-lang-client-0130643182",
+    "production": "farmavida-production-gcp"
+  }
+}

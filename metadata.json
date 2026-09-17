@@ -1,0 +1,6 @@
+{
+  "name": "FarmaVida",
+  "description": "Sistema de gestão e inteligência administrativa para farmácias com indicadores, conciliação e análises orientadas por IA.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
