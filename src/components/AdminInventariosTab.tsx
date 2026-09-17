@@ -26,6 +26,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { InventoryCount, InventoryItemCount, Product, User } from '../types';
+import { formatCurrencyBRL } from '../lib/format';
 
 interface AdminInventariosTabProps {
   inventories: InventoryCount[];
@@ -558,7 +559,7 @@ export function AdminInventariosTab({
                           }`}
                         >
                           {inv.totalFinancialImpact >= 0 ? '+' : ''}
-                          R$ {inv.totalFinancialImpact.toFixed(2)}
+                          {formatCurrencyBRL(inv.totalFinancialImpact)}
                         </span>
                       ) : (
                         <span className="text-slate-400 italic">Sob contagem</span>
@@ -923,7 +924,7 @@ export function AdminInventariosTab({
                   }`}
                 >
                   {(reviewingInventory.totalFinancialImpact || 0) >= 0 ? '+' : ''}
-                  R$ {(reviewingInventory.totalFinancialImpact || 0).toFixed(2)}
+                  {formatCurrencyBRL(reviewingInventory.totalFinancialImpact || 0)}
                 </p>
               </div>
             </div>
@@ -1009,7 +1010,7 @@ export function AdminInventariosTab({
                           )}
                         </td>
                         <td className="py-2 px-3 text-right font-mono text-slate-600">
-                          R$ {(item.unitCost || 0).toFixed(2)}
+                          {formatCurrencyBRL(item.unitCost || 0)}
                         </td>
                         <td className="py-2 px-3 text-right font-mono font-bold">
                           {item.financialImpact !== undefined ? (
@@ -1023,7 +1024,7 @@ export function AdminInventariosTab({
                               }
                             >
                               {item.financialImpact >= 0 ? '+' : ''}
-                              R$ {item.financialImpact.toFixed(2)}
+                              {formatCurrencyBRL(item.financialImpact)}
                             </span>
                           ) : (
                             '-'
@@ -1200,7 +1201,7 @@ export function AdminInventariosTab({
               <div className="flex justify-between">
                 <span>Impacto Financeiro Líquido:</span>
                 <span className="font-mono font-bold text-slate-900">
-                  R$ {(reviewingInventory.totalFinancialImpact || 0).toFixed(2)}
+                  {formatCurrencyBRL(reviewingInventory.totalFinancialImpact || 0)}
                 </span>
               </div>
               <div className="flex justify-between">

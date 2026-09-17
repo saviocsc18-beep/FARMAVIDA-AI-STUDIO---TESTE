@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { PurchaseOrder, PurchaseOrderItem, Supplier, Product, UnmetDemand, User } from '../types';
+import { formatCurrencyBRL } from '../lib/format';
 import { 
   Truck, 
   Plus, 
@@ -281,7 +282,7 @@ export const AdminPurchases: React.FC<AdminPurchasesProps> = ({
                     </td>
 
                     <td className="py-3 px-4 text-right font-bold text-emerald-800">
-                      R$ {getOrderTotal(order).toFixed(2)}
+                      {formatCurrencyBRL(getOrderTotal(order))}
                     </td>
 
                     <td className="py-3 px-4 text-neutral-600">
@@ -573,7 +574,7 @@ export const AdminPurchases: React.FC<AdminPurchasesProps> = ({
                               />
                             </td>
                             <td className="py-2 px-3 text-right font-bold text-emerald-800">
-                              R$ {(item.quantityOrdered * item.unitCost).toFixed(2)}
+                              {formatCurrencyBRL(item.quantityOrdered * item.unitCost)}
                             </td>
                             <td className="py-2 px-3 text-center">
                               <button
@@ -614,10 +615,9 @@ export const AdminPurchases: React.FC<AdminPurchasesProps> = ({
                 <div className="text-sm font-bold text-neutral-900">
                   Total Estimado:{' '}
                   <span className="text-emerald-800">
-                    R${' '}
-                    {orderItems
-                      .reduce((acc, it) => acc + it.quantityOrdered * it.unitCost, 0)
-                      .toFixed(2)}
+                    {formatCurrencyBRL(
+                      orderItems.reduce((acc, it) => acc + it.quantityOrdered * it.unitCost, 0)
+                    )}
                   </span>
                 </div>
 

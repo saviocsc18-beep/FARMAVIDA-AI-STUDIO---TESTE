@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { User, WorkShift, Sale, SalesGoal } from '../types';
+import { formatCurrencyBRL } from '../lib/format';
 import { 
   Users, 
   Clock, 
@@ -178,15 +179,15 @@ export const AdminStaff: React.FC<AdminStaffProps> = ({
                       </td>
 
                       <td className="py-3 px-4 text-right font-bold text-emerald-800 text-sm">
-                        R$ {(item.totalRevenue || 0).toFixed(2)}
+                        {formatCurrencyBRL(item.totalRevenue || 0)}
                       </td>
 
                       <td className="py-3 px-4 text-right font-medium">
-                        R$ {(item.avgTicket || 0).toFixed(2)}
+                        {formatCurrencyBRL(item.avgTicket || 0)}
                       </td>
 
                       <td className="py-3 px-4 text-right text-amber-900 font-semibold">
-                        R$ {(item.totalDiscounts || 0).toFixed(2)}
+                        {formatCurrencyBRL(item.totalDiscounts || 0)}
                       </td>
 
                       <td className="py-3 px-4 text-right">
@@ -311,11 +312,11 @@ export const AdminStaff: React.FC<AdminStaffProps> = ({
                   <div className="flex justify-between text-xs pt-1 border-t border-neutral-100 text-neutral-600">
                     <div>
                       <span>Realizado: </span>
-                      <strong className="text-emerald-900">R$ {(current || 0).toFixed(2)}</strong>
+                      <strong className="text-emerald-900">{formatCurrencyBRL(current || 0)}</strong>
                     </div>
                     <div>
                       <span>Meta: </span>
-                      <strong className="text-neutral-900">R$ {(target || 0).toFixed(2)}</strong>
+                      <strong className="text-neutral-900">{formatCurrencyBRL(target || 0)}</strong>
                     </div>
                   </div>
                 </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { User, Sale, SalesGoal } from '../types';
 import { Target, TrendingUp, Award, DollarSign, ShoppingBag, Percent, Calendar, CheckCircle2, AlertCircle } from 'lucide-react';
+import { formatCurrencyBRL } from '../lib/format';
 
 interface ColaboradorMetasProps {
   currentUser: User;
@@ -113,7 +114,7 @@ export const ColaboradorMetas: React.FC<ColaboradorMetasProps> = ({
           <div className="bg-neutral-50 rounded-xl p-3.5 border border-neutral-200">
             <span className="text-xs text-neutral-500 block">Realizado até o momento</span>
             <strong className="text-xl font-bold text-emerald-900 block mt-0.5">
-              R$ {currentAmount.toFixed(2)}
+              {formatCurrencyBRL(currentAmount)}
             </strong>
             <span className="text-[11px] text-emerald-700 mt-1 flex items-center gap-1">
               <TrendingUp className="w-3 h-3" /> {salesCount} vendas efetuadas
@@ -123,7 +124,7 @@ export const ColaboradorMetas: React.FC<ColaboradorMetasProps> = ({
           <div className="bg-neutral-50 rounded-xl p-3.5 border border-neutral-200">
             <span className="text-xs text-neutral-500 block">Meta Estipulada</span>
             <strong className="text-xl font-bold text-neutral-900 block mt-0.5">
-              R$ {targetAmount.toFixed(2)}
+              {formatCurrencyBRL(targetAmount)}
             </strong>
             <span className="text-[11px] text-neutral-500 mt-1 block">
               Definida pela gerência da loja
@@ -133,7 +134,7 @@ export const ColaboradorMetas: React.FC<ColaboradorMetasProps> = ({
           <div className="bg-neutral-50 rounded-xl p-3.5 border border-neutral-200">
             <span className="text-xs text-neutral-500 block">Faltando para a Meta</span>
             <strong className="text-xl font-bold text-amber-900 block mt-0.5">
-              {remainingAmount > 0 ? `R$ ${remainingAmount.toFixed(2)}` : 'Meta Atingida! 🎉'}
+              {remainingAmount > 0 ? formatCurrencyBRL(remainingAmount) : 'Meta Atingida! 🎉'}
             </strong>
             <span className="text-[11px] text-neutral-500 mt-1 block">
               {remainingAmount > 0 ? 'Continue com foco no balcão' : 'Parabéns pela dedicação'}
@@ -150,7 +151,7 @@ export const ColaboradorMetas: React.FC<ColaboradorMetasProps> = ({
             <DollarSign className="w-4 h-4 text-emerald-700" />
           </div>
           <div className="text-2xl font-bold text-neutral-900">
-            R$ {avgTicket.toFixed(2)}
+            {formatCurrencyBRL(avgTicket)}
           </div>
           <p className="text-[11px] text-neutral-500 mt-1">
             Valor médio por cliente atendido
@@ -163,7 +164,7 @@ export const ColaboradorMetas: React.FC<ColaboradorMetasProps> = ({
             <Percent className="w-4 h-4 text-amber-700" />
           </div>
           <div className="text-2xl font-bold text-neutral-900">
-            R$ {totalDiscounts.toFixed(2)}
+            {formatCurrencyBRL(totalDiscounts)}
           </div>
           <p className="text-[11px] text-neutral-500 mt-1">
             Taxa média: <strong className="text-neutral-700">{discountRate.toFixed(1)}%</strong>
@@ -242,10 +243,10 @@ export const ColaboradorMetas: React.FC<ColaboradorMetasProps> = ({
                       {(sale.payments || []).map((p) => p.method.replace('_', ' ')).join(' + ')}
                     </td>
                     <td className="py-2.5 px-3 text-right text-amber-900">
-                      {sale.totalDiscount > 0 ? `R$ ${sale.totalDiscount.toFixed(2)}` : '-'}
+                      {sale.totalDiscount > 0 ? formatCurrencyBRL(sale.totalDiscount) : '-'}
                     </td>
                     <td className="py-2.5 px-3 text-right font-bold text-emerald-800">
-                      R$ {sale.total.toFixed(2)}
+                      {formatCurrencyBRL(sale.total)}
                     </td>
                   </tr>
                 ))}

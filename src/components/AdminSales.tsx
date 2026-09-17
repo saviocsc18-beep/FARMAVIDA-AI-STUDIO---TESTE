@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Sale, User } from '../types';
+import { formatCurrencyBRL } from '../lib/format';
 import { Search, Receipt, CheckCircle2, Clock, AlertTriangle, ArrowUpRight, Filter, Download, Ban, ShieldAlert, X } from 'lucide-react';
 
 interface AdminSalesProps {
@@ -262,7 +263,7 @@ export const AdminSales: React.FC<AdminSalesProps> = ({
 
                     <td className="py-3 px-4">
                       <div className={`font-bold text-sm ${isCanceled ? 'text-red-700 line-through' : 'text-emerald-800'}`}>
-                        R$ {sale.total.toFixed(2)}
+                        {formatCurrencyBRL(sale.total)}
                       </div>
                       <div className="text-[11px] text-neutral-500">
                         {(sale.payments || []).map((p) => p.method.replace('_', ' ')).join(' + ')}
@@ -398,11 +399,11 @@ export const AdminSales: React.FC<AdminSalesProps> = ({
                           <div className="text-[10px] text-neutral-500">{it.presentation || it.category}</div>
                         </td>
                         <td className="py-2 px-3 text-center">{it.quantity}</td>
-                        <td className="py-2 px-3 text-right">R$ {it.unitPrice.toFixed(2)}</td>
+                        <td className="py-2 px-3 text-right">{formatCurrencyBRL(it.unitPrice)}</td>
                         <td className="py-2 px-3 text-right text-amber-700">
-                          {it.discountAmount > 0 ? `-R$ ${it.discountAmount.toFixed(2)}` : '-'}
+                          {it.discountAmount > 0 ? `-${formatCurrencyBRL(it.discountAmount)}` : '-'}
                         </td>
-                        <td className="py-2 px-3 text-right font-bold">R$ {it.total.toFixed(2)}</td>
+                        <td className="py-2 px-3 text-right font-bold">{formatCurrencyBRL(it.total)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -424,7 +425,7 @@ export const AdminSales: React.FC<AdminSalesProps> = ({
                     <span className="font-semibold capitalize text-neutral-800">
                       {p.method.replace('_', ' ')}
                     </span>
-                    <span className="font-bold text-emerald-800">R$ {p.amount.toFixed(2)}</span>
+                    <span className="font-bold text-emerald-800">{formatCurrencyBRL(p.amount)}</span>
                   </div>
                 ))}
               </div>
@@ -481,7 +482,7 @@ export const AdminSales: React.FC<AdminSalesProps> = ({
                   Cancelar Venda {cancelingSale.code}
                 </h3>
                 <p className="text-xs text-neutral-500">
-                  Valor total: R$ {cancelingSale.total.toFixed(2)} ({cancelingSale.items?.length || 0} itens)
+                  Valor total: {formatCurrencyBRL(cancelingSale.total)} ({cancelingSale.items?.length || 0} itens)
                 </p>
               </div>
             </div>
@@ -572,7 +573,7 @@ export const AdminSales: React.FC<AdminSalesProps> = ({
 
             <p className="text-xs text-neutral-500">
               Informe o número da NFC-e ou SAT emitido no sistema satélite de cupom fiscal para a venda{' '}
-              <strong className="text-neutral-800">{reconcilingSale.code}</strong> (Valor R$ {reconcilingSale.total.toFixed(2)}).
+              <strong className="text-neutral-800">{reconcilingSale.code}</strong> (Valor {formatCurrencyBRL(reconcilingSale.total)}).
             </p>
 
             <form onSubmit={handleSubmitReconciliation} className="space-y-3 text-xs">

@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { CashRegister, CashMovement, User, Sale, WorkShift, Store, Terminal, OperatorCashSummary } from '../types';
+import { formatCurrencyBRL } from '../lib/format';
 import { 
   Banknote, 
   ArrowDownCircle, 
@@ -467,7 +468,7 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
                     </div>
                   </td>
                   <td className="py-3 px-4 text-right font-black text-neutral-900 text-sm">
-                    R$ {expectedPhysicalCash.toFixed(2)}
+                    {formatCurrencyBRL(expectedPhysicalCash)}
                   </td>
                   <td className="py-3 px-4 text-right">
                     <div className="flex flex-col items-end gap-1 py-1">
@@ -511,7 +512,7 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
                       <span className={`px-2.5 py-1 rounded-md text-xs font-bold inline-flex items-center gap-1 ${
                         cashDiscrepancy > 0 ? 'bg-blue-100 text-blue-900 border border-blue-200' : 'bg-red-100 text-red-900 border border-red-200'
                       }`}>
-                        {cashDiscrepancy > 0 ? `Sobra (+ R$ ${cashDiscrepancy.toFixed(2)})` : `Falta (- R$ ${Math.abs(cashDiscrepancy).toFixed(2)})`}
+                        {cashDiscrepancy > 0 ? `Sobra (+ ${formatCurrencyBRL(cashDiscrepancy)})` : `Falta (- ${formatCurrencyBRL(Math.abs(cashDiscrepancy))})`}
                       </span>
                     )}
                   </td>
@@ -527,7 +528,7 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
                     </div>
                   </td>
                   <td className="py-3 px-4 text-right font-black text-neutral-900 text-sm">
-                    R$ {registerSalesMetrics.pixSales.toFixed(2)}
+                    {formatCurrencyBRL(registerSalesMetrics.pixSales)}
                   </td>
                   <td className="py-3 px-4 text-right">
                     <div className="flex flex-col items-end gap-1 py-1">
@@ -563,7 +564,7 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
                       </span>
                     ) : (
                       <span className="bg-amber-100 text-amber-900 border border-amber-200 px-2.5 py-1 rounded-md text-xs font-bold">
-                        Dif: R$ {pixDiscrepancy.toFixed(2)}
+                        Dif: {formatCurrencyBRL(pixDiscrepancy)}
                       </span>
                     )}
                   </td>
@@ -579,7 +580,7 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
                     </div>
                   </td>
                   <td className="py-3 px-4 text-right font-black text-neutral-900 text-sm">
-                    R$ {registerSalesMetrics.debitSales.toFixed(2)}
+                    {formatCurrencyBRL(registerSalesMetrics.debitSales)}
                   </td>
                   <td className="py-3 px-4 text-right">
                     <div className="flex flex-col items-end gap-1 py-1">
@@ -615,7 +616,7 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
                       </span>
                     ) : (
                       <span className="bg-amber-100 text-amber-900 border border-amber-200 px-2.5 py-1 rounded-md text-xs font-bold">
-                        Dif: R$ {debitDiscrepancy.toFixed(2)}
+                        Dif: {formatCurrencyBRL(debitDiscrepancy)}
                       </span>
                     )}
                   </td>
@@ -631,7 +632,7 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
                     </div>
                   </td>
                   <td className="py-3 px-4 text-right font-black text-neutral-900 text-sm">
-                    R$ {registerSalesMetrics.creditSales.toFixed(2)}
+                    {formatCurrencyBRL(registerSalesMetrics.creditSales)}
                   </td>
                   <td className="py-3 px-4 text-right">
                     <div className="flex flex-col items-end gap-1 py-1">
@@ -667,7 +668,7 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
                       </span>
                     ) : (
                       <span className="bg-amber-100 text-amber-900 border border-amber-200 px-2.5 py-1 rounded-md text-xs font-bold">
-                        Dif: R$ {creditDiscrepancy.toFixed(2)}
+                        Dif: {formatCurrencyBRL(creditDiscrepancy)}
                       </span>
                     )}
                   </td>
@@ -684,23 +685,23 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-neutral-700">
               <div className="p-2.5 bg-white rounded border border-neutral-200">
                 <span className="text-neutral-500 block">Fundo de Abertura:</span>
-                <span className="font-bold text-neutral-900">+ R$ {openingAmount.toFixed(2)}</span>
+                <span className="font-bold text-neutral-900">+ {formatCurrencyBRL(openingAmount)}</span>
               </div>
               <div className="p-2.5 bg-white rounded border border-neutral-200">
                 <span className="text-neutral-500 block">Vendas em Dinheiro:</span>
-                <span className="font-bold text-emerald-800">+ R$ {registerSalesMetrics.cashSales.toFixed(2)}</span>
+                <span className="font-bold text-emerald-800">+ {formatCurrencyBRL(registerSalesMetrics.cashSales)}</span>
               </div>
               <div className="p-2.5 bg-white rounded border border-neutral-200">
                 <span className="text-neutral-500 block">Suprimentos:</span>
-                <span className="font-bold text-blue-800">+ R$ {cashSuprimentos.toFixed(2)}</span>
+                <span className="font-bold text-blue-800">+ {formatCurrencyBRL(cashSuprimentos)}</span>
               </div>
               <div className="p-2.5 bg-white rounded border border-neutral-200">
                 <span className="text-neutral-500 block">Sangrias:</span>
-                <span className="font-bold text-amber-800">- R$ {cashSangrias.toFixed(2)}</span>
+                <span className="font-bold text-amber-800">- {formatCurrencyBRL(cashSangrias)}</span>
               </div>
               <div className="p-2.5 bg-emerald-100/60 rounded border border-emerald-300">
                 <span className="text-emerald-900 block font-medium">Dinheiro Esperado:</span>
-                <span className="font-bold text-emerald-950 text-sm">= R$ {expectedPhysicalCash.toFixed(2)}</span>
+                <span className="font-bold text-emerald-950 text-sm">= {formatCurrencyBRL(expectedPhysicalCash)}</span>
               </div>
             </div>
           </div>
@@ -710,7 +711,7 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
             <div className="p-4 bg-amber-50 border border-amber-300 rounded-xl space-y-2">
               <div className="flex items-center gap-2 text-amber-900 font-bold text-xs">
                 <AlertTriangle className="w-4 h-4 text-amber-700 shrink-0" />
-                <span>Divergência detectada: {cashDiscrepancy > 0 ? `Sobra de R$ ${cashDiscrepancy.toFixed(2)}` : `Falta de R$ ${Math.abs(cashDiscrepancy).toFixed(2)}`}</span>
+                <span>Divergência detectada: {cashDiscrepancy > 0 ? `Sobra de ${formatCurrencyBRL(cashDiscrepancy)}` : `Falta de ${formatCurrencyBRL(Math.abs(cashDiscrepancy))}`}</span>
               </div>
               <p className="text-xs text-amber-800">
                 O valor apurado não é cego. Conforme a regra de negócio FarmaVida, reconte o dinheiro. Se a diferença persistir, descreva a justificativa detalhada para conferência da administração.
@@ -743,7 +744,7 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
                 <div className="p-3 bg-neutral-50 rounded-lg border border-neutral-200">
                   <span className="text-neutral-500 block">Fundo de Troco Sugerido para o Próximo Turno:</span>
                   <span className="font-bold text-neutral-900 text-sm">
-                    R$ {targetNextFloat.toFixed(2)}
+                    {formatCurrencyBRL(targetNextFloat)}
                   </span>
                   <span className="block text-[11px] text-neutral-500 mt-0.5">
                     Permanece fisicamente na gaveta do caixa.
@@ -753,7 +754,7 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
                 <div className="p-3 bg-emerald-50 rounded-lg border border-emerald-200">
                   <span className="text-emerald-800 block">Valor Sugerido para Recolhimento (Cofre):</span>
                   <span className="font-bold text-emerald-950 text-base">
-                    R$ {suggestedWithdrawal.toFixed(2)}
+                    {formatCurrencyBRL(suggestedWithdrawal)}
                   </span>
                   <span className="block text-[11px] text-emerald-700 mt-0.5">
                     Total apurado menos o fundo de reserva mantido.
@@ -773,7 +774,7 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
                     <div className="text-xs text-neutral-800">
                       <strong className="text-neutral-900">Confirmar Sangria de Fechamento:</strong>
                       <p className="text-neutral-600 text-[11px] mt-0.5">
-                        Confirmo que o valor de <strong>R$ {suggestedWithdrawal.toFixed(2)}</strong> foi retirado fisicamente da gaveta para recolhimento ao cofre/tesouraria.
+                        Confirmo que o valor de <strong>{formatCurrencyBRL(suggestedWithdrawal)}</strong> foi retirado fisicamente da gaveta para recolhimento ao cofre/tesouraria.
                       </p>
                     </div>
                   </label>
@@ -855,16 +856,16 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 bg-neutral-50 rounded-xl border border-neutral-200 text-xs">
               <div>
                 <span className="text-neutral-500 block">Dinheiro Esperado:</span>
-                <span className="text-sm font-black text-neutral-900">R$ {closedSummaryData.expectedCash.toFixed(2)}</span>
+                <span className="text-sm font-black text-neutral-900">{formatCurrencyBRL(closedSummaryData.expectedCash)}</span>
               </div>
               <div>
                 <span className="text-neutral-500 block">Dinheiro Contado:</span>
-                <span className="text-sm font-black text-neutral-900">R$ {closedSummaryData.countedCash.toFixed(2)}</span>
+                <span className="text-sm font-black text-neutral-900">{formatCurrencyBRL(closedSummaryData.countedCash)}</span>
               </div>
               <div>
                 <span className="text-neutral-500 block">Diferença Final:</span>
                 <span className={`text-sm font-black ${closedSummaryData.discrepancy === 0 ? 'text-emerald-700' : 'text-amber-700'}`}>
-                  {closedSummaryData.discrepancy === 0 ? 'Exato (R$ 0,00)' : closedSummaryData.discrepancy > 0 ? `+ R$ ${closedSummaryData.discrepancy.toFixed(2)}` : `- R$ ${Math.abs(closedSummaryData.discrepancy).toFixed(2)}`}
+                  {closedSummaryData.discrepancy === 0 ? 'Exato (R$ 0,00)' : closedSummaryData.discrepancy > 0 ? `+ ${formatCurrencyBRL(closedSummaryData.discrepancy)}` : `- ${formatCurrencyBRL(Math.abs(closedSummaryData.discrepancy))}`}
                 </span>
               </div>
             </div>
@@ -963,7 +964,7 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
                   </div>
                   <div className="flex justify-between text-neutral-600">
                     <span>Fundo Sugerido (Loja):</span>
-                    <span className="font-semibold text-emerald-800">R$ {suggestedFloat.toFixed(2)}</span>
+                    <span className="font-semibold text-emerald-800">{formatCurrencyBRL(suggestedFloat)}</span>
                   </div>
                 </div>
 
@@ -1072,15 +1073,15 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
                       <td className="py-2.5 px-4">
                         {reg.closedAt ? new Date(reg.closedAt).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : 'Em Aberto'}
                       </td>
-                      <td className="py-2.5 px-4 text-right font-medium">R$ {reg.openingAmount.toFixed(2)}</td>
-                      <td className="py-2.5 px-4 text-right">R$ {(reg.expectedCash || 0).toFixed(2)}</td>
+                      <td className="py-2.5 px-4 text-right font-medium">{formatCurrencyBRL(reg.openingAmount)}</td>
+                      <td className="py-2.5 px-4 text-right">{formatCurrencyBRL(reg.expectedCash || 0)}</td>
                       <td className="py-2.5 px-4 text-right font-bold">
-                        {reg.countedCash !== undefined ? `R$ ${reg.countedCash.toFixed(2)}` : '-'}
+                        {reg.countedCash !== undefined ? formatCurrencyBRL(reg.countedCash) : '-'}
                       </td>
                       <td className="py-2.5 px-4 text-right">
                         {reg.difference !== undefined ? (
                           <span className={reg.difference === 0 ? 'text-emerald-700 font-bold' : reg.difference > 0 ? 'text-blue-700 font-bold' : 'text-red-700 font-bold'}>
-                            {reg.difference === 0 ? 'Exato' : `R$ ${reg.difference.toFixed(2)}`}
+                            {reg.difference === 0 ? 'Exato' : formatCurrencyBRL(reg.difference)}
                           </span>
                         ) : '-'}
                       </td>
@@ -1213,7 +1214,7 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
                 Caixa Aberto com Sucesso
               </div>
               <div className="text-base sm:text-lg font-black text-emerald-950 mt-0.5">
-                Terminal {activeCashRegister.terminalName} • Fundo: R$ {activeCashRegister.openingAmount.toFixed(2)}
+                Terminal {activeCashRegister.terminalName} • Fundo: {formatCurrencyBRL(activeCashRegister.openingAmount)}
               </div>
               <p className="text-xs text-emerald-800 mt-0.5">
                 Terminal pronto para atender clientes. Clique abaixo para iniciar suas vendas no balcão.
@@ -1242,7 +1243,7 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
               Dinheiro Físico em Gaveta
             </div>
             <div className="text-2xl font-black text-emerald-950 mt-0.5">
-              R$ {expectedPhysicalCash.toFixed(2)}
+              {formatCurrencyBRL(expectedPhysicalCash)}
             </div>
             <p className="text-xs text-neutral-500 mt-0.5">
               Soma estrita do fundo de troco, entradas em espécie e suprimentos, deduzidas as sangrias.
@@ -1252,7 +1253,7 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
           <div className="bg-emerald-50 px-3.5 py-2 rounded-lg border border-emerald-200 text-right">
             <div className="text-[10px] uppercase font-semibold text-emerald-800">Total Geral de Vendas no Turno</div>
             <div className="text-lg font-bold text-emerald-900">
-              R$ {registerSalesMetrics.totalSalesAmount.toFixed(2)}
+              {formatCurrencyBRL(registerSalesMetrics.totalSalesAmount)}
             </div>
             <div className="text-[11px] text-emerald-700">
               {registerSalesMetrics.salesCount} venda(s) registrada(s)
@@ -1264,22 +1265,22 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
           <div className="p-3 bg-neutral-50 rounded-lg border border-neutral-200">
             <span className="text-neutral-500 block">Fundo de Abertura:</span>
-            <span className="font-bold text-neutral-800 text-sm">+ R$ {openingAmount.toFixed(2)}</span>
+            <span className="font-bold text-neutral-800 text-sm">+ {formatCurrencyBRL(openingAmount)}</span>
           </div>
 
           <div className="p-3 bg-emerald-50 rounded-lg border border-emerald-200">
             <span className="text-emerald-800 block">Vendas em Espécie (Dinheiro):</span>
-            <span className="font-bold text-emerald-950 text-sm">+ R$ {registerSalesMetrics.cashSales.toFixed(2)}</span>
+            <span className="font-bold text-emerald-950 text-sm">+ {formatCurrencyBRL(registerSalesMetrics.cashSales)}</span>
           </div>
 
           <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
             <span className="text-blue-800 block">Suprimentos Adicionados:</span>
-            <span className="font-bold text-blue-900 text-sm">+ R$ {cashSuprimentos.toFixed(2)}</span>
+            <span className="font-bold text-blue-900 text-sm">+ {formatCurrencyBRL(cashSuprimentos)}</span>
           </div>
 
           <div className="p-3 bg-amber-50 rounded-lg border border-amber-200">
             <span className="text-amber-800 block">Sangrias Efetuadas:</span>
-            <span className="font-bold text-amber-900 text-sm">- R$ {cashSangrias.toFixed(2)}</span>
+            <span className="font-bold text-amber-900 text-sm">- {formatCurrencyBRL(cashSangrias)}</span>
           </div>
         </div>
       </div>
@@ -1302,7 +1303,7 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
               <span>Dinheiro</span>
             </div>
             <div className="text-base font-bold text-emerald-950">
-              R$ {registerSalesMetrics.cashSales.toFixed(2)}
+              {formatCurrencyBRL(registerSalesMetrics.cashSales)}
             </div>
             <span className="text-[10px] text-emerald-700 block mt-0.5">Entra na gaveta física</span>
           </div>
@@ -1313,7 +1314,7 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
               <span>Pix Direto</span>
             </div>
             <div className="text-base font-bold text-teal-950">
-              R$ {registerSalesMetrics.pixSales.toFixed(2)}
+              {formatCurrencyBRL(registerSalesMetrics.pixSales)}
             </div>
             <span className="text-[10px] text-teal-700 block mt-0.5">Conta bancária</span>
           </div>
@@ -1324,7 +1325,7 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
               <span>Cartão Débito</span>
             </div>
             <div className="text-base font-bold text-blue-950">
-              R$ {registerSalesMetrics.debitSales.toFixed(2)}
+              {formatCurrencyBRL(registerSalesMetrics.debitSales)}
             </div>
             <span className="text-[10px] text-blue-700 block mt-0.5">Maquininha TEF/POS</span>
           </div>
@@ -1335,7 +1336,7 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
               <span>Cartão Crédito</span>
             </div>
             <div className="text-base font-bold text-purple-950">
-              R$ {registerSalesMetrics.creditSales.toFixed(2)}
+              {formatCurrencyBRL(registerSalesMetrics.creditSales)}
             </div>
             <span className="text-[10px] text-purple-700 block mt-0.5">Maquininha TEF/POS</span>
           </div>
@@ -1389,11 +1390,11 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
                     )}
                   </td>
                   <td className="py-2.5 px-4 text-right font-medium">{op.salesCount}</td>
-                  <td className="py-2.5 px-4 text-right font-bold text-neutral-900">R$ {op.totalSold.toFixed(2)}</td>
-                  <td className="py-2.5 px-4 text-right text-emerald-800 font-semibold">R$ {op.cashSales.toFixed(2)}</td>
-                  <td className="py-2.5 px-4 text-right text-teal-800 font-semibold">R$ {op.pixSales.toFixed(2)}</td>
-                  <td className="py-2.5 px-4 text-right text-blue-800 font-semibold">R$ {(op.cardDebitSales + op.cardCreditSales).toFixed(2)}</td>
-                  <td className="py-2.5 px-4 text-right text-neutral-600">R$ {op.discountTotal.toFixed(2)}</td>
+                  <td className="py-2.5 px-4 text-right font-bold text-neutral-900">{formatCurrencyBRL(op.totalSold)}</td>
+                  <td className="py-2.5 px-4 text-right text-emerald-800 font-semibold">{formatCurrencyBRL(op.cashSales)}</td>
+                  <td className="py-2.5 px-4 text-right text-teal-800 font-semibold">{formatCurrencyBRL(op.pixSales)}</td>
+                  <td className="py-2.5 px-4 text-right text-blue-800 font-semibold">{formatCurrencyBRL(op.cardDebitSales + op.cardCreditSales)}</td>
+                  <td className="py-2.5 px-4 text-right text-neutral-600">{formatCurrencyBRL(op.discountTotal)}</td>
                 </tr>
               ))}
               {computedOperatorSummaries.length === 0 && (
@@ -1453,7 +1454,7 @@ export const MeuCaixaView: React.FC<MeuCaixaViewProps> = ({
                   <td className="py-2.5 px-4 text-neutral-600">{m.authorizedByName || 'Operador'}</td>
                   <td className="py-2.5 px-4 text-right font-bold">
                     <span className={m.type === 'suprimento' ? 'text-emerald-700' : 'text-amber-800'}>
-                      {m.type === 'suprimento' ? `+ R$ ${m.amount.toFixed(2)}` : `- R$ ${m.amount.toFixed(2)}`}
+                      {m.type === 'suprimento' ? `+ ${formatCurrencyBRL(m.amount)}` : `- ${formatCurrencyBRL(m.amount)}`}
                     </span>
                   </td>
                 </tr>

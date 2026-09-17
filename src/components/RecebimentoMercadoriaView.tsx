@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PurchaseOrder, Product, User } from '../types';
 import { 
   Truck, 
@@ -12,8 +12,17 @@ import {
   ShieldCheck,
   Search,
   Minus,
-  Plus
+  Plus,
+  Sparkles,
+  Layers,
+  ArrowLeft
 } from 'lucide-react';
+import { Button } from './ui/Button';
+import { Badge } from './ui/Badge';
+import { Input } from './ui/Field';
+import { Card, SectionTitle, Callout } from './ui/Layout';
+import { notify } from './ui/feedback';
+import { cn } from '../lib/ui';
 
 interface RecebimentoMercadoriaViewProps {
   purchaseOrders: PurchaseOrder[];
@@ -22,7 +31,8 @@ interface RecebimentoMercadoriaViewProps {
   onReceiveOrder: (
     orderId: string, 
     receivedItems: { productId: string; receivedQuantity: number; damagedQuantity: number }[],
-    invoiceNumber?: string
+    invoiceNumber?: string,
+    notes?: string
   ) => Promise<boolean>;
   onGoToBalcao: () => void;
 }
@@ -54,13 +64,13 @@ export const RecebimentoMercadoriaView: React.FC<RecebimentoMercadoriaViewProps>
   const selectedOrder = eligibleOrders.find((po) => po.id === selectedOrderId);
 
   // Inicializa inputs quando seleciona um pedido
-  React.useEffect(() => {
+  useEffect(() => {
     if (selectedOrder) {
       const inputs: Record<string, { received: number; damaged: number }> = {};
       selectedOrder.items.forEach((item) => {
         const pending = Math.max(0, item.quantityOrdered - (item.quantityReceived || 0));
         inputs[item.productId] = {
-          received: pending, // Sugere quantidade pendente como default para facilitar conferência
+          received: pending, // Sugere quantidade pendente como default para conferência ágil
           damaged: 0,
         };
       });
@@ -104,6 +114,7 @@ export const RecebimentoMercadoriaView: React.FC<RecebimentoMercadoriaViewProps>
       };
     });
     setItemsInputs(inputs);
+    notify.info('Quantidades preenchidas conforme saldo pendente da ordem.');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -119,7 +130,9 @@ export const RecebimentoMercadoriaView: React.FC<RecebimentoMercadoriaViewProps>
     );
 
     if (!hasAnyQuantity) {
-      setErrorMsg('Informe a quantidade recebida de pelo menos um produto para confirmar a entrada física.');
+      const msg = 'Informe a quantidade recebida de pelo menos um produto para confirmar a entrada física.';
+      setErrorMsg(msg);
+      notify.erro(msg);
       return;
     }
 
@@ -131,9 +144,16 @@ export const RecebimentoMercadoriaView: React.FC<RecebimentoMercadoriaViewProps>
 
     setIsSubmitting(true);
     try {
-      const success = await onReceiveOrder(selectedOrder.id, payload, invoiceNumber.trim() || undefined);
+      const success = await onReceiveOrder(
+        selectedOrder.id, 
+        payload, 
+        invoiceNumber.trim() || undefined,
+        deliveryNotes.trim() || undefined
+      );
       if (success) {
-        setSuccessMsg(`Recebimento do pedido ${selectedOrder.code} confirmado com sucesso! O saldo foi creditado no estoque.`);
+        const msg = `Recebimento do pedido ${selectedOrder.code} registrado com sucesso! Saldo creditado no estoque.`;
+        setSuccessMsg(msg);
+        notify.sucesso(msg);
         // Limpa seleção se não houver mais pedidos
         const remaining = eligibleOrders.filter((o) => o.id !== selectedOrder.id);
         if (remaining.length > 0) {
@@ -142,100 +162,80 @@ export const RecebimentoMercadoriaView: React.FC<RecebimentoMercadoriaViewProps>
           setSelectedOrderId('');
         }
       } else {
-        setErrorMsg('Não foi possível registrar o recebimento. Verifique os dados e tente novamente.');
+        const err = 'Não foi possível registrar o recebimento. Verifique os dados e tente novamente.';
+        setErrorMsg(err);
+        notify.erro(err);
       }
     } catch (err: any) {
-      setErrorMsg(err.message || 'Erro inesperado ao registrar recebimento.');
+      const errTxt = err.message || 'Erro inesperado ao registrar recebimento.';
+      setErrorMsg(errTxt);
+      notify.erro(errTxt);
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div id="receber-mercadoria-container" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-      {/* Header Operacional */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-neutral-200">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <Truck className="w-6 h-6 text-emerald-700" />
-            <h1 className="text-xl sm:text-2xl font-black text-neutral-900 tracking-tight">
-              Receber Mercadoria
-            </h1>
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase bg-emerald-100 text-emerald-800 border border-emerald-300">
-              Conferência Física
-            </span>
-          </div>
-          <p className="text-xs sm:text-sm text-neutral-500 mt-1">
-            Conferência cega proibida. Registre os produtos entregues pela distribuidora com base no pedido autorizado pela gerência.
-          </p>
-        </div>
-
-        <button
-          type="button"
-          onClick={onGoToBalcao}
-          className="px-4 py-2.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-bold text-xs rounded-xl transition-colors flex items-center justify-center gap-2 self-start sm:self-auto cursor-pointer"
-        >
-          <span>Voltar ao Balcão</span>
-          <ArrowRight className="w-4 h-4" />
-        </button>
-      </div>
-
+    <div id="receber-mercadoria-container" className="space-y-5">
       {/* Alertas de Notificação */}
       {successMsg && (
-        <div className="p-4 bg-emerald-50 border-2 border-emerald-400 rounded-2xl text-emerald-900 text-sm font-semibold flex items-center justify-between gap-3 shadow-xs">
-          <div className="flex items-center gap-3">
-            <CheckCircle2 className="w-5 h-5 text-emerald-700 shrink-0" />
-            <span>{successMsg}</span>
-          </div>
-          <button
-            type="button"
-            onClick={onGoToBalcao}
-            className="px-4 py-2 bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs rounded-xl shadow-xs transition-colors shrink-0 cursor-pointer"
-          >
-            Ir para o Balcão
-          </button>
-        </div>
+        <Callout
+          variant="ok"
+          title="Recebimento Concluído com Sucesso"
+          action={
+            <Button
+              size="sm"
+              variant="primary"
+              onClick={onGoToBalcao}
+              icon={ArrowRight}
+            >
+              Ir ao Balcão
+            </Button>
+          }
+        >
+          {successMsg}
+        </Callout>
       )}
 
       {errorMsg && (
-        <div className="p-4 bg-red-50 border border-red-300 rounded-2xl text-red-800 text-sm font-semibold flex items-center gap-3 shadow-xs">
-          <AlertTriangle className="w-5 h-5 text-red-600 shrink-0" />
-          <span>{errorMsg}</span>
-        </div>
+        <Callout variant="danger" title="Erro no Recebimento">
+          {errorMsg}
+        </Callout>
       )}
 
       {/* Conteúdo Principal */}
       {eligibleOrders.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-neutral-200 p-8 text-center space-y-3 shadow-xs">
-          <div className="w-12 h-12 rounded-2xl bg-neutral-100 text-neutral-400 flex items-center justify-center mx-auto">
+        <Card className="p-8 text-center space-y-3 bg-white border-[#E1E9E4]">
+          <div className="w-12 h-12 rounded-2xl bg-[#E6F4EC] text-[#0E7A53] flex items-center justify-center mx-auto">
             <PackageCheck className="w-6 h-6" />
           </div>
-          <h2 className="text-base sm:text-lg font-bold text-neutral-900">
+          <h2 className="text-base sm:text-lg font-bold text-[#13231B]">
             Nenhum Pedido de Compra Pendente de Entrega
           </h2>
-          <p className="text-xs sm:text-sm text-neutral-500 max-w-md mx-auto">
+          <p className="text-xs sm:text-sm text-[#56675E] max-w-md mx-auto">
             Todos os pedidos autorizados pela gerência já foram recebidos e conferidos fisicamente no estoque.
           </p>
           <div className="pt-2">
-            <button
-              type="button"
+            <Button
+              variant="primary"
+              size="md"
               onClick={onGoToBalcao}
-              className="px-6 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm rounded-xl transition-all shadow-xs cursor-pointer"
+              icon={ArrowRight}
             >
               Retornar ao Balcão de Vendas
-            </button>
+            </Button>
           </div>
-        </div>
+        </Card>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-5">
           {/* Seletor de Pedido Autorizado */}
-          <div className="bg-white rounded-2xl border border-neutral-200 p-5 shadow-xs space-y-4">
+          <Card className="p-5 bg-white border-[#E1E9E4] space-y-3.5">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-neutral-700 mb-1">
-                  Selecione o Pedido de Compra que Chegou:
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#13231B] mb-2">
+                  Selecione o Pedido de Compra Entregue:
                 </label>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2.5">
                   {eligibleOrders.map((po) => {
                     const isSelected = po.id === selectedOrderId;
                     return (
@@ -243,14 +243,18 @@ export const RecebimentoMercadoriaView: React.FC<RecebimentoMercadoriaViewProps>
                         key={po.id}
                         type="button"
                         onClick={() => setSelectedOrderId(po.id)}
-                        className={`min-h-[46px] px-4 py-2 rounded-xl text-left border transition-all cursor-pointer ${
+                        className={cn(
+                          "min-h-[46px] px-4 py-2.5 rounded-xl text-left border transition-all cursor-pointer",
                           isSelected
-                            ? 'bg-emerald-50 border-2 border-emerald-600 text-emerald-950 font-bold shadow-xs'
-                            : 'bg-neutral-50 border-neutral-200 text-neutral-700 hover:bg-neutral-100'
-                        }`}
+                            ? "bg-[#E6F4EC] border-[#0E7A53] text-[#0B6445] font-bold ring-2 ring-[#0E7A53]/20"
+                            : "bg-[#F3F7F4] border-[#E1E9E4] text-[#13231B] hover:bg-[#E1E9E4]/60"
+                        )}
                       >
-                        <div className="text-xs font-black">{po.code}</div>
-                        <div className="text-[11px] text-neutral-500">
+                        <div className="text-xs font-extrabold flex items-center gap-1.5">
+                          <span>{po.code}</span>
+                          {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-[#0E7A53]" />}
+                        </div>
+                        <div className="text-[11px] text-[#56675E] mt-0.5">
                           {po.supplierName} • {po.items.length} item(ns)
                         </div>
                       </button>
@@ -260,49 +264,51 @@ export const RecebimentoMercadoriaView: React.FC<RecebimentoMercadoriaViewProps>
               </div>
 
               {selectedOrder && (
-                <div className="bg-emerald-50/70 border border-emerald-200 p-3 rounded-xl text-xs space-y-1 sm:text-right shrink-0">
-                  <div className="font-bold text-emerald-950">
-                    Fornecedor: {selectedOrder.supplierName}
+                <div className="bg-[#F3F7F4] border border-[#E1E9E4] p-3.5 rounded-xl text-xs space-y-1 sm:text-right shrink-0">
+                  <div className="font-bold text-[#13231B]">
+                    Fornecedor: <span className="text-[#0E7A53]">{selectedOrder.supplierName}</span>
                   </div>
-                  <div className="text-emerald-800">
-                    Status: <span className="font-semibold uppercase">{selectedOrder.status.replace('_', ' ')}</span>
+                  <div className="text-[#56675E]">
+                    Status: <Badge variant="ok">{selectedOrder.status.replace('_', ' ')}</Badge>
                   </div>
-                  <div className="text-[11px] text-neutral-500">
-                    Autorizado em: {selectedOrder.approvedAt ? new Date(selectedOrder.approvedAt).toLocaleDateString() : 'Sim'}
+                  <div className="text-[11px] text-[#56675E]">
+                    Autorizado em: {selectedOrder.approvedAt ? new Date(selectedOrder.approvedAt).toLocaleDateString('pt-BR') : 'Sim'}
                   </div>
                 </div>
               )}
             </div>
-          </div>
+          </Card>
 
           {/* Formulário de Conferência Física de Itens */}
           {selectedOrder && (
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="bg-white rounded-2xl border border-neutral-200 shadow-xs overflow-hidden">
-                <div className="p-4 bg-neutral-50 border-b border-neutral-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="bg-white rounded-2xl border border-[#E1E9E4] shadow-2xs overflow-hidden">
+                <div className="p-4 sm:p-5 bg-[#F3F7F4]/60 border-b border-[#E1E9E4] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
-                    <h2 className="text-sm font-bold uppercase tracking-wider text-neutral-900">
-                      Conferência de Produtos do Pedido ({selectedOrder.code})
+                    <h2 className="text-sm sm:text-base font-extrabold uppercase tracking-tight text-[#13231B] flex items-center gap-2">
+                      <Truck className="w-4 h-4 text-[#0E7A53]" />
+                      Conferência de Produtos ({selectedOrder.code})
                     </h2>
-                    <p className="text-xs text-neutral-500">
-                      Confira cada caixa entregue fisicamente. Diferenças serão auditadas pela administração.
+                    <p className="text-xs text-[#56675E] mt-0.5">
+                      Confira fisicamente cada caixa. Registre avarias para emissão de nota de devolução/recusa.
                     </p>
                   </div>
 
-                  <button
+                  <Button
                     type="button"
+                    variant="soft"
+                    size="sm"
                     onClick={handleFillAllExact}
-                    className="px-3.5 py-1.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-950 text-xs font-bold rounded-lg border border-emerald-300 transition-colors flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
+                    icon={CheckCircle2}
                   >
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700" />
-                    <span>Conferir Tudo Conforme (Saldo Exato)</span>
-                  </button>
+                    Preencher Tudo Conforme
+                  </Button>
                 </div>
 
                 {/* Tabela Operacional de Itens */}
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
-                    <thead className="bg-neutral-100 text-neutral-700 font-bold border-b border-neutral-200 uppercase tracking-wider text-[11px]">
+                    <thead className="bg-[#F3F7F4] text-[#56675E] font-bold border-b border-[#E1E9E4] uppercase tracking-wider text-[11px]">
                       <tr>
                         <th className="py-3 px-4">Medicamento / Apresentação</th>
                         <th className="py-3 px-3 text-center">Qtd Pedida</th>
@@ -313,7 +319,7 @@ export const RecebimentoMercadoriaView: React.FC<RecebimentoMercadoriaViewProps>
                         <th className="py-3 px-4 text-right">Situação / Diferença</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-neutral-200 text-neutral-800">
+                    <tbody className="divide-y divide-[#E1E9E4] text-[#13231B]">
                       {selectedOrder.items.map((it) => {
                         const product = products.find((p) => p.id === it.productId);
                         const pendingQty = Math.max(0, it.quantityOrdered - (it.quantityReceived || 0));
@@ -324,83 +330,81 @@ export const RecebimentoMercadoriaView: React.FC<RecebimentoMercadoriaViewProps>
                         const diff = totalDelivered - pendingQty;
 
                         return (
-                          <tr key={it.productId} className="hover:bg-neutral-50 transition-colors">
-                            <td className="py-3 px-4">
-                              <div className="font-bold text-neutral-900 text-sm">{it.productName}</div>
-                              <div className="text-[11px] text-neutral-500">
-                                Código: {it.productCode || product?.code || '-'}
+                          <tr key={it.productId} className="hover:bg-[#F3F7F4]/40 transition-colors">
+                            <td className="py-3.5 px-4">
+                              <div className="font-bold text-[#13231B] text-sm">{it.productName}</div>
+                              <div className="text-[11px] text-[#56675E] font-mono mt-0.5">
+                                EAN/Código: {it.productCode || product?.code || '-'}
                               </div>
                             </td>
 
-                            <td className="py-3 px-3 text-center font-bold text-neutral-700 text-sm">
+                            <td className="py-3.5 px-3 text-center font-bold text-[#56675E] text-sm">
                               {it.quantityOrdered}
                             </td>
 
-                            <td className="py-3 px-3 text-center text-neutral-500 font-semibold">
+                            <td className="py-3.5 px-3 text-center text-[#56675E] font-semibold">
                               {it.quantityReceived || 0}
                             </td>
 
-                            <td className="py-3 px-3 text-center font-bold text-emerald-900 bg-emerald-50/50">
+                            <td className="py-3.5 px-3 text-center font-bold text-[#0B6445] bg-[#E6F4EC]/40">
                               {pendingQty}
                             </td>
 
                             {/* Campo de Entrada Física com Controles Táteis */}
-                            <td className="py-3 px-4 text-center">
-                              <div className="inline-flex items-center border border-neutral-300 rounded-xl bg-white overflow-hidden shadow-2xs">
+                            <td className="py-3.5 px-4 text-center">
+                              <div className="inline-flex items-center border border-[#E1E9E4] rounded-xl bg-white overflow-hidden shadow-2xs">
                                 <button
                                   type="button"
                                   onClick={() => handleUpdateReceived(it.productId, receivedNow - 1)}
-                                  className="w-8 h-8 flex items-center justify-center font-bold text-neutral-700 hover:bg-neutral-100 cursor-pointer"
+                                  className="w-8 h-8 flex items-center justify-center font-bold text-[#13231B] hover:bg-[#F3F7F4] transition-colors cursor-pointer"
                                   aria-label="Diminuir"
                                 >
-                                  <Minus className="w-3.5 h-3.5" />
+                                  <Minus className="w-3.5 h-3.5 text-[#56675E]" />
                                 </button>
                                 <input
                                   type="number"
                                   min="0"
                                   value={receivedNow}
                                   onChange={(e) => handleUpdateReceived(it.productId, Number(e.target.value))}
-                                  className="w-14 text-center font-black text-neutral-900 text-sm py-1 focus:outline-none"
+                                  className="w-14 text-center font-black text-[#13231B] text-sm py-1 focus:outline-none"
                                 />
                                 <button
                                   type="button"
                                   onClick={() => handleUpdateReceived(it.productId, receivedNow + 1)}
-                                  className="w-8 h-8 flex items-center justify-center font-bold text-neutral-700 hover:bg-neutral-100 cursor-pointer"
+                                  className="w-8 h-8 flex items-center justify-center font-bold text-[#13231B] hover:bg-[#F3F7F4] transition-colors cursor-pointer"
                                   aria-label="Aumentar"
                                 >
-                                  <Plus className="w-3.5 h-3.5" />
+                                  <Plus className="w-3.5 h-3.5 text-[#56675E]" />
                                 </button>
                               </div>
                             </td>
 
                             {/* Campo de Avaria */}
-                            <td className="py-3 px-3 text-center">
+                            <td className="py-3.5 px-3 text-center">
                               <input
                                 type="number"
                                 min="0"
                                 placeholder="0"
                                 value={damagedNow > 0 ? damagedNow : ''}
                                 onChange={(e) => handleUpdateDamaged(it.productId, Number(e.target.value))}
-                                className="w-14 px-2 py-1 bg-white border border-neutral-300 rounded-lg text-center font-semibold text-red-700 text-xs focus:ring-1 focus:ring-red-500"
+                                className="w-14 px-2 py-1.5 bg-white border border-[#E1E9E4] rounded-lg text-center font-bold text-[#A8261B] text-xs focus:ring-2 focus:ring-[#A8261B]/20 focus:border-[#A8261B] outline-none"
                               />
                             </td>
 
                             {/* Diferença */}
-                            <td className="py-3 px-4 text-right font-bold">
+                            <td className="py-3.5 px-4 text-right font-bold">
                               {diff === 0 ? (
-                                <span className="text-emerald-800 bg-emerald-100/80 px-2.5 py-1 rounded-md text-[11px] inline-flex items-center gap-1 font-bold">
-                                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700" />
-                                  <span>Exato</span>
-                                </span>
+                                <Badge variant="ok" icon={CheckCircle2}>
+                                  Exato
+                                </Badge>
                               ) : diff < 0 ? (
-                                <span className="text-amber-800 bg-amber-100/80 px-2.5 py-1 rounded-md text-[11px] inline-flex items-center gap-1 font-bold">
-                                  <AlertTriangle className="w-3.5 h-3.5 text-amber-700" />
-                                  <span>Falta ({Math.abs(diff)})</span>
-                                </span>
+                                <Badge variant="warn" icon={AlertTriangle}>
+                                  Falta ({Math.abs(diff)})
+                                </Badge>
                               ) : (
-                                <span className="text-blue-800 bg-blue-100/80 px-2.5 py-1 rounded-md text-[11px] inline-flex items-center gap-1 font-bold">
-                                  <span>Excesso (+{diff})</span>
-                                </span>
+                                <Badge variant="info">
+                                  Excesso (+{diff})
+                                </Badge>
                               )}
                             </td>
                           </tr>
@@ -411,48 +415,50 @@ export const RecebimentoMercadoriaView: React.FC<RecebimentoMercadoriaViewProps>
                 </div>
 
                 {/* Dados da Nota Fiscal e Conclusão */}
-                <div className="p-5 bg-neutral-50/70 border-t border-neutral-200 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="p-5 bg-[#F3F7F4]/60 border-t border-[#E1E9E4] grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-neutral-700 mb-1">
-                      Número da Nota Fiscal (DANFE) / Canhoto (Opcional):
+                    <label className="block text-xs font-bold text-[#13231B] mb-1.5">
+                      Número da Nota Fiscal (DANFE) / Canhoto:
                     </label>
                     <input
                       type="text"
                       placeholder="Ex: NF-e 104592"
                       value={invoiceNumber}
                       onChange={(e) => setInvoiceNumber(e.target.value)}
-                      className="w-full px-3 py-2 bg-white border border-neutral-300 rounded-xl text-xs font-bold text-neutral-900 focus:ring-2 focus:ring-emerald-500"
+                      className="w-full h-10 px-3.5 bg-white border border-[#E1E9E4] rounded-xl text-xs font-bold text-[#13231B] focus:ring-2 focus:ring-[#0E7A53]/20 focus:border-[#0E7A53] outline-none transition-all"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-neutral-700 mb-1">
-                      Observação Operacional do Recebimento (Opcional):
+                    <label className="block text-xs font-bold text-[#13231B] mb-1.5">
+                      Observação Operacional do Recebimento:
                     </label>
                     <input
                       type="text"
                       placeholder="Ex: Entregador João da Distribuidora Santa Cruz. Lote conferido."
                       value={deliveryNotes}
                       onChange={(e) => setDeliveryNotes(e.target.value)}
-                      className="w-full px-3 py-2 bg-white border border-neutral-300 rounded-xl text-xs text-neutral-900 focus:ring-2 focus:ring-emerald-500"
+                      className="w-full h-10 px-3.5 bg-white border border-[#E1E9E4] rounded-xl text-xs text-[#13231B] focus:ring-2 focus:ring-[#0E7A53]/20 focus:border-[#0E7A53] outline-none transition-all"
                     />
                   </div>
                 </div>
 
                 {/* Botão de Confirmação */}
-                <div className="p-4 bg-white border-t border-neutral-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div className="text-xs text-neutral-500">
-                    Operador responsável pelo recebimento: <strong>{currentUser.name}</strong>. A entrada será registrada imediatamente no estoque vendável.
+                <div className="p-4 sm:p-5 bg-white border-t border-[#E1E9E4] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="text-xs text-[#56675E]">
+                    Operador responsável: <strong className="text-[#13231B]">{currentUser.name}</strong>. A entrada física será creditada imediatamente no estoque da loja.
                   </div>
 
-                  <button
+                  <Button
                     type="submit"
-                    disabled={isSubmitting}
-                    className="min-h-[48px] px-8 bg-emerald-700 hover:bg-emerald-800 text-white font-black text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                    variant="primary"
+                    size="lg"
+                    loading={isSubmitting}
+                    icon={PackageCheck}
+                    className="min-h-[48px] px-8"
                   >
-                    <PackageCheck className="w-5 h-5" />
-                    <span>{isSubmitting ? 'Gravando Entrada...' : 'CONFIRMAR ENTRADA NO ESTOQUE'}</span>
-                  </button>
+                    Confirmar Entrada no Estoque
+                  </Button>
                 </div>
               </div>
             </form>
@@ -462,3 +468,4 @@ export const RecebimentoMercadoriaView: React.FC<RecebimentoMercadoriaViewProps>
     </div>
   );
 };
+

@@ -1,11 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { User, CashRegister } from '../types';
 import { 
   ShoppingBag, 
-  Banknote,
-  Clock, 
   Target, 
-  AlertTriangle, 
   LayoutDashboard, 
   Receipt, 
   Wallet, 
@@ -15,15 +12,22 @@ import {
   Sparkles, 
   FileSpreadsheet, 
   ClipboardCheck, 
+  ClipboardList,
   ChevronsLeft, 
   ChevronsRight, 
   Shield, 
-  Lock, 
   X,
   Store,
   ShieldAlert,
-  Settings
+  Settings,
+  ChevronDown,
+  ChevronRight,
+  Workflow,
+  Plus,
+  ArrowRightLeft,
+  UserCircle2
 } from 'lucide-react';
+import { cn } from '../lib/ui';
 
 export interface SidebarProps {
   currentUser: User;
@@ -38,6 +42,7 @@ export interface SidebarProps {
   pendingApprovalsCount: number;
   activeCashRegister: CashRegister | null;
   openInventoriesCount?: number;
+  onOpenSwitchOperatorModal?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -53,168 +58,156 @@ export const Sidebar: React.FC<SidebarProps> = ({
   pendingApprovalsCount,
   activeCashRegister,
   openInventoriesCount = 0,
+  onOpenSwitchOperatorModal,
 }) => {
   const isAdmin = currentUser.role === 'admin';
 
-  // Group 1: Operação & Balcão (Acesso livre para todos os colaboradores e administradores)
+  // Persistência de recolhimento dos grupos
+  const [isOperacaoCollapsed, setIsOperacaoCollapsed] = useState<boolean>(() => {
+    return sessionStorage.getItem('sidebar_operacao_collapsed') === 'true';
+  });
+  const [isGestaoCollapsed, setIsGestaoCollapsed] = useState<boolean>(() => {
+    return sessionStorage.getItem('sidebar_gestao_collapsed') === 'true';
+  });
+
+  const toggleOperacao = () => {
+    setIsOperacaoCollapsed((prev) => {
+      const next = !prev;
+      sessionStorage.setItem('sidebar_operacao_collapsed', String(next));
+      return next;
+    });
+  };
+
+  const toggleGestao = () => {
+    setIsGestaoCollapsed((prev) => {
+      const next = !prev;
+      sessionStorage.setItem('sidebar_gestao_collapsed', String(next));
+      return next;
+    });
+  };
+
+  // Group 1: Operação & Balcão (5 itens consolidados)
   const operationalItems = [
+    {
+      id: 'minha_operacao',
+      label: 'Minha Operação',
+      icon: Workflow,
+      badge: activeCashRegister ? 'Aberto' : null,
+      badgeVariant: 'ok' as const,
+    },
     {
       id: 'balcao',
       label: 'Balcão & PDV',
-      shortLabel: 'PDV',
       icon: ShoppingBag,
-      description: 'Caixa de vendas e carrinho',
       badge: null,
+      badgeVariant: 'neutral' as const,
     },
     {
-      id: 'meu_caixa',
-      label: 'Meu Caixa',
-      shortLabel: 'Meu Caixa',
-      icon: Banknote,
-      description: 'Abertura, sangrias e fechamento',
-      badge: activeCashRegister ? 'Aberto' : null,
-      badgeColor: activeCashRegister ? 'bg-emerald-600 text-white' : undefined,
+      id: 'estoque_operacional',
+      label: 'Estoque Operacional',
+      icon: Boxes,
+      badge: (pendingOrdersCount + openInventoriesCount) > 0 ? `${pendingOrdersCount + openInventoriesCount}` : null,
+      badgeVariant: 'brand' as const,
     },
     {
-      id: 'meu_turno',
-      label: 'Meu Turno & Ponto',
-      shortLabel: 'Turno',
-      icon: Clock,
-      description: 'Jornada, pausas e ponto',
-      badge: null,
-    },
-    {
-      id: 'receber_mercadoria',
-      label: 'Receber Mercadoria',
-      shortLabel: 'Receber',
-      icon: Truck,
-      description: 'Conferência física e entrada de compras',
-      badge: pendingOrdersCount > 0 ? `${pendingOrdersCount}` : null,
-      badgeColor: 'bg-emerald-600 text-white',
-    },
-    {
-      id: 'contagem_estoque',
-      label: 'Contagem de Estoque',
-      shortLabel: 'Inventário',
-      icon: ClipboardCheck,
-      description: 'Contagem física cega e conferência',
-      badge: openInventoriesCount > 0 ? `${openInventoriesCount}` : null,
-      badgeColor: 'bg-blue-600 text-white font-bold',
+      id: 'admin_demands',
+      label: 'Produtos Procurados',
+      icon: ClipboardList,
+      badge: unmetDemandsCount > 0 ? `${unmetDemandsCount}` : null,
+      badgeVariant: 'warn' as const,
     },
     {
       id: 'colab_metas',
       label: 'Minhas Metas',
-      shortLabel: 'Metas',
       icon: Target,
-      description: 'Produtividade individual',
       badge: null,
-    },
-    {
-      id: 'admin_demands',
-      label: 'Falta de Remédios',
-      shortLabel: 'Faltas',
-      icon: AlertTriangle,
-      description: 'Demanda reprimida de balcão',
-      badge: unmetDemandsCount > 0 ? `${unmetDemandsCount}` : null,
-      badgeColor: 'bg-red-500 text-white',
+      badgeVariant: 'neutral' as const,
     },
   ];
 
-  // Group 2: Gestão & Gerência (Exclusivo Administrador com barreiras claras)
+  // Group 2: Gestão & Gerência (Exclusivo Administrador)
   const adminItems = [
     {
       id: 'admin_approvals',
       label: 'Central de Aprovações',
-      shortLabel: 'Aprovações',
       icon: ShieldAlert,
-      description: 'Cancelamentos, preços e descontos',
-      badge: pendingApprovalsCount > 0 ? `${pendingApprovalsCount} pendente(s)` : null,
-      badgeColor: 'bg-amber-500 text-white font-bold animate-pulse',
+      badge: pendingApprovalsCount > 0 ? `${pendingApprovalsCount}` : null,
+      badgeVariant: 'warn' as const,
     },
     {
       id: 'admin_overview',
       label: 'Painel Executivo',
-      shortLabel: 'Painel',
       icon: LayoutDashboard,
-      description: 'DRE, faturamento e saúde da loja',
       badge: null,
+      badgeVariant: 'neutral' as const,
     },
     {
       id: 'admin_sales',
       label: 'Vendas & Histórico',
-      shortLabel: 'Vendas',
       icon: Receipt,
-      description: 'Histórico auditado e estornos',
       badge: null,
+      badgeVariant: 'neutral' as const,
     },
     {
       id: 'admin_cash',
       label: 'Caixa & Tesouraria',
-      shortLabel: 'Caixa',
       icon: Wallet,
-      description: 'Abertura, sangrias e fechamento',
       badge: activeCashRegister ? 'Aberto' : 'Fechado',
-      badgeColor: activeCashRegister ? 'bg-emerald-600 text-white' : 'bg-neutral-600 text-neutral-200',
+      badgeVariant: activeCashRegister ? ('ok' as const) : ('neutral' as const),
     },
     {
       id: 'admin_stock',
       label: 'Estoque & Produtos',
-      shortLabel: 'Estoque',
       icon: Boxes,
-      description: 'Saldos, inventário e ajustes',
       badge: null,
+      badgeVariant: 'neutral' as const,
     },
     {
       id: 'admin_purchases',
       label: 'Compras & Pedidos',
-      shortLabel: 'Compras',
       icon: Truck,
-      description: 'Cotações e conferência física',
       badge: pendingOrdersCount > 0 ? `${pendingOrdersCount}` : null,
-      badgeColor: 'bg-amber-500 text-white',
+      badgeVariant: 'warn' as const,
     },
     {
       id: 'admin_staff',
       label: 'Equipe & Metas da Loja',
-      shortLabel: 'Equipe',
       icon: Users,
-      description: 'Produtividade e metas mensais',
       badge: null,
+      badgeVariant: 'neutral' as const,
     },
     {
       id: 'admin_ai',
       label: 'Relatórios IA (Gemini)',
-      shortLabel: 'IA Gemini',
       icon: Sparkles,
-      description: 'Diagnóstico inteligente sob demanda',
       badge: 'IA',
-      badgeColor: 'bg-emerald-600 text-white',
+      badgeVariant: 'brand' as const,
     },
     {
       id: 'admin_settings',
       label: 'Configurações Gerais',
-      shortLabel: 'Config',
       icon: Settings,
-      description: 'Empresa, usuários, jornadas e caixa',
       badge: null,
+      badgeVariant: 'neutral' as const,
     },
     {
       id: 'admin_import',
       label: 'Importar Planilhas',
-      shortLabel: 'Importar',
       icon: FileSpreadsheet,
-      description: 'Carga de produtos CSV/XLS',
       badge: null,
+      badgeVariant: 'neutral' as const,
     },
     {
       id: 'admin_tasks',
       label: 'Tarefas & Auditoria',
-      shortLabel: 'Auditoria',
       icon: ClipboardCheck,
-      description: 'Checklists e trilha de logs',
       badge: null,
+      badgeVariant: 'neutral' as const,
     },
   ];
+
+  const operacaoTotalAlerts = (pendingOrdersCount || 0) + (openInventoriesCount || 0) + (unmetDemandsCount || 0);
+  const gestaoTotalAlerts = (pendingApprovalsCount || 0) + (pendingOrdersCount || 0);
 
   const handleSelectTab = (tabId: string) => {
     setActiveTab(tabId);
@@ -223,45 +216,53 @@ export const Sidebar: React.FC<SidebarProps> = ({
     }
   };
 
+  const badgeStyles = {
+    brand: 'bg-[#E6F4EC] text-[#0B6445] border-[#C2E4D2]',
+    ok: 'bg-[#E6F4EC] text-[#0B6445] border-[#C2E4D2]',
+    warn: 'bg-[#FFF4E0] text-[#8A5300] border-[#FFE1A8]',
+    danger: 'bg-[#FDEDEB] text-[#A8261B] border-[#F8B5AF]',
+    neutral: 'bg-[#F3F7F4] text-[#56675E] border-[#E1E9E4]',
+  };
+
   return (
     <>
       {/* Mobile Backdrop Overlay */}
       {isMobileOpen && (
         <div
           onClick={onCloseMobile}
-          className="fixed inset-0 bg-neutral-950/70 backdrop-blur-xs z-40 lg:hidden transition-opacity"
+          className="fixed inset-0 bg-[#13231B]/60 backdrop-blur-xs z-40 lg:hidden transition-opacity"
           aria-hidden="true"
         />
       )}
 
-      {/* Sidebar Container */}
+      {/* Sidebar Container Claro (256px de largura e fundo branco) */}
       <aside
-        className={`fixed lg:static top-0 bottom-0 left-0 z-50 flex flex-col bg-neutral-900 text-neutral-100 border-r border-neutral-800 transition-all duration-300 ease-in-out select-none shadow-xl lg:shadow-none ${
-          isMobileOpen ? 'translate-x-0 w-72' : '-translate-x-full lg:translate-x-0'
-        } ${
-          isCollapsed ? 'lg:w-[72px]' : 'lg:w-64'
-        }`}
+        className={cn(
+          "fixed lg:static top-0 bottom-0 left-0 z-50 flex flex-col bg-white text-[#13231B] border-r border-[#E1E9E4] transition-all duration-200 ease-in-out select-none shadow-xl lg:shadow-none",
+          isMobileOpen ? "translate-x-0 w-64" : "-translate-x-full lg:translate-x-0",
+          isCollapsed ? "lg:w-[72px]" : "lg:w-64"
+        )}
       >
         {/* Brand Header */}
-        <div className="h-14 flex items-center justify-between px-3 border-b border-neutral-800 bg-neutral-950/80">
+        <div className="h-14 flex items-center justify-between px-3.5 border-b border-[#E1E9E4] bg-white shrink-0">
           {!isCollapsed ? (
-            <div className="flex items-center gap-2.5 overflow-hidden pl-1">
-              <div className="w-8 h-8 rounded-lg bg-emerald-700 text-white flex items-center justify-center font-bold text-sm shadow-xs shrink-0">
-                FV
+            <div className="flex items-center gap-2.5 overflow-hidden">
+              <div className="w-8 h-8 rounded-xl bg-[#0E7A53] text-white flex items-center justify-center font-extrabold text-sm shadow-xs shrink-0">
+                <Plus className="w-5 h-5 stroke-[2.5]" />
               </div>
               <div className="flex flex-col overflow-hidden">
-                <span className="font-bold text-sm tracking-wide text-white truncate">
+                <span className="font-extrabold text-base tracking-tight text-[#13231B] truncate">
                   FarmaVida
                 </span>
-                <span className="text-[10px] text-emerald-400 font-medium truncate">
-                  Sistema Operacional & Gestão
+                <span className="text-xs text-[#56675E] font-medium truncate">
+                  Gestão Farmacêutica
                 </span>
               </div>
             </div>
           ) : (
             <div className="w-full flex justify-center">
-              <div className="w-8 h-8 rounded-lg bg-emerald-700 text-white flex items-center justify-center font-bold text-sm shadow-xs">
-                FV
+              <div className="w-8 h-8 rounded-xl bg-[#0E7A53] text-white flex items-center justify-center font-extrabold text-sm shadow-xs">
+                <Plus className="w-5 h-5 stroke-[2.5]" />
               </div>
             </div>
           )}
@@ -269,8 +270,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {/* Close button on mobile */}
           <button
             onClick={onCloseMobile}
-            className="p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800 lg:hidden"
-            aria-label="Fechar menu"
+            className="p-1.5 rounded-lg text-[#56675E] hover:text-[#13231B] hover:bg-[#F3F7F4] lg:hidden cursor-pointer"
+            aria-label="Fechar menu lateral"
           >
             <X className="w-5 h-5" />
           </button>
@@ -278,32 +279,52 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {/* Desktop Collapse Toggle in header */}
           <button
             onClick={onToggleCollapse}
-            className="hidden lg:flex p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors"
+            className="hidden lg:flex p-1.5 rounded-lg text-[#56675E] hover:text-[#13231B] hover:bg-[#F3F7F4] transition-colors cursor-pointer"
             title={isCollapsed ? "Expandir menu lateral [S]" : "Recolher menu lateral [S]"}
-            aria-label={isCollapsed ? "Expandir menu" : "Recolher menu"}
+            aria-label={isCollapsed ? "Expandir menu lateral" : "Recolher menu lateral"}
           >
             {isCollapsed ? (
-              <ChevronsRight className="w-4 h-4 text-emerald-400" />
+              <ChevronsRight className="w-4 h-4 text-[#0E7A53]" />
             ) : (
-              <ChevronsLeft className="w-4 h-4 text-neutral-400" />
+              <ChevronsLeft className="w-4 h-4 text-[#56675E]" />
             )}
           </button>
         </div>
 
         {/* Navigation Modules List */}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden p-2 space-y-4 no-scrollbar">
+        <div className="flex-1 overflow-y-auto overflow-x-hidden p-2.5 space-y-4 no-scrollbar">
           {/* Group 1: Operação & Balcão */}
           <div className="space-y-1">
             {!isCollapsed ? (
-              <div className="px-2.5 py-1 text-[10px] font-bold text-emerald-400/90 tracking-wider uppercase flex items-center justify-between">
-                <span>Operação & Balcão</span>
-                <span className="text-[9px] text-emerald-300/60 font-normal">Balconista</span>
-              </div>
+              <button
+                type="button"
+                onClick={toggleOperacao}
+                className="w-full px-2 py-1.5 rounded-lg flex items-center justify-between text-[#56675E] hover:text-[#13231B] hover:bg-[#F3F7F4] transition-colors cursor-pointer group"
+                title={isOperacaoCollapsed ? 'Expandir Operação & Balcão' : 'Recolher Operação & Balcão'}
+              >
+                <div className="flex items-center gap-1.5 text-xs font-bold text-[#0B6445] tracking-wider uppercase">
+                  {isOperacaoCollapsed ? (
+                    <ChevronRight className="w-3.5 h-3.5 text-[#0E7A53] shrink-0" />
+                  ) : (
+                    <ChevronDown className="w-3.5 h-3.5 text-[#0E7A53] shrink-0" />
+                  )}
+                  <span>Operação & Balcão</span>
+                </div>
+
+                <div className="flex items-center gap-1.5">
+                  {isOperacaoCollapsed && operacaoTotalAlerts > 0 && (
+                    <span className="px-1.5 py-0.5 rounded-full text-xs font-bold bg-[#FFF4E0] text-[#8A5300] border border-[#FFE1A8]">
+                      {operacaoTotalAlerts}
+                    </span>
+                  )}
+                </div>
+              </button>
             ) : (
-              <div className="w-full h-px bg-neutral-800 my-1" />
+              <div className="w-full h-px bg-[#E1E9E4] my-1" />
             )}
 
-            {operationalItems.map((item) => {
+            {/* List of Operational Items */}
+            {(!isOperacaoCollapsed || isCollapsed) && operationalItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
 
@@ -312,30 +333,31 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   key={item.id}
                   onClick={() => handleSelectTab(item.id)}
                   title={isCollapsed ? item.label : undefined}
-                  className={`w-full flex items-center rounded-xl transition-all group ${
-                    isCollapsed 
-                      ? 'justify-center p-2.5' 
-                      : 'gap-3 px-3 py-2 text-left'
-                  } ${
+                  className={cn(
+                    "w-full flex items-center h-[38px] rounded-[10px] transition-all duration-150 cursor-pointer group select-none text-left relative",
+                    isCollapsed ? "justify-center px-0" : "gap-2.5 px-3",
                     isActive
-                      ? 'bg-emerald-700 text-white font-semibold shadow-xs ring-1 ring-emerald-500/40'
-                      : 'text-neutral-300 hover:bg-neutral-800/80 hover:text-white'
-                  }`}
+                      ? "bg-[#E6F4EC] text-[#0B6445] font-bold"
+                      : "text-[#56675E] hover:bg-[#F3F7F4] hover:text-[#13231B] font-semibold"
+                  )}
                 >
-                  <Icon className={`w-4 h-4 shrink-0 transition-transform group-hover:scale-105 ${
-                    isActive ? 'text-white' : 'text-emerald-400'
-                  }`} />
+                  <Icon
+                    className={cn(
+                      "w-4 h-4 shrink-0 transition-colors",
+                      isActive ? "text-[#0E7A53]" : "text-[#56675E] group-hover:text-[#13231B]"
+                    )}
+                  />
 
                   {!isCollapsed && (
-                    <div className="flex-1 overflow-hidden flex items-center justify-between gap-1">
-                      <div className="truncate">
-                        <span className="text-xs block truncate">{item.label}</span>
-                        <span className={`text-[10px] block truncate ${isActive ? 'text-emerald-100' : 'text-neutral-500'}`}>
-                          {item.description}
-                        </span>
-                      </div>
+                    <div className="flex-1 overflow-hidden flex items-center justify-between gap-1.5">
+                      <span className="text-xs sm:text-sm truncate">{item.label}</span>
                       {item.badge && (
-                        <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold shrink-0 ${item.badgeColor || 'bg-neutral-700 text-neutral-200'}`}>
+                        <span
+                          className={cn(
+                            "text-xs px-2 py-0.5 rounded-md border font-bold shrink-0 tabular",
+                            badgeStyles[item.badgeVariant]
+                          )}
+                        >
                           {item.badge}
                         </span>
                       )}
@@ -343,7 +365,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   )}
 
                   {isCollapsed && item.badge && (
-                    <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-red-500" />
+                    <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#0E7A53]" />
                   )}
                 </button>
               );
@@ -352,22 +374,43 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
           {/* Group 2: Gestão & Gerência (Exclusivo Administrador) */}
           {isAdmin && (
-            <div className="space-y-1 pt-1">
+            <div className="space-y-1 pt-2 border-t border-[#E1E9E4]">
               {!isCollapsed ? (
-                <div className="px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase flex items-center justify-between text-neutral-400 border-t border-neutral-800 pt-3">
-                  <span className="flex items-center gap-1.5">
-                    <Shield className="w-3 h-3 text-emerald-400" />
-                    <span>Gestão & Gerência</span>
-                  </span>
-                  <span className="text-[9px] px-1.5 py-0.2 rounded font-bold bg-emerald-500/20 text-emerald-300">
-                    Admin
-                  </span>
-                </div>
+                <button
+                  type="button"
+                  onClick={toggleGestao}
+                  className="w-full px-2 py-1.5 rounded-lg flex items-center justify-between text-[#56675E] hover:text-[#13231B] hover:bg-[#F3F7F4] transition-colors cursor-pointer group"
+                  title={isGestaoCollapsed ? 'Expandir Gestão & Gerência' : 'Recolher Gestão & Gerência'}
+                >
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#56675E] tracking-wider uppercase">
+                    {isGestaoCollapsed ? (
+                      <ChevronRight className="w-3.5 h-3.5 text-[#56675E] shrink-0" />
+                    ) : (
+                      <ChevronDown className="w-3.5 h-3.5 text-[#56675E] shrink-0" />
+                    )}
+                    <span className="flex items-center gap-1">
+                      <Shield className="w-3.5 h-3.5 text-[#0E7A53]" />
+                      <span>Gestão & Gerência</span>
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-1.5">
+                    {isGestaoCollapsed && gestaoTotalAlerts > 0 && (
+                      <span className="px-1.5 py-0.5 rounded-full text-xs font-bold bg-[#FFF4E0] text-[#8A5300] border border-[#FFE1A8]">
+                        {gestaoTotalAlerts}
+                      </span>
+                    )}
+                    <span className="text-xs px-1.5 py-0.2 rounded font-bold bg-[#E6F4EC] text-[#0B6445] border border-[#C2E4D2]">
+                      Admin
+                    </span>
+                  </div>
+                </button>
               ) : (
-                <div className="w-full h-px bg-neutral-800 my-2" />
+                <div className="w-full h-px bg-[#E1E9E4] my-1" />
               )}
 
-              {adminItems.map((item) => {
+              {/* List of Admin Items */}
+              {(!isGestaoCollapsed || isCollapsed) && adminItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = activeTab === item.id;
 
@@ -376,36 +419,39 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     key={item.id}
                     onClick={() => handleSelectTab(item.id)}
                     title={isCollapsed ? item.label : undefined}
-                    className={`w-full flex items-center rounded-xl transition-all group relative ${
-                      isCollapsed 
-                        ? 'justify-center p-2.5' 
-                        : 'gap-3 px-3 py-2 text-left'
-                    } ${
+                    className={cn(
+                      "w-full flex items-center h-[38px] rounded-[10px] transition-all duration-150 cursor-pointer group select-none text-left relative",
+                      isCollapsed ? "justify-center px-0" : "gap-2.5 px-3",
                       isActive
-                        ? 'bg-emerald-700 text-white font-semibold shadow-xs ring-1 ring-emerald-500/40'
-                        : 'text-neutral-300 hover:bg-neutral-800/80 hover:text-white'
-                    }`}
+                        ? "bg-[#E6F4EC] text-[#0B6445] font-bold"
+                        : "text-[#56675E] hover:bg-[#F3F7F4] hover:text-[#13231B] font-semibold"
+                    )}
                   >
-                    <Icon className={`w-4 h-4 shrink-0 transition-transform group-hover:scale-105 ${
-                      isActive ? 'text-white' : 'text-emerald-400'
-                    }`} />
+                    <Icon
+                      className={cn(
+                        "w-4 h-4 shrink-0 transition-colors",
+                        isActive ? "text-[#0E7A53]" : "text-[#56675E] group-hover:text-[#13231B]"
+                      )}
+                    />
 
                     {!isCollapsed && (
-                      <div className="flex-1 overflow-hidden flex items-center justify-between gap-1">
-                        <div className="truncate">
-                          <div className="flex items-center gap-1.5">
-                            <span className="text-xs truncate">{item.label}</span>
-                          </div>
-                          <span className={`text-[10px] block truncate ${isActive ? 'text-emerald-100' : 'text-neutral-500'}`}>
-                            {item.description}
-                          </span>
-                        </div>
+                      <div className="flex-1 overflow-hidden flex items-center justify-between gap-1.5">
+                        <span className="text-xs sm:text-sm truncate">{item.label}</span>
                         {item.badge && (
-                          <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold shrink-0 ${item.badgeColor || 'bg-neutral-700 text-neutral-200'}`}>
+                          <span
+                            className={cn(
+                              "text-xs px-2 py-0.5 rounded-md border font-bold shrink-0 tabular",
+                              badgeStyles[item.badgeVariant]
+                            )}
+                          >
                             {item.badge}
                           </span>
                         )}
                       </div>
+                    )}
+
+                    {isCollapsed && item.badge && (
+                      <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#0E7A53]" />
                     )}
                   </button>
                 );
@@ -414,47 +460,62 @@ export const Sidebar: React.FC<SidebarProps> = ({
           )}
         </div>
 
-        {/* Footer in Sidebar */}
-        <div className="p-2.5 border-t border-neutral-800 bg-neutral-950/80 space-y-2">
-          {/* Quick Cash Register Status */}
+        {/* Footer in Sidebar com Operador e Troca Rápida */}
+        <div className="p-2.5 border-t border-[#E1E9E4] bg-[#F3F7F4]/60 space-y-2 shrink-0">
           {!isCollapsed ? (
-            <div className="px-2.5 py-1.5 rounded-lg bg-neutral-900 border border-neutral-800 flex items-center justify-between text-xs">
-              <div className="flex items-center gap-1.5 text-neutral-300">
-                <Store className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Caixa Balcão:</span>
+            <div className="p-2 rounded-xl bg-white border border-[#E1E9E4] flex items-center justify-between gap-2 shadow-2xs">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="w-7 h-7 rounded-lg bg-[#E6F4EC] text-[#0B6445] flex items-center justify-center shrink-0 font-bold text-xs">
+                  {currentUser.name.charAt(0).toUpperCase()}
+                </div>
+                <div className="truncate">
+                  <div className="text-xs font-bold text-[#13231B] truncate">{currentUser.name.split(' ')[0]}</div>
+                  <div className="text-xs text-[#56675E] font-medium">{isAdmin ? 'Gerência' : 'Operador'}</div>
+                </div>
               </div>
-              <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                activeCashRegister ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-neutral-700 text-neutral-300'
-              }`}>
-                {activeCashRegister ? 'Aberto' : 'Fechado'}
-              </span>
+
+              {onOpenSwitchOperatorModal && (
+                <button
+                  type="button"
+                  onClick={onOpenSwitchOperatorModal}
+                  className="p-1.5 rounded-lg text-[#56675E] hover:text-[#0E7A53] hover:bg-[#E6F4EC] transition-colors cursor-pointer shrink-0"
+                  title="Trocar operador do terminal"
+                  aria-label="Trocar operador do terminal"
+                >
+                  <ArrowRightLeft className="w-3.5 h-3.5" />
+                </button>
+              )}
             </div>
           ) : (
-            <div 
-              className={`w-3 h-3 mx-auto rounded-full ${activeCashRegister ? 'bg-emerald-500' : 'bg-neutral-600'}`} 
-              title={activeCashRegister ? 'Caixa Balcão Aberto' : 'Caixa Balcão Fechado'}
-            />
+            <div className="flex justify-center">
+              <div 
+                className="w-8 h-8 rounded-lg bg-[#E6F4EC] text-[#0B6445] flex items-center justify-center font-bold text-xs"
+                title={`Operador: ${currentUser.name}`}
+              >
+                {currentUser.name.charAt(0).toUpperCase()}
+              </div>
+            </div>
           )}
 
           {/* Desktop Toggle Button at bottom with S shortcut */}
           <button
             onClick={onToggleCollapse}
-            className={`w-full hidden lg:flex items-center rounded-lg py-1.5 px-2 text-neutral-400 hover:text-white hover:bg-neutral-800/80 transition-colors text-xs ${
-              isCollapsed ? 'justify-center' : 'justify-between'
-            }`}
-            title="Pressione 'S' no teclado para alternar"
-          >
-            {!isCollapsed && (
-              <span className="text-[11px] text-neutral-400">Recolher Menu</span>
+            className={cn(
+              "w-full hidden lg:flex items-center rounded-lg py-1 px-2 text-[#56675E] hover:text-[#13231B] hover:bg-white transition-colors text-xs font-semibold cursor-pointer",
+              isCollapsed ? "justify-center" : "justify-between"
             )}
+            title="Pressione 'S' no teclado para alternar"
+            aria-label="Alternar menu lateral"
+          >
+            {!isCollapsed && <span className="text-xs text-[#56675E]">Recolher Menu</span>}
             <div className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 text-[9px] font-mono bg-neutral-800 text-neutral-400 rounded border border-neutral-700">
+              <kbd className="px-1.5 py-0.5 text-xs font-mono bg-white text-[#56675E] rounded border border-[#CFDAD3]">
                 S
               </kbd>
               {isCollapsed ? (
-                <ChevronsRight className="w-4 h-4 text-emerald-400" />
+                <ChevronsRight className="w-4 h-4 text-[#0E7A53]" />
               ) : (
-                <ChevronsLeft className="w-4 h-4 text-neutral-400" />
+                <ChevronsLeft className="w-4 h-4 text-[#56675E]" />
               )}
             </div>
           </button>

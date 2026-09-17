@@ -17,13 +17,13 @@ import {
 interface OperatorSwitchModalProps {
   isOpen: boolean;
   onClose: () => void;
-  terminals: Terminal[];
+  terminals?: Terminal[];
   currentTerminalId: string;
   onSelectTerminal: (termId: string) => void;
   currentOperator: User;
-  availableUsers: User[];
-  workShifts: WorkShift[];
-  cashRegisters: CashRegister[];
+  availableUsers?: User[];
+  workShifts?: WorkShift[];
+  cashRegisters?: CashRegister[];
   onOperatorSwitched: (newUser: User) => void;
   refreshData: () => Promise<void>;
 }
@@ -31,13 +31,13 @@ interface OperatorSwitchModalProps {
 export const OperatorSwitchModal: React.FC<OperatorSwitchModalProps> = ({
   isOpen,
   onClose,
-  terminals,
+  terminals = [],
   currentTerminalId,
   onSelectTerminal,
   currentOperator,
-  availableUsers,
-  workShifts,
-  cashRegisters,
+  availableUsers = [],
+  workShifts = [],
+  cashRegisters = [],
   onOperatorSwitched,
   refreshData,
 }) => {

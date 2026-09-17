@@ -7,7 +7,7 @@ import { FirestoreDataService } from './server/firestoreService.js';
 import { authMiddleware, requireAuth, requireAdmin, generateAuthToken } from './server/auth.js';
 import { generateStoreAnalysis } from './server/gemini.js';
 import { loadAppConfig, getPublicClientConfig } from './server/config.js';
-import { Sale, StockMovement, CashMovement, PurchaseOrder, CashRegister, Product, ApprovalRequest, InventoryCount, InventoryItemCount, InventoryHistoryVersion, WorkShift, Terminal, OperatorCashSummary } from './src/types.js';
+import { Sale, StockMovement, CashMovement, PurchaseOrder, CashRegister, Product, ApprovalRequest, InventoryCount, InventoryItemCount, InventoryHistoryVersion, WorkShift, Terminal, OperatorCashSummary, User } from './src/types.js';
 
 dotenv.config();
 
@@ -300,13 +300,13 @@ const normalizePurchaseOrder = (po: any) => {
 // Full state sync for fast frontend hydration
 app.get('/api/sync', (req, res) => {
   try {
-    const role = (req.headers['x-user-role'] as string) || (req.query.role as string) || 'colaborador';
+    const userRole = (req as any).authenticatedUser?.role || (req.headers['x-user-role'] as string) || (req.query.role as string) || 'colaborador';
     const data = db.getRawData();
     res.json({
       store: data.stores[0] || null,
       terminals: data.terminals || [],
       users: data.users || [],
-      products: (data.products || []).map((p) => sanitizeProductForRole(p, role)),
+      products: (data.products || []).map((p) => sanitizeProductForRole(p, userRole)),
       sales: data.sales || [],
       cashRegisters: (data.cashRegisters || []).map((cr: any) => ({
         ...cr,
@@ -319,7 +319,7 @@ app.get('/api/sync', (req, res) => {
       suppliers: data.suppliers || [],
       tasks: data.tasks || [],
       inventories: (data.inventories || []).map((inv: InventoryCount) => {
-        if (role !== 'admin') {
+        if (userRole !== 'admin') {
           return sanitizeInventoryForCollaborator(inv);
         }
         recalculateInventorySummary(data, inv);
@@ -358,7 +358,7 @@ app.get('/api/sync', (req, res) => {
         }
         return goals;
       }),
-      auditLogs: data.auditLogs || [],
+      auditLogs: userRole === 'admin' ? (data.auditLogs || []) : [],
       aiReports: data.aiReports || [],
       customers: data.customers || [],
       approvals: data.approvals || [],
@@ -874,118 +874,32 @@ app.post('/api/sales/:id/cancel', async (req, res) => {
 // -------------------------------------------------------------
 // 2. AUTH & SESSIONS
 // -------------------------------------------------------------
-app.post('/api/auth/login', (req, res) => {
-  const { pin, email, role } = req.body;
+app.post('/api/auth/login', async (req, res) => {
+  const { pin, email, username } = req.body;
   const data = db.getRawData();
 
+  if (!pin || !String(pin).trim()) {
+    return res.status(400).json({ error: 'O PIN de segurança é obrigatório para autenticação.' });
+  }
+
+  const cleanPin = String(pin).trim();
   let user = null;
-  if (pin) {
-    user = data.users.find((u) => u.pin === pin && u.active);
-  } else if (email) {
-    user = data.users.find((u) => u.email.toLowerCase() === email.toLowerCase() && u.active);
-  } else if (role) {
-    user = data.users.find((u) => u.role === role && u.active);
+
+  if (email) {
+    user = data.users.find((u) => u.email.toLowerCase() === email.toLowerCase() && u.pin === cleanPin && u.active);
+  } else if (username) {
+    user = data.users.find((u) => (u.id === username || u.name.toLowerCase() === username.toLowerCase()) && u.pin === cleanPin && u.active);
+  } else {
+    user = data.users.find((u) => u.pin === cleanPin && u.active);
   }
 
   if (!user) {
-    return res.status(401).json({ error: 'Credencial ou PIN inválido ou usuário inativo.' });
+    return res.status(401).json({ error: 'Credenciais ou PIN inválidos, ou usuário inativo.' });
   }
 
-  db.logAudit(user.storeId, user.id, user.name, 'LOGIN', 'USUARIOS', `Usuário realizou login com sucesso.`);
-  res.json({ user, store: data.stores[0] });
-});
-
-// PHASE-05: Troca Segura de Operador com Autenticação de PIN Individual
-app.post('/api/auth/switch-operator', async (req, res) => {
-  const { terminalId, toUserId, pin, autoStartShift } = req.body;
-  if (!toUserId) {
-    return res.status(400).json({ error: 'Identificação do colaborador de destino é obrigatória.' });
-  }
-  if (!pin || !pin.trim()) {
-    return res.status(400).json({ error: 'O PIN individual do colaborador é obrigatório para assumir o terminal.' });
-  }
-
-  const data = db.getRawData();
-  const targetUser = (data.users || []).find((u) => u.id === toUserId && u.active);
-  if (!targetUser) {
-    return res.status(404).json({ error: 'Colaborador não encontrado ou inativo.' });
-  }
-
-  // Validação estrita de PIN (PIN nunca é exibido nem trafegado em log)
-  if (targetUser.pin !== pin.trim()) {
-    return res.status(401).json({ error: 'PIN incorreto. Acesso ao terminal não autorizado.' });
-  }
-
-  let activeShift = (data.shifts || []).find((s) => s.userId === targetUser.id && s.status !== 'encerrado');
-
-  // Se não tem expediente ativo e autoStartShift solicitado, inicia o ponto automaticamente com o PIN
-  if (!activeShift && autoStartShift) {
-    const nowStr = new Date().toISOString();
-    const todayStr = nowStr.split('T')[0];
-    const newShift: WorkShift = {
-      id: `ws_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
-      userId: targetUser.id,
-      userName: targetUser.name,
-      storeId: targetUser.storeId || 'store_matriz',
-      date: todayStr,
-      startedAt: nowStr,
-      status: 'em_andamento',
-      breaks: [],
-    };
-    if (!data.shifts) data.shifts = [];
-    data.shifts.unshift(newShift);
-    activeShift = newShift;
-    await db.save(data);
-
-    db.logAudit(
-      targetUser.storeId || 'store_matriz',
-      targetUser.id,
-      targetUser.name,
-      'INICIO_TURNO',
-      'TURNO',
-      `Expediente iniciado automaticamente com PIN ao assumir o terminal.`,
-      newShift.id
-    );
-  } else if (!activeShift && targetUser.role === 'colaborador') {
-    return res.status(400).json({
-      error: 'O colaborador selecionado não possui expediente de trabalho iniciado (ponto). Inicie o expediente antes de assumir o terminal.',
-      requiresShift: true,
-    });
-  }
-
-  const resolvedTerminalId = terminalId || 'terminal_01';
-  const terminal = (data.terminals || []).find((t) => t.id === resolvedTerminalId) || {
-    id: resolvedTerminalId,
-    name: resolvedTerminalId === 'terminal_02' ? 'Terminal Balcão 02' : 'Terminal Balcão 01',
-    storeId: targetUser.storeId || 'store_matriz',
-    active: true,
-    createdAt: new Date().toISOString(),
-  };
-
-  // Identifica a gaveta física (sessão de caixa) aberta para este terminal
-  const activeCashRegister = (data.cashRegisters || []).find(
-    (cr) => cr.status === 'aberto' && (cr.terminalId === terminal.id || cr.terminalName === terminal.name || (!cr.terminalId && terminal.id === 'terminal_01'))
-  );
-
-  // Auditoria da Troca de Operador (NUNCA expor PIN)
-  db.logAudit(
-    targetUser.storeId || 'store_matriz',
-    targetUser.id,
-    targetUser.name,
-    'OPERATOR_SWITCHED',
-    'TERMINAL',
-    `Operador assumiu o "${terminal.name}" com sucesso.${activeCashRegister ? ` Sessão de gaveta física ${activeCashRegister.displayCode || activeCashRegister.id} preservada.` : ' Nenhuma gaveta física aberta no momento.'}`,
-    terminal.id
-  );
-
-  res.json({
-    success: true,
-    user: targetUser,
-    terminal,
-    activeCashRegister: activeCashRegister || null,
-    activeShift,
-    message: `Terminal ${terminal.name} assumido com sucesso por ${targetUser.name}.`,
-  });
+  const token = generateAuthToken(user, req.body.terminalId);
+  db.logAudit(user.storeId, user.id, user.name, 'LOGIN', 'USUARIOS', `Usuário realizou login com PIN com sucesso.`);
+  res.json({ success: true, user, token, store: data.stores[0] });
 });
 
 app.post('/api/terminals/switch-operator', (req, res) => {
@@ -1010,7 +924,7 @@ app.get('/api/terminals', (req, res) => {
 });
 
 app.post('/api/terminals', async (req, res) => {
-  const { name, notes } = req.body;
+  const { name, notes, drawerName, drawerId } = req.body;
   if (!name || !name.trim()) {
     return res.status(400).json({ error: 'Nome do terminal é obrigatório.' });
   }
@@ -1021,6 +935,8 @@ app.post('/api/terminals', async (req, res) => {
     name: name.trim(),
     storeId: data.stores[0]?.id || 'store_matriz',
     active: true,
+    drawerId: drawerId ? drawerId.trim() : `gaveta_${String(seq).padStart(2, '0')}`,
+    drawerName: drawerName ? drawerName.trim() : `Gaveta ${name.trim()}`,
     notes: notes ? notes.trim() : undefined,
     createdAt: new Date().toISOString(),
   };
@@ -1030,9 +946,202 @@ app.post('/api/terminals', async (req, res) => {
   res.json({ success: true, terminal: newTerminal });
 });
 
+app.put('/api/terminals/:id', async (req, res) => {
+  const { id } = req.params;
+  const { name, notes, drawerName, drawerId, active } = req.body;
+  const data = db.getRawData();
+  const terminal = (data.terminals || []).find((t) => t.id === id);
+  if (!terminal) {
+    return res.status(404).json({ error: 'Terminal não encontrado.' });
+  }
+
+  if (name && name.trim()) terminal.name = name.trim();
+  if (notes !== undefined) terminal.notes = notes ? notes.trim() : undefined;
+  if (drawerName !== undefined) terminal.drawerName = drawerName ? drawerName.trim() : undefined;
+  if (drawerId !== undefined) terminal.drawerId = drawerId ? drawerId.trim() : undefined;
+  if (active !== undefined) terminal.active = Boolean(active);
+
+  await db.save(data);
+  res.json({ success: true, terminal });
+});
+
+app.delete('/api/terminals/:id', async (req, res) => {
+  const { id } = req.params;
+  const data = db.getRawData();
+  const terminalIndex = (data.terminals || []).findIndex((t) => t.id === id);
+  if (terminalIndex === -1) {
+    return res.status(404).json({ error: 'Terminal não encontrado.' });
+  }
+
+  // Check if open cash register uses this terminal
+  const openCash = (data.cashRegisters || []).find((cr) => cr.status === 'aberto' && cr.terminalId === id);
+  if (openCash) {
+    return res.status(400).json({ error: 'Não é possível excluir um terminal que possui caixa aberto em andamento.' });
+  }
+
+  data.terminals.splice(terminalIndex, 1);
+  await db.save(data);
+  res.json({ success: true, message: 'Terminal removido com sucesso.' });
+});
+
 app.get('/api/users', (req, res) => {
   const data = db.getRawData();
   res.json(data.users);
+});
+
+app.post('/api/users', async (req, res) => {
+  const { name, email, role, roleTitle, phone, pin } = req.body;
+  const data = db.getRawData();
+
+  if (!name || typeof name !== 'string' || name.trim().length < 2) {
+    return res.status(400).json({ error: 'Nome do colaborador é obrigatório (mínimo 2 caracteres).' });
+  }
+
+  if (!email || typeof email !== 'string' || !email.includes('@')) {
+    return res.status(400).json({ error: 'E-mail válido é obrigatório.' });
+  }
+
+  const existingEmail = (data.users || []).find((u) => u.email.toLowerCase() === email.trim().toLowerCase());
+  if (existingEmail) {
+    return res.status(400).json({ error: 'Já existe um colaborador cadastrado com este e-mail.' });
+  }
+
+  const cleanPin = String(pin || '').trim();
+  if (!cleanPin || cleanPin.length !== 4 || !/^\d{4}$/.test(cleanPin)) {
+    return res.status(400).json({ error: 'O PIN de balcão deve conter exatamente 4 dígitos numéricos.' });
+  }
+
+  const existingPin = (data.users || []).find((u) => u.pin === cleanPin && u.active);
+  if (existingPin) {
+    return res.status(400).json({ error: 'Este PIN já está em uso por outro colaborador ativo.' });
+  }
+
+  const newUser: User = {
+    id: `usr_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+    name: name.trim(),
+    email: email.trim().toLowerCase(),
+    role: role === 'admin' ? 'admin' : 'colaborador',
+    roleTitle: roleTitle ? roleTitle.trim() : (role === 'admin' ? 'Gerente' : 'Balconista'),
+    phone: phone ? phone.trim() : undefined,
+    pin: cleanPin,
+    active: true,
+    storeId: data.stores[0]?.id || 'store_matriz',
+  };
+
+  if (!data.users) data.users = [];
+  data.users.push(newUser);
+  await db.save(data);
+
+  db.logAudit(
+    newUser.storeId,
+    'usr_admin',
+    'Administração',
+    'USUARIO_CRIADO',
+    'USUARIOS',
+    `Novo colaborador cadastrado: ${newUser.name} (${newUser.roleTitle || newUser.role})`,
+    newUser.id
+  );
+
+  res.json({ success: true, user: newUser, message: 'Colaborador cadastrado com sucesso.' });
+});
+
+app.put('/api/users/:id', async (req, res) => {
+  const { id } = req.params;
+  const { name, email, role, roleTitle, phone, pin, active } = req.body;
+  const data = db.getRawData();
+  const user = (data.users || []).find((u) => u.id === id);
+
+  if (!user) {
+    return res.status(404).json({ error: 'Colaborador não encontrado.' });
+  }
+
+  if (name && typeof name === 'string' && name.trim().length >= 2) {
+    user.name = name.trim();
+  }
+
+  if (email && typeof email === 'string' && email.includes('@')) {
+    const existing = (data.users || []).find((u) => u.id !== id && u.email.toLowerCase() === email.trim().toLowerCase());
+    if (existing) {
+      return res.status(400).json({ error: 'Este e-mail já está em uso por outro colaborador.' });
+    }
+    user.email = email.trim().toLowerCase();
+  }
+
+  if (role && (role === 'admin' || role === 'colaborador')) {
+    user.role = role;
+  }
+
+  if (roleTitle !== undefined) {
+    user.roleTitle = roleTitle ? roleTitle.trim() : undefined;
+  }
+
+  if (phone !== undefined) {
+    user.phone = phone ? phone.trim() : undefined;
+  }
+
+  if (pin !== undefined) {
+    const cleanPin = String(pin).trim();
+    if (!cleanPin || cleanPin.length !== 4 || !/^\d{4}$/.test(cleanPin)) {
+      return res.status(400).json({ error: 'O PIN deve conter exatamente 4 dígitos numéricos.' });
+    }
+    const existingPin = (data.users || []).find((u) => u.id !== id && u.pin === cleanPin && u.active);
+    if (existingPin) {
+      return res.status(400).json({ error: 'Este PIN já está em uso por outro colaborador.' });
+    }
+    user.pin = cleanPin;
+  }
+
+  if (active !== undefined) {
+    user.active = Boolean(active);
+  }
+
+  await db.save(data);
+
+  db.logAudit(
+    user.storeId,
+    'usr_admin',
+    'Administração',
+    'USUARIO_ATUALIZADO',
+    'USUARIOS',
+    `Dados do colaborador atualizados: ${user.name}`,
+    user.id
+  );
+
+  res.json({ success: true, user, message: 'Colaborador atualizado com sucesso.' });
+});
+
+app.delete('/api/users/:id', async (req, res) => {
+  const { id } = req.params;
+  const data = db.getRawData();
+  const user = (data.users || []).find((u) => u.id === id);
+
+  if (!user) {
+    return res.status(404).json({ error: 'Colaborador não encontrado.' });
+  }
+
+  // Prevent deleting the only active admin
+  if (user.role === 'admin') {
+    const activeAdmins = (data.users || []).filter((u) => u.role === 'admin' && u.active && u.id !== id);
+    if (activeAdmins.length === 0) {
+      return res.status(400).json({ error: 'Não é possível desativar ou excluir o único administrador ativo do sistema.' });
+    }
+  }
+
+  // Soft delete / inactivate
+  user.active = false;
+  await db.save(data);
+
+  db.logAudit(
+    user.storeId,
+    'usr_admin',
+    'Administração',
+    'USUARIO_INATIVADO',
+    'USUARIOS',
+    `Colaborador inativado: ${user.name}`,
+    user.id
+  );
+
+  res.json({ success: true, message: 'Colaborador inativado com sucesso.' });
 });
 
 app.get('/api/stores/current', (req, res) => {
@@ -1147,6 +1256,24 @@ app.post('/api/store/settings', async (req, res) => {
       if (settings.defaultPaymentMethods && Array.isArray(settings.defaultPaymentMethods)) {
         store.settings.defaultPaymentMethods = settings.defaultPaymentMethods;
       }
+      if (settings.pixConfig !== undefined) {
+        store.settings.pixConfig = settings.pixConfig;
+      }
+      if (settings.cardRates !== undefined) {
+        store.settings.cardRates = settings.cardRates;
+      }
+      if (settings.cashSecurity !== undefined) {
+        store.settings.cashSecurity = settings.cashSecurity;
+      }
+      if (settings.printConfig !== undefined) {
+        store.settings.printConfig = settings.printConfig;
+      }
+      if (settings.categoryPolicies !== undefined) {
+        store.settings.categoryPolicies = settings.categoryPolicies;
+      }
+      if (settings.inventoryAiConfig !== undefined) {
+        store.settings.inventoryAiConfig = settings.inventoryAiConfig;
+      }
     }
 
     const newSummary = `Nome: ${store.tradeName}, CNPJ: ${store.cnpj}, Teto: ${store.settings?.maxDiscountWithoutAuthPercent}%`;
@@ -1237,6 +1364,27 @@ app.put('/api/store/settings', async (req, res) => {
       }
       if (settings.defaultOpeningAmount !== undefined) {
         store.settings.defaultOpeningAmount = Number(settings.defaultOpeningAmount);
+      }
+      if (settings.defaultPaymentMethods && Array.isArray(settings.defaultPaymentMethods)) {
+        store.settings.defaultPaymentMethods = settings.defaultPaymentMethods;
+      }
+      if (settings.pixConfig !== undefined) {
+        store.settings.pixConfig = settings.pixConfig;
+      }
+      if (settings.cardRates !== undefined) {
+        store.settings.cardRates = settings.cardRates;
+      }
+      if (settings.cashSecurity !== undefined) {
+        store.settings.cashSecurity = settings.cashSecurity;
+      }
+      if (settings.printConfig !== undefined) {
+        store.settings.printConfig = settings.printConfig;
+      }
+      if (settings.categoryPolicies !== undefined) {
+        store.settings.categoryPolicies = settings.categoryPolicies;
+      }
+      if (settings.inventoryAiConfig !== undefined) {
+        store.settings.inventoryAiConfig = settings.inventoryAiConfig;
       }
     }
 
@@ -2074,24 +2222,23 @@ app.post('/api/sales', async (req, res) => {
     });
   }
 
-  // REGRA PHASE-05: Terminal compartilhado com gaveta física única
+  // REGRA: Venda só é permitida com expediente e caixa individual do próprio operador abertos
   const requestedTerminalId = req.body.terminalId || 'terminal_01';
   let activeCash = (data.cashRegisters || []).find(
-    (c) => c.status === 'aberto' && (c.id === cashRegisterId || c.terminalId === requestedTerminalId || (!c.terminalId && requestedTerminalId === 'terminal_01'))
+    (c) => c.status === 'aberto' &&
+           c.openedBy === effectiveOperatorId &&
+           (c.id === cashRegisterId || c.terminalId === requestedTerminalId || (!c.terminalId && requestedTerminalId === 'terminal_01'))
   );
 
   if (!activeCash && cashRegisterId) {
-    activeCash = (data.cashRegisters || []).find((c) => c.id === cashRegisterId && c.status === 'aberto');
-  }
-
-  if (!activeCash) {
-    // Fallback: qualquer caixa aberto na drogaria
-    activeCash = (data.cashRegisters || []).find((c) => c.status === 'aberto');
+    activeCash = (data.cashRegisters || []).find(
+      (c) => c.id === cashRegisterId && c.status === 'aberto' && c.openedBy === effectiveOperatorId
+    );
   }
 
   if (!activeCash) {
     return res.status(400).json({
-      error: 'A gaveta de caixa deste terminal ainda não foi aberta com fundo de troco. Abra o caixa antes de vender.',
+      error: 'Não é permitido vender sem expediente e caixa do próprio operador abertos. Abra seu caixa individual antes de registrar vendas.',
     });
   }
 
@@ -2547,26 +2694,39 @@ async function executeCashRegisterOpen(params: {
   const resolvedTerminalId = terminalId || 'terminal_01';
   const resolvedTerminalName = terminalName && terminalName.trim() ? terminalName.trim() : (resolvedTerminalId === 'terminal_02' ? 'Terminal Balcão 02' : 'Terminal Balcão 01');
 
-  // REGRA 01: Validação de expediente ativo obrigatória no backend
+  // REGRA: Validação de expediente ativo obrigatória no backend
   const userShift = (data.shifts || []).find((s) => s.userId === operatorId && (s.status === 'em_andamento' || s.status === 'pausado'));
   if (!userShift) {
     return { status: 400, error: 'Você precisa ter um expediente de trabalho ativo (ponto iniciado) para abrir uma sessão de caixa.' };
   }
 
-  // REGRA PHASE-05: Cada terminal só pode ter UMA gaveta física aberta por vez
+  // REGRA: O caixa é individual por colaborador e turno. O mesmo operador não pode ter dois caixas abertos simultaneamente.
+  const existingUserRegister = (data.cashRegisters || []).find(
+    (c) => c.status === 'aberto' && c.openedBy === operatorId
+  );
+  if (existingUserRegister) {
+    return {
+      status: 400,
+      error: `Você já possui um caixa individual aberto (${existingUserRegister.displayCode}) no terminal ${existingUserRegister.terminalName}. Feche seu caixa atual antes de abrir uma nova sessão.`,
+    };
+  }
+
+  // REGRA: O terminal não pode ter outra sessão de caixa aberta simultaneamente
   const existingTerminalRegister = (data.cashRegisters || []).find(
     (c) => c.status === 'aberto' && (c.terminalId === resolvedTerminalId || c.terminalName.toLowerCase() === resolvedTerminalName.toLowerCase())
   );
   if (existingTerminalRegister) {
     return {
       status: 400,
-      error: `O ${resolvedTerminalName} já possui uma gaveta física aberta (${existingTerminalRegister.displayCode}). A gaveta já está disponível para uso compartilhado.`,
+      error: `O ${resolvedTerminalName} está em uso com caixa aberto pelo operador ${existingTerminalRegister.openedByName} (${existingTerminalRegister.displayCode}). O operador anterior deve realizar o fechamento para liberar o terminal.`,
     };
   }
 
   const sessionSeq = (data.cashRegisters || []).length + 1;
   const displayCode = `CX-${new Date().getFullYear()}-${String(sessionSeq).padStart(4, '0')}`;
   const uniqueId = `cx_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+  const drawerId = resolvedTerminalId === 'terminal_02' ? 'gaveta_02' : 'gaveta_01';
+  const drawerName = resolvedTerminalId === 'terminal_02' ? 'Gaveta Balcão 02' : 'Gaveta Balcão 01';
 
   const newRegister: CashRegister = {
     id: uniqueId,
@@ -2574,6 +2734,8 @@ async function executeCashRegisterOpen(params: {
     storeId: 'store_matriz',
     terminalId: resolvedTerminalId,
     terminalName: resolvedTerminalName,
+    drawerId,
+    drawerName,
     workShiftId: workShiftId || userShift.id,
     openedBy: operatorId,
     openedByName: openedByName || (data.users.find(u => u.id === operatorId)?.name || 'Operador'),
@@ -2589,7 +2751,7 @@ async function executeCashRegisterOpen(params: {
     expectedCash: numOpening,
     status: 'aberto',
     reconciliationStatus: 'aberto',
-    notes: notes || 'Abertura de gaveta física com fundo de troco operacional',
+    notes: notes || 'Abertura de caixa individual com fundo de troco operacional',
     operatorSummaries: [],
   };
 
@@ -2623,14 +2785,13 @@ async function executeCashRegisterMovement(params: {
   const register = data.cashRegisters.find((c) => c.id === cashRegisterId && c.status === 'aberto');
   if (!register) return { status: 404, error: 'Caixa aberto não encontrado ou já encerrado.' };
 
-  // REGRA PHASE-05: Qualquer colaborador com expediente ativo na loja ou gestor/admin pode registrar sangria/suprimento
+  // REGRA: Apenas o operador titular do caixa ou gestor/admin autorizado pode movimentar
   const requestingUser = (data.users || []).find((u) => u.id === authorizedBy);
   const isOwner = register.openedBy === authorizedBy;
   const isAdminOrManager = requestingUser && requestingUser.role === 'admin';
-  const hasActiveShift = (data.shifts || []).some((s) => s.userId === authorizedBy && s.status !== 'encerrado');
 
-  if (!isOwner && !isAdminOrManager && !hasActiveShift) {
-    return { status: 403, error: 'Acesso negado: Você precisa ter um expediente ativo de trabalho para registrar movimentação na gaveta.' };
+  if (!isOwner && !isAdminOrManager) {
+    return { status: 403, error: 'Acesso negado: Um colaborador não pode movimentar o caixa de outro operador, exceto gestor autorizado.' };
   }
 
   const numAmount = Number(amount);
@@ -2713,13 +2874,12 @@ async function executeCashRegisterClose(params: {
   const register = data.cashRegisters.find((c) => c.id === cashRegisterId && c.status === 'aberto');
   if (!register) return { status: 404, error: 'Caixa aberto não encontrado ou já encerrado.' };
 
-  // Permissão: qualquer operador com turno ativo ou gestor/admin pode fechar
+  // REGRA: Apenas o operador titular do caixa ou gestor/admin autorizado pode fechar a sessão
   const requestingUser = (data.users || []).find((u) => u.id === closedBy);
   const isOwner = register.openedBy === closedBy;
   const isAdminOrManager = requestingUser && requestingUser.role === 'admin';
-  const hasActiveShift = (data.shifts || []).some((s) => s.userId === closedBy && s.status !== 'encerrado');
-  if (!isOwner && !isAdminOrManager && !hasActiveShift) {
-    return { status: 403, error: 'Acesso negado: Você precisa ter um expediente ativo ou perfil gestor para fechar a gaveta do terminal.' };
+  if (!isOwner && !isAdminOrManager) {
+    return { status: 403, error: 'Acesso negado: Um colaborador não pode fechar o caixa de outro colaborador, exceto gestor autorizado.' };
   }
 
   const counted = Number(countedCash);
@@ -3102,6 +3262,9 @@ app.post('/api/purchases/:id/receive', async (req, res) => {
 
   if (invoiceNumber) {
     order.invoiceNumber = invoiceNumber;
+  }
+  if (notes && String(notes).trim()) {
+    order.notes = order.notes ? `${order.notes} | Obs. Recebimento: ${String(notes).trim()}` : String(notes).trim();
   }
 
   const rawList = rawReceipts || receivedItems || [];

@@ -40,18 +40,23 @@ import { AdminApprovals } from './components/AdminApprovals';
 import { AdminSettings } from './components/AdminSettings';
 import { RecebimentoMercadoriaView } from './components/RecebimentoMercadoriaView';
 import { ContagemEstoqueView } from './components/ContagemEstoqueView';
+import { MinhaOperacaoView } from './components/MinhaOperacaoView';
+import { EstoqueOperacionalView } from './components/EstoqueOperacionalView';
 import { ContextualHelpModal } from './components/ContextualHelpModal';
 import { OperatorSwitchModal } from './components/OperatorSwitchModal';
+import { Toaster } from './components/ui/feedback';
 import { apiFetch, getStoredToken, setStoredToken, getStoredUser, setStoredUser } from './lib/api';
 
 const MODULE_TITLES: Record<string, string> = {
+  minha_operacao: 'Minha Operação (Expediente & Caixa)',
   balcao: 'Balcão & PDV',
   meu_caixa: 'Meu Caixa Operacional',
   meu_turno: 'Meu Turno & Ponto',
+  estoque_operacional: 'Estoque Operacional (Recebimento & Inventário)',
   receber_mercadoria: 'Receber Mercadoria (Conferência Física)',
   contagem_estoque: 'Contagem de Estoque (Inventário Físico)',
   colab_metas: 'Minhas Metas',
-  admin_demands: 'Falta de Medicamentos',
+  admin_demands: 'Produtos Procurados (Demanda Reprimida & Balcão)',
   admin_approvals: 'Central de Aprovações',
   admin_overview: 'Painel Executivo',
   admin_sales: 'Vendas & Histórico',
@@ -124,6 +129,8 @@ export default function App() {
 
   // Navigation and UI state
   const [activeTab, setActiveTab] = useState<string>('balcao');
+  const [minhaOperacaoSubTab, setMinhaOperacaoSubTab] = useState<'jornada' | 'turno' | 'caixa'>('jornada');
+  const [estoqueOperacionalSubTab, setEstoqueOperacionalSubTab] = useState<'receber' | 'contagens'>('receber');
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(() => {
     try {
       return localStorage.getItem('farmavida_sidebar_collapsed') === 'true';
@@ -137,6 +144,16 @@ export default function App() {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [isAnalyzingAi, setIsAnalyzingAi] = useState<boolean>(false);
   const [isHelpOpen, setIsHelpOpen] = useState<boolean>(false);
+
+  const navigateToMinhaOperacao = (subTab: 'jornada' | 'turno' | 'caixa' = 'jornada') => {
+    setMinhaOperacaoSubTab(subTab);
+    setActiveTab('minha_operacao');
+  };
+
+  const navigateToEstoqueOperacional = (subTab: 'receber' | 'contagens' = 'receber') => {
+    setEstoqueOperacionalSubTab(subTab);
+    setActiveTab('estoque_operacional');
+  };
 
   // Sync data from backend API
   const refreshAllData = useCallback(async () => {
@@ -161,7 +178,7 @@ export default function App() {
               (ws: any) => ws.userId === effectiveUser.id && ws.status !== 'encerrado'
             );
             if (!hasShift) {
-              setActiveTab('meu_turno');
+              navigateToMinhaOperacao('jornada');
             }
           }
         }
@@ -1070,12 +1087,39 @@ export default function App() {
           pendingApprovalsCount={pendingApprovalsCount}
           activeCashRegister={activeCashRegister}
           openInventoriesCount={inventories.filter((i) => i.status === 'aberto' || i.status === 'em_contagem' || i.status === 'reaberto').length}
+          onOpenSwitchOperatorModal={() => setIsOperatorSwitchModalOpen(true)}
         />
 
         {/* Content Workspace Area */}
-        <main className="flex-1 overflow-y-auto bg-neutral-100 min-w-0 flex flex-col justify-between">
+        <main className="flex-1 overflow-y-auto bg-[#F3F7F4] min-w-0 flex flex-col justify-between">
           <div className="p-2 sm:p-4 lg:p-6">
             {/* Operational Modules - Available to all */}
+            {activeTab === 'minha_operacao' && (
+              <MinhaOperacaoView
+                currentUser={currentUser}
+                activeShift={activeShift}
+                activeCashRegister={activeCashRegister}
+                cashRegisters={cashRegisters}
+                cashHistory={cashRegisters}
+                allShifts={workShifts}
+                workShifts={workShifts}
+                sales={sales}
+                store={store}
+                terminalId={currentTerminalId}
+                terminals={terminals}
+                defaultSubTab={minhaOperacaoSubTab}
+                onStartShift={handleStartShift}
+                onToggleBreak={handleToggleBreak}
+                onEndShift={handleEndShift}
+                onOpenCash={handleOpenCash}
+                onAddMovement={handleAddCashMovement}
+                onCloseCash={handleCloseCash}
+                onGoToBalcao={() => setActiveTab('balcao')}
+                onNavigateToBalcao={() => setActiveTab('balcao')}
+                onOpenSwitchOperatorModal={() => setIsOperatorSwitchModalOpen(true)}
+              />
+            )}
+
             {activeTab === 'balcao' && (
               <ColaboradorWorkspace
                 currentUser={currentUser}
@@ -1090,11 +1134,26 @@ export default function App() {
                 onSaveSale={handleSaveSale}
                 onRegisterDemand={handleRegisterDemand}
                 onRegisterCustomer={handleRegisterCustomer}
-                onOpenCashModal={() => setActiveTab('meu_caixa')}
-                onToggleShift={activeShift ? () => setActiveTab('meu_turno') : handleStartShift}
+                onOpenCashModal={() => navigateToMinhaOperacao('caixa')}
+                onToggleShift={activeShift ? () => navigateToMinhaOperacao('turno') : handleStartShift}
                 onToggleBreak={handleToggleBreak}
-                onGoToTurno={() => setActiveTab('meu_turno')}
-                onGoToCaixa={() => setActiveTab('meu_caixa')}
+                onGoToTurno={() => navigateToMinhaOperacao('turno')}
+                onGoToCaixa={() => navigateToMinhaOperacao('caixa')}
+              />
+            )}
+
+            {activeTab === 'estoque_operacional' && (
+              <EstoqueOperacionalView
+                purchaseOrders={purchaseOrders}
+                products={products}
+                inventories={inventories}
+                currentUser={currentUser}
+                defaultTab={estoqueOperacionalSubTab}
+                onReceiveOrder={handleReceiveOrder}
+                onSaveInventoryCount={handleSaveInventoryCount}
+                onCompleteInventoryCount={handleCompleteInventoryCount}
+                onRefreshData={refreshAllData}
+                onGoToBalcao={() => setActiveTab('balcao')}
               />
             )}
 
@@ -1112,7 +1171,7 @@ export default function App() {
                 onOpenCash={handleOpenCash}
                 onAddMovement={handleAddCashMovement}
                 onCloseCash={handleCloseCash}
-                onGoToTurno={() => setActiveTab('meu_turno')}
+                onGoToTurno={() => navigateToMinhaOperacao('turno')}
                 onGoToBalcao={() => setActiveTab('balcao')}
               />
             )}
@@ -1127,7 +1186,7 @@ export default function App() {
                 onStartShift={handleStartShift}
                 onToggleBreak={handleToggleBreak}
                 onEndShift={handleEndShift}
-                onGoToCash={() => setActiveTab('meu_caixa')}
+                onGoToCash={() => navigateToMinhaOperacao('caixa')}
                 onGoToBalcao={() => setActiveTab('balcao')}
               />
             )}
@@ -1167,7 +1226,9 @@ export default function App() {
                 unmetDemands={unmetDemands}
                 currentUser={currentUser}
                 onResolveDemand={handleResolveDemand}
+                onRegisterDemand={handleRegisterDemand}
                 onNavigateToPurchases={() => setActiveTab('admin_purchases')}
+                onNavigateToBalcao={() => setActiveTab('balcao')}
               />
             )}
 
@@ -1449,14 +1510,14 @@ export default function App() {
           </div>
 
           {/* Footer info */}
-          <footer className="bg-white border-t border-neutral-200 py-2.5 px-4 text-xs text-neutral-500 mt-auto">
+          <footer className="bg-white border-t border-[#E1E9E4] py-2.5 px-4 text-xs text-[#56675E] mt-auto">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
               <span className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-600" />
-                <strong>FarmaVida</strong> • {isAdmin ? 'Perfil Gerencial Completo' : 'Perfil Operacional de Balcão'}
+                <span className="w-2 h-2 rounded-full bg-[#0E7A53]" />
+                <strong className="text-[#13231B]">FarmaVida</strong> • {isAdmin ? 'Perfil Gerencial Completo' : 'Perfil Operacional de Balcão'}
               </span>
-              <span className="text-neutral-400 text-[11px]">
-                Atalhos: pressione <kbd className="px-1 py-0.5 font-mono bg-neutral-100 border border-neutral-300 rounded text-neutral-600">S</kbd> para menu lateral, <kbd className="px-1 py-0.5 font-mono bg-neutral-100 border border-neutral-300 rounded text-neutral-600">?</kbd> para ajuda contextual
+              <span className="text-[#84968D] text-xs">
+                Atalhos: pressione <kbd className="px-1.5 py-0.5 font-mono bg-[#F3F7F4] border border-[#CFDAD3] rounded text-[#56675E]">S</kbd> para menu lateral, <kbd className="px-1.5 py-0.5 font-mono bg-[#F3F7F4] border border-[#CFDAD3] rounded text-[#56675E]">?</kbd> para ajuda contextual
               </span>
             </div>
           </footer>
@@ -1486,6 +1547,9 @@ export default function App() {
           refreshAllData();
         }}
       />
+
+      {/* FarmaVida Toast Notifications Container */}
+      <Toaster />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { CashRegister, CashMovement, User, Sale } from '../types';
+import { formatCurrencyBRL } from '../lib/format';
 import { 
   Banknote, 
   ArrowDownCircle, 
@@ -209,7 +210,7 @@ export const AdminCash: React.FC<AdminCashProps> = ({
                   Dinheiro Físico Esperado no Caixa
                 </div>
                 <div className="text-xl font-bold text-emerald-900">
-                  R$ {calculatedExpectedCash.toFixed(2)}
+                  {formatCurrencyBRL(calculatedExpectedCash)}
                 </div>
               </div>
             </div>
@@ -219,28 +220,28 @@ export const AdminCash: React.FC<AdminCashProps> = ({
               <div className="p-3 bg-neutral-50 rounded-lg border border-neutral-200">
                 <span className="text-neutral-500 block">Fundo de Abertura:</span>
                 <span className="font-bold text-neutral-800 text-sm">
-                  + R$ {openingAmount.toFixed(2)}
+                  + {formatCurrencyBRL(openingAmount)}
                 </span>
               </div>
 
               <div className="p-3 bg-emerald-50 rounded-lg border border-emerald-200">
                 <span className="text-emerald-800 block">Vendas em Espécie:</span>
                 <span className="font-bold text-emerald-900 text-sm">
-                  + R$ {cashSalesTotal.toFixed(2)}
+                  + {formatCurrencyBRL(cashSalesTotal)}
                 </span>
               </div>
 
               <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
                 <span className="text-blue-800 block">Suprimentos de Troco:</span>
                 <span className="font-bold text-blue-900 text-sm">
-                  + R$ {cashSuprimentos.toFixed(2)}
+                  + {formatCurrencyBRL(cashSuprimentos)}
                 </span>
               </div>
 
               <div className="p-3 bg-amber-50 rounded-lg border border-amber-200">
                 <span className="text-amber-800 block">Sangrias de Caixa:</span>
                 <span className="font-bold text-amber-900 text-sm">
-                  - R$ {cashSangrias.toFixed(2)}
+                  - {formatCurrencyBRL(cashSangrias)}
                 </span>
               </div>
             </div>
@@ -283,7 +284,7 @@ export const AdminCash: React.FC<AdminCashProps> = ({
 
                   <div className="text-right">
                     <div className={`font-bold text-sm ${mov.type === 'suprimento' ? 'text-emerald-800' : 'text-amber-800'}`}>
-                      {mov.type === 'suprimento' ? '+' : '-'} R$ {mov.amount.toFixed(2)}
+                      {mov.type === 'suprimento' ? '+' : '-'} {formatCurrencyBRL(mov.amount)}
                     </div>
                     <div className="text-[10px] text-neutral-400">
                       {new Date(mov.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -372,12 +373,12 @@ export const AdminCash: React.FC<AdminCashProps> = ({
                         <span className="text-emerald-700 font-semibold">Em Aberto</span>
                       )}
                     </td>
-                    <td className="py-2.5 px-4 text-right">R$ {reg.openingAmount.toFixed(2)}</td>
+                    <td className="py-2.5 px-4 text-right">{formatCurrencyBRL(reg.openingAmount)}</td>
                     <td className="py-2.5 px-4 text-right font-medium">
-                      {expCash !== undefined ? `R$ ${Number(expCash).toFixed(2)}` : '-'}
+                      {expCash !== undefined ? formatCurrencyBRL(Number(expCash)) : '-'}
                     </td>
                     <td className="py-2.5 px-4 text-right font-medium">
-                      {countCash !== undefined ? `R$ ${Number(countCash).toFixed(2)}` : '-'}
+                      {countCash !== undefined ? formatCurrencyBRL(Number(countCash)) : '-'}
                     </td>
                     <td className="py-2.5 px-4 text-right">
                       {reg.difference !== undefined ? (
@@ -388,7 +389,7 @@ export const AdminCash: React.FC<AdminCashProps> = ({
                             ? 'text-blue-700' 
                             : 'text-red-700'
                         }`}>
-                          {Math.abs(reg.difference) < 0.01 ? 'Exato (R$ 0,00)' : `R$ ${reg.difference.toFixed(2)}`}
+                          {Math.abs(reg.difference) < 0.01 ? 'Exato (R$ 0,00)' : formatCurrencyBRL(reg.difference)}
                         </span>
                       ) : (
                         '-'
@@ -472,30 +473,30 @@ export const AdminCash: React.FC<AdminCashProps> = ({
               <div className="grid grid-cols-2 gap-x-6 gap-y-1.5 pt-1 text-neutral-600">
                 <div className="flex justify-between">
                   <span>(+) Fundo de Troco Inicial:</span>
-                  <span className="font-semibold text-neutral-900">R$ {selectedSessionForDetail.openingAmount.toFixed(2)}</span>
+                  <span className="font-semibold text-neutral-900">{formatCurrencyBRL(selectedSessionForDetail.openingAmount)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>(+) Vendas em Dinheiro:</span>
-                  <span className="font-semibold text-emerald-800">+ R$ {(selectedSessionForDetail.cashSales || 0).toFixed(2)}</span>
+                  <span className="font-semibold text-emerald-800">+ {formatCurrencyBRL(selectedSessionForDetail.cashSales || 0)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>(+) Suprimentos de Caixa:</span>
-                  <span className="font-semibold text-blue-800">+ R$ {(selectedSessionForDetail.suppliesTotal || 0).toFixed(2)}</span>
+                  <span className="font-semibold text-blue-800">+ {formatCurrencyBRL(selectedSessionForDetail.suppliesTotal || 0)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>(-) Sangrias Operacionais:</span>
-                  <span className="font-semibold text-amber-800">- R$ {(selectedSessionForDetail.bleedingsTotal || 0).toFixed(2)}</span>
+                  <span className="font-semibold text-amber-800">- {formatCurrencyBRL(selectedSessionForDetail.bleedingsTotal || 0)}</span>
                 </div>
                 {selectedSessionForDetail.cashReturnsTotal ? (
                   <div className="flex justify-between">
                     <span>(-) Devoluções em Dinheiro:</span>
-                    <span className="font-semibold text-red-800">- R$ {selectedSessionForDetail.cashReturnsTotal.toFixed(2)}</span>
+                    <span className="font-semibold text-red-800">- {formatCurrencyBRL(selectedSessionForDetail.cashReturnsTotal)}</span>
                   </div>
                 ) : null}
                 {selectedSessionForDetail.withdrawnAmount ? (
                   <div className="flex justify-between">
                     <span>(-) Sangria de Fechamento (Cofre):</span>
-                    <span className="font-semibold text-neutral-800">- R$ {selectedSessionForDetail.withdrawnAmount.toFixed(2)}</span>
+                    <span className="font-semibold text-neutral-800">- {formatCurrencyBRL(selectedSessionForDetail.withdrawnAmount)}</span>
                   </div>
                 ) : null}
               </div>
@@ -503,14 +504,14 @@ export const AdminCash: React.FC<AdminCashProps> = ({
               <div className="pt-2 border-t flex items-center justify-between font-bold text-neutral-900">
                 <span>Saldo Físico Esperado:</span>
                 <span className="text-emerald-800 text-sm">
-                  R$ {(selectedSessionForDetail.expectedCash !== undefined ? selectedSessionForDetail.expectedCash : (selectedSessionForDetail as any).expectedAmount || 0).toFixed(2)}
+                  {formatCurrencyBRL(selectedSessionForDetail.expectedCash !== undefined ? selectedSessionForDetail.expectedCash : (selectedSessionForDetail as any).expectedAmount || 0)}
                 </span>
               </div>
 
               <div className="flex items-center justify-between font-bold text-neutral-900">
                 <span>Saldo Físico Contado pelo Operador:</span>
                 <span className="text-neutral-900 text-sm">
-                  R$ {(selectedSessionForDetail.countedCash !== undefined ? selectedSessionForDetail.countedCash : (selectedSessionForDetail as any).closingAmount || 0).toFixed(2)}
+                  {formatCurrencyBRL(selectedSessionForDetail.countedCash !== undefined ? selectedSessionForDetail.countedCash : (selectedSessionForDetail as any).closingAmount || 0)}
                 </span>
               </div>
 
@@ -530,7 +531,7 @@ export const AdminCash: React.FC<AdminCashProps> = ({
                       : 'Falta Apurada no Fechamento:'}
                   </span>
                   <span className="text-sm">
-                    R$ {Math.abs(selectedSessionForDetail.difference).toFixed(2)}
+                    {formatCurrencyBRL(Math.abs(selectedSessionForDetail.difference))}
                   </span>
                 </div>
               )}
@@ -572,10 +573,10 @@ export const AdminCash: React.FC<AdminCashProps> = ({
                         <tr key={op.operatorId} className="hover:bg-neutral-50">
                           <td className="py-2 px-3 font-semibold text-neutral-900">{op.operatorName}</td>
                           <td className="py-2 px-3 text-right">{op.salesCount}</td>
-                          <td className="py-2 px-3 text-right font-bold text-neutral-900">R$ {op.totalSold.toFixed(2)}</td>
-                          <td className="py-2 px-3 text-right text-emerald-800">R$ {op.cashSales.toFixed(2)}</td>
-                          <td className="py-2 px-3 text-right text-blue-800">R$ {(op.pixSales + op.cardDebitSales + op.cardCreditSales).toFixed(2)}</td>
-                          <td className="py-2 px-3 text-right text-neutral-500">R$ {op.discountTotal.toFixed(2)}</td>
+                          <td className="py-2 px-3 text-right font-bold text-neutral-900">{formatCurrencyBRL(op.totalSold)}</td>
+                          <td className="py-2 px-3 text-right text-emerald-800">{formatCurrencyBRL(op.cashSales)}</td>
+                          <td className="py-2 px-3 text-right text-blue-800">{formatCurrencyBRL(op.pixSales + op.cardDebitSales + op.cardCreditSales)}</td>
+                          <td className="py-2 px-3 text-right text-neutral-500">{formatCurrencyBRL(op.discountTotal)}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -590,15 +591,15 @@ export const AdminCash: React.FC<AdminCashProps> = ({
               <div className="grid grid-cols-3 gap-2">
                 <div className="p-2 bg-white rounded-lg border border-neutral-200">
                   <span className="text-neutral-500 block text-[11px]">Pix:</span>
-                  <span className="font-bold text-neutral-800">R$ {(selectedSessionForDetail.pixSales || 0).toFixed(2)}</span>
+                  <span className="font-bold text-neutral-800">{formatCurrencyBRL(selectedSessionForDetail.pixSales || 0)}</span>
                 </div>
                 <div className="p-2 bg-white rounded-lg border border-neutral-200">
                   <span className="text-neutral-500 block text-[11px]">Cartão Débito:</span>
-                  <span className="font-bold text-neutral-800">R$ {(selectedSessionForDetail.cardDebitSales || 0).toFixed(2)}</span>
+                  <span className="font-bold text-neutral-800">{formatCurrencyBRL(selectedSessionForDetail.cardDebitSales || 0)}</span>
                 </div>
                 <div className="p-2 bg-white rounded-lg border border-neutral-200">
                   <span className="text-neutral-500 block text-[11px]">Cartão Crédito:</span>
-                  <span className="font-bold text-neutral-800">R$ {(selectedSessionForDetail.cardCreditSales || 0).toFixed(2)}</span>
+                  <span className="font-bold text-neutral-800">{formatCurrencyBRL(selectedSessionForDetail.cardCreditSales || 0)}</span>
                 </div>
               </div>
             </div>
@@ -819,23 +820,23 @@ export const AdminCash: React.FC<AdminCashProps> = ({
             <div className="bg-neutral-50 p-3 rounded-lg border border-neutral-200 space-y-1 text-xs">
               <div className="flex justify-between text-neutral-600">
                 <span>Fundo Inicial:</span>
-                <span>R$ {openingAmount.toFixed(2)}</span>
+                <span>{formatCurrencyBRL(openingAmount)}</span>
               </div>
               <div className="flex justify-between text-neutral-600">
                 <span>Vendas em Espécie:</span>
-                <span>+ R$ {cashSalesTotal.toFixed(2)}</span>
+                <span>+ {formatCurrencyBRL(cashSalesTotal)}</span>
               </div>
               <div className="flex justify-between text-neutral-600">
                 <span>Suprimentos:</span>
-                <span>+ R$ {cashSuprimentos.toFixed(2)}</span>
+                <span>+ {formatCurrencyBRL(cashSuprimentos)}</span>
               </div>
               <div className="flex justify-between text-neutral-600">
                 <span>Sangrias:</span>
-                <span>- R$ {cashSangrias.toFixed(2)}</span>
+                <span>- {formatCurrencyBRL(cashSangrias)}</span>
               </div>
               <div className="flex justify-between font-bold text-neutral-900 pt-1 border-t border-neutral-200 text-sm">
                 <span>Saldo Teórico Esperado:</span>
-                <span className="text-emerald-800">R$ {calculatedExpectedCash.toFixed(2)}</span>
+                <span className="text-emerald-800">{formatCurrencyBRL(calculatedExpectedCash)}</span>
               </div>
             </div>
 
@@ -871,7 +872,7 @@ export const AdminCash: React.FC<AdminCashProps> = ({
                       : 'Falta de Caixa Identificada:'}
                   </span>
                   <strong className="text-sm">
-                    R$ {Math.abs(discrepancy).toFixed(2)}
+                    {formatCurrencyBRL(Math.abs(discrepancy))}
                   </strong>
                 </div>
               )}

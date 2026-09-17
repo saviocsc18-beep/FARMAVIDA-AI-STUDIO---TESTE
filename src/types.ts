@@ -17,6 +17,8 @@ export interface Terminal {
   name: string; // ex: 'Terminal Balcão 01'
   storeId: string;
   active: boolean;
+  drawerId?: string; // ID da gaveta física conectada (ex: 'gaveta_01')
+  drawerName?: string; // Nome da gaveta física (ex: 'Gaveta Balcão 01')
   notes?: string;
   createdAt: string;
 }
@@ -35,6 +37,43 @@ export interface OperatorCashSummary {
   bleedingsTotal: number;
 }
 
+export interface PixConfig {
+  type: 'cnpj' | 'email' | 'telefone' | 'aleatoria';
+  key: string;
+  recipientName: string;
+  bankName?: string;
+}
+
+export interface CardRatesConfig {
+  debitPercent: number;
+  creditSightPercent: number;
+  creditInstallments2to6Percent: number;
+  creditInstallments7to12Percent: number;
+}
+
+export interface CashSecurityConfig {
+  maxCashInDrawerAlert: number; // ex: R$ 800
+  maxRegisterDiscrepancyTolerance: number; // ex: R$ 2
+}
+
+export interface PrintConfig {
+  paperWidth: '80mm' | '58mm' | 'A4';
+  footerMessage: string;
+  autoPrintOnSale: boolean;
+}
+
+export interface CategoryCommercialPolicy {
+  category: string;
+  targetMarginPercent: number;
+  maxDiscountPercent: number;
+}
+
+export interface InventoryAiConfig {
+  criticalExpiryDays: number; // ex: 60 dias
+  minSafetyCoverageDays: number; // ex: 15 dias
+  aiAnalysisFrequency: 'daily' | 'weekly' | 'manual';
+}
+
 export interface Store {
   id: string;
   name: string;
@@ -49,6 +88,12 @@ export interface Store {
     enableLotTracking: boolean;
     accessToleranceMinutes?: number;
     defaultOpeningAmount?: number;
+    pixConfig?: PixConfig;
+    cardRates?: CardRatesConfig;
+    cashSecurity?: CashSecurityConfig;
+    printConfig?: PrintConfig;
+    categoryPolicies?: CategoryCommercialPolicy[];
+    inventoryAiConfig?: InventoryAiConfig;
   };
 }
 
@@ -189,6 +234,8 @@ export interface CashRegister {
   storeId: string;
   terminalId?: string; // ID do terminal associado (ex: 'terminal_01')
   terminalName: string;
+  drawerId?: string; // ID da gaveta física conectada (ex: 'gaveta_01')
+  drawerName?: string; // Nome da gaveta física (ex: 'Gaveta Balcão 01')
   workShiftId?: string; // Vínculo com a jornada de trabalho ativa
   openedBy: string;
   openedByName: string;

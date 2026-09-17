@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { User, ApprovalRequest, ApprovalType } from '../types';
+import { formatCurrencyBRL } from '../lib/format';
 import { 
   ShieldAlert, 
   CheckCircle2, 
@@ -382,7 +383,7 @@ export const AdminApprovals: React.FC<AdminApprovalsProps> = ({
                       <div className="text-left">
                         <span className="text-[10px] text-neutral-500 block uppercase">Impacto Financeiro</span>
                         <span className="text-xs font-bold text-neutral-900">
-                          R$ {appr.financialImpact.toFixed(2)}
+                          {formatCurrencyBRL(appr.financialImpact)}
                         </span>
                       </div>
                     </div>

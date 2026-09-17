@@ -20,6 +20,11 @@ import {
   Lock,
 } from 'lucide-react';
 import { InventoryCount, InventoryItemCount, User } from '../types';
+import { Button } from './ui/Button';
+import { Badge } from './ui/Badge';
+import { Card, SectionTitle, Callout } from './ui/Layout';
+import { notify } from './ui/feedback';
+import { cn } from '../lib/ui';
 
 interface ContagemEstoqueViewProps {
   currentUser: User | null;
@@ -206,10 +211,14 @@ export function ContagemEstoqueView({
         }));
 
       await onSaveCount(activeInventory.id, itemsPayload);
-      setFeedbackMsg({ type: 'success', text: 'Progresso da contagem física salvo com sucesso!' });
+      const msg = 'Progresso da contagem física salvo com sucesso!';
+      setFeedbackMsg({ type: 'success', text: msg });
+      notify.sucesso(msg);
       setTimeout(() => setFeedbackMsg(null), 4000);
     } catch (err: any) {
-      setFeedbackMsg({ type: 'error', text: err.message || 'Erro ao salvar contagem.' });
+      const errMsg = err.message || 'Erro ao salvar contagem.';
+      setFeedbackMsg({ type: 'error', text: errMsg });
+      notify.erro(errMsg);
     } finally {
       setIsSaving(false);
     }
@@ -220,10 +229,12 @@ export function ContagemEstoqueView({
     if (!activeInventory || isLockedForCount) return;
 
     if (stats.pending > 0) {
+      const msg = `Atenção: existem ${stats.pending} produto(s) ainda não contados. Preencha todos antes de finalizar.`;
       setFeedbackMsg({
         type: 'error',
-        text: `Atenção: existem ${stats.pending} produto(s) ainda não contados. Todos os itens obrigatórios devem ser contados ou explicitamente marcados como 0 antes de finalizar.`,
+        text: msg,
       });
+      notify.aviso(msg);
       return;
     }
 
@@ -248,12 +259,16 @@ export function ContagemEstoqueView({
       await onCompleteCount(activeInventory.id, itemsPayload, completionNotes);
 
       setShowConfirmModal(false);
+      const successText = 'Contagem física concluída com sucesso! Os dados foram enviados para conferência da gerência.';
       setFeedbackMsg({
         type: 'success',
-        text: 'Contagem física concluída com sucesso! Os dados foram enviados para conferência e revisão gerencial.',
+        text: successText,
       });
+      notify.sucesso(successText);
     } catch (err: any) {
-      setFeedbackMsg({ type: 'error', text: err.message || 'Erro ao concluir contagem.' });
+      const errMsg = err.message || 'Erro ao concluir contagem.';
+      setFeedbackMsg({ type: 'error', text: errMsg });
+      notify.erro(errMsg);
     } finally {
       setIsFinishing(false);
     }
@@ -262,74 +277,75 @@ export function ContagemEstoqueView({
   // If no inventories are available
   if (!activeInventory) {
     return (
-      <div className="p-8 max-w-5xl mx-auto text-center" id="contagem-estoque-empty">
-        <div className="bg-white rounded-2xl p-12 border border-slate-200 shadow-sm max-w-lg mx-auto">
-          <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <ClipboardCheck className="w-8 h-8" />
+      <div className="p-8 max-w-xl mx-auto text-center" id="contagem-estoque-empty">
+        <Card className="p-10 text-center space-y-3 bg-white border-[#E1E9E4]">
+          <div className="w-14 h-14 bg-[#E6F4EC] text-[#0E7A53] rounded-2xl flex items-center justify-center mx-auto mb-2">
+            <ClipboardCheck className="w-7 h-7" />
           </div>
-          <h2 className="text-xl font-bold text-slate-800 mb-2">Nenhum Inventário em Aberto</h2>
-          <p className="text-sm text-slate-500 mb-6">
-            Não há inventários físicos ativos atribuídos à sua unidade no momento. Quando a gerência abrir um balanço ou contagem periódica, ele aparecerá automaticamente aqui.
+          <h2 className="text-lg font-bold text-[#13231B]">Nenhum Inventário em Aberto</h2>
+          <p className="text-xs sm:text-sm text-[#56675E] max-w-sm mx-auto">
+            Não há inventários físicos ativos atribuídos à sua unidade no momento. Quando a gerência abrir uma nova contagem periódica, ela aparecerá automaticamente aqui.
           </p>
-          <button
-            onClick={onRefreshData}
-            id="btn-refresh-empty-inventory"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl shadow-sm transition-colors"
-          >
-            <RotateCcw className="w-4 h-4" />
-            Atualizar Lista
-          </button>
-        </div>
+          {onRefreshData && (
+            <div className="pt-3">
+              <Button
+                variant="soft"
+                size="md"
+                onClick={onRefreshData}
+                icon={RotateCcw}
+              >
+                Atualizar Lista
+              </Button>
+            </div>
+          )}
+        </Card>
       </div>
     );
   }
 
   return (
-    <div className="p-4 md:p-6 max-w-7xl mx-auto space-y-6" id="contagem-estoque-view">
+    <div className="space-y-5" id="contagem-estoque-view">
       {/* Header Banner */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 md:p-6" id="inventory-header-card">
+      <Card className="p-5 md:p-6 bg-white border-[#E1E9E4]" id="inventory-header-card">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-          <div className="space-y-1">
+          <div className="space-y-1.5">
             <div className="flex items-center gap-2.5 flex-wrap">
-              <span className="px-3 py-1 bg-blue-100 text-blue-800 font-mono text-xs font-bold rounded-lg border border-blue-200">
+              <span className="px-2.5 py-1 bg-[#E6F4EC] text-[#0B6445] font-mono text-xs font-bold rounded-lg border border-[#0E7A53]/20">
                 {activeInventory.code}
               </span>
-              <h1 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight">
+              <h2 className="text-lg md:text-xl font-black text-[#13231B] tracking-tight">
                 {activeInventory.title}
-              </h1>
+              </h2>
               {activeInventory.status === 'reaberto' && (
-                <span className="px-2.5 py-1 bg-purple-100 text-purple-800 text-xs font-bold rounded-full border border-purple-200 flex items-center gap-1">
-                  <RotateCcw className="w-3 h-3" />
-                  Reaberto p/ Recontagem ({activeInventory.reopenCount}ª vez)
-                </span>
+                <Badge variant="warn" icon={RotateCcw}>
+                  Reaberto ({activeInventory.reopenCount}ª vez)
+                </Badge>
               )}
               {activeInventory.status === 'em_contagem' && (
-                <span className="px-2.5 py-1 bg-amber-100 text-amber-800 text-xs font-bold rounded-full border border-amber-200 flex items-center gap-1">
-                  <Clock className="w-3 h-3" />
+                <Badge variant="info" icon={Clock}>
                   Em Contagem
-                </span>
+                </Badge>
               )}
               {activeInventory.status === 'aberto' && (
-                <span className="px-2.5 py-1 bg-blue-50 text-blue-700 text-xs font-bold rounded-full border border-blue-200">
+                <Badge variant="neutral">
                   Aberto
-                </span>
+                </Badge>
               )}
               {activeInventory.status === 'aguardando_revisao' && (
-                <span className="px-2.5 py-1 bg-teal-100 text-teal-800 text-xs font-bold rounded-full border border-teal-200 flex items-center gap-1">
-                  <CheckCircle2 className="w-3 h-3" />
-                  Aguardando Revisão Gerencial
-                </span>
+                <Badge variant="ok" icon={CheckCircle2}>
+                  Aguardando Revisão
+                </Badge>
               )}
               {activeInventory.status === 'ajustado' && (
-                <span className="px-2.5 py-1 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-full border border-emerald-200">
+                <Badge variant="ok">
                   Ajuste Concluído
-                </span>
+                </Badge>
               )}
             </div>
 
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 pt-1">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[#56675E] pt-0.5">
               <span>
-                <strong className="text-slate-700">Escopo:</strong>{' '}
+                <strong className="text-[#13231B]">Escopo:</strong>{' '}
                 {activeInventory.scope === 'geral'
                   ? 'Geral (Todos os Produtos)'
                   : activeInventory.scope === 'categoria'
@@ -338,14 +354,14 @@ export function ContagemEstoqueView({
               </span>
               <span>•</span>
               <span>
-                <strong className="text-slate-700">Responsáveis:</strong>{' '}
+                <strong className="text-[#13231B]">Responsáveis:</strong>{' '}
                 {activeInventory.assignedUserNames?.join(', ') || 'Equipe Geral'}
               </span>
               {activeInventory.dueDate && (
                 <>
                   <span>•</span>
                   <span>
-                    <strong className="text-slate-700">Prazo:</strong> {activeInventory.dueDate}
+                    <strong className="text-[#13231B]">Prazo:</strong> {activeInventory.dueDate}
                   </span>
                 </>
               )}
@@ -355,14 +371,14 @@ export function ContagemEstoqueView({
           {/* Inventories Switcher (if multiple available) */}
           {inventories.length > 1 && (
             <div className="flex items-center gap-2">
-              <label htmlFor="select-active-inventory" className="text-xs font-semibold text-slate-500 whitespace-nowrap">
+              <label htmlFor="select-active-inventory" className="text-xs font-bold text-[#56675E] whitespace-nowrap">
                 Trocar Inventário:
               </label>
               <select
                 id="select-active-inventory"
                 value={activeInventory.id}
                 onChange={(e) => setSelectedInventoryId(e.target.value)}
-                className="px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-3 py-1.5 bg-[#F3F7F4] border border-[#E1E9E4] rounded-xl text-xs font-semibold text-[#13231B] focus:ring-2 focus:ring-[#0E7A53]/20 focus:border-[#0E7A53] outline-none"
               >
                 {inventories.map((inv) => (
                   <option key={inv.id} value={inv.id}>
@@ -376,26 +392,26 @@ export function ContagemEstoqueView({
 
         {/* Reopen Warning Banner */}
         {activeInventory.status === 'reaberto' && activeInventory.reopenReason && (
-          <div className="mt-4 p-3.5 bg-purple-50 border border-purple-200 rounded-xl text-xs text-purple-900 flex items-start gap-2.5">
-            <Info className="w-4 h-4 text-purple-600 shrink-0 mt-0.5" />
+          <div className="mt-4 p-3.5 bg-[#F3F7F4] border border-[#E1E9E4] rounded-xl text-xs text-[#13231B] flex items-start gap-2.5">
+            <Info className="w-4 h-4 text-[#0E7A53] shrink-0 mt-0.5" />
             <div>
-              <p className="font-bold text-purple-950">
-                Inventário reaberto pela administração para nova contagem cega:
+              <p className="font-bold text-[#13231B]">
+                Inventário reaberto pela administração para nova contagem:
               </p>
-              <p className="italic mt-0.5">"{activeInventory.reopenReason}"</p>
+              <p className="italic text-[#56675E] mt-0.5">"{activeInventory.reopenReason}"</p>
             </div>
           </div>
         )}
 
         {/* Locked Status Banner */}
         {isLockedForCount && (
-          <div className="mt-4 p-3.5 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 flex items-center gap-2.5">
-            <Lock className="w-4 h-4 text-amber-600 shrink-0" />
+          <div className="mt-4 p-3.5 bg-[#FEF3EB] border border-[#F4B78A] rounded-xl text-xs text-[#8C3A00] flex items-center gap-2.5">
+            <Lock className="w-4 h-4 text-[#C05621] shrink-0" />
             <div>
               <p className="font-bold">
-                Contagem finalizada e bloqueada para edição operacional.
+                Contagem bloqueada para edição operacional.
               </p>
-              <p className="text-amber-700 text-xs">
+              <p className="text-xs text-[#8C3A00]/80">
                 Este inventário está sob conferência gerencial. Apenas a administração pode aprovar ajustes ou solicitar recontagem.
               </p>
             </div>
@@ -403,17 +419,17 @@ export function ContagemEstoqueView({
         )}
 
         {/* Progress Bar & Actions */}
-        <div className="mt-5 pt-5 border-t border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="mt-5 pt-5 border-t border-[#E1E9E4] flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex-1 max-w-md">
-            <div className="flex justify-between text-xs font-semibold mb-1.5">
-              <span className="text-slate-700">Progresso da Contagem Cega</span>
-              <span className="text-blue-700 font-bold">
+            <div className="flex justify-between text-xs font-bold mb-1.5">
+              <span className="text-[#13231B]">Progresso da Contagem</span>
+              <span className="text-[#0E7A53]">
                 {stats.counted} de {stats.total} itens ({stats.percent}%)
               </span>
             </div>
-            <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+            <div className="w-full bg-[#E1E9E4] rounded-full h-2.5 overflow-hidden">
               <div
-                className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+                className="bg-[#0E7A53] h-2.5 rounded-full transition-all duration-300"
                 style={{ width: `${stats.percent}%` }}
               />
             </div>
@@ -422,81 +438,64 @@ export function ContagemEstoqueView({
           <div className="flex items-center gap-2.5 flex-wrap">
             {!isLockedForCount && (
               <>
-                <button
+                <Button
                   type="button"
                   id="btn-save-inventory-progress"
+                  variant="secondary"
+                  size="sm"
                   onClick={handleSaveProgress}
-                  disabled={isSaving}
-                  className="px-4 py-2 bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 text-xs font-bold rounded-xl shadow-sm transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50"
+                  loading={isSaving}
+                  icon={Save}
                 >
-                  <Save className="w-3.5 h-3.5 text-slate-500" />
-                  {isSaving ? 'Salvando...' : 'Salvar Rascunho'}
-                </button>
+                  Salvar Rascunho
+                </Button>
 
-                <button
+                <Button
                   type="button"
                   id="btn-finish-inventory-count"
+                  variant="primary"
+                  size="sm"
                   onClick={handleInitiateCompletion}
-                  disabled={isFinishing}
-                  className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-sm transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50"
+                  loading={isFinishing}
+                  icon={Send}
                 >
-                  <Send className="w-3.5 h-3.5" />
                   Finalizar Contagem
-                </button>
+                </Button>
               </>
             )}
           </div>
         </div>
-      </div>
+      </Card>
 
       {/* Feedback Messages */}
       {feedbackMsg && (
-        <div
-          id="inventory-feedback-msg"
-          className={`p-4 rounded-xl border text-sm font-medium flex items-center justify-between gap-3 animate-fadeIn ${
-            feedbackMsg.type === 'success'
-              ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
-              : feedbackMsg.type === 'error'
-              ? 'bg-rose-50 border-rose-200 text-rose-800'
-              : 'bg-blue-50 border-blue-200 text-blue-800'
-          }`}
+        <Callout
+          variant={feedbackMsg.type === 'success' ? 'ok' : feedbackMsg.type === 'error' ? 'danger' : 'info'}
+          title={feedbackMsg.type === 'success' ? 'Sucesso' : feedbackMsg.type === 'error' ? 'Atenção' : 'Informação'}
         >
-          <div className="flex items-center gap-2">
-            {feedbackMsg.type === 'success' ? (
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-            ) : (
-              <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
-            )}
-            <span>{feedbackMsg.text}</span>
-          </div>
-          <button
-            onClick={() => setFeedbackMsg(null)}
-            className="text-xs font-bold hover:underline opacity-80"
-          >
-            Fechar
-          </button>
-        </div>
+          {feedbackMsg.text}
+        </Callout>
       )}
 
       {/* Search and Filters Bar */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm space-y-3">
+      <Card className="p-4 bg-white border-[#E1E9E4] space-y-3">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-          {/* Search Input with barcode reader capability */}
+          {/* Search Input */}
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-[#56675E] absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               ref={barcodeInputRef}
               type="text"
               id="input-inventory-search"
-              placeholder="Buscar produto por nome, código interno ou código de barras (EAN)..."
+              placeholder="Buscar por nome, código interno ou código de barras (EAN)..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs md:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
+              className="w-full pl-10 pr-16 h-10 bg-[#F3F7F4] border border-[#E1E9E4] rounded-xl text-xs md:text-sm text-[#13231B] placeholder-[#56675E]/70 focus:bg-white focus:ring-2 focus:ring-[#0E7A53]/20 focus:border-[#0E7A53] outline-none transition-all"
             />
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs font-bold"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-[#56675E] hover:text-[#13231B] cursor-pointer"
               >
                 Limpar
               </button>
@@ -509,11 +508,12 @@ export function ContagemEstoqueView({
               type="button"
               id="filter-inventory-all"
               onClick={() => setFilterStatus('todos')}
-              className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-colors ${
+              className={cn(
+                "px-3 py-1.5 text-xs font-bold rounded-lg transition-colors cursor-pointer",
                 filterStatus === 'todos'
-                  ? 'bg-slate-900 text-white'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-              }`}
+                  ? "bg-[#13231B] text-white"
+                  : "bg-[#F3F7F4] text-[#56675E] hover:bg-[#E1E9E4]"
+              )}
             >
               Todos ({stats.total})
             </button>
@@ -521,11 +521,12 @@ export function ContagemEstoqueView({
               type="button"
               id="filter-inventory-pending"
               onClick={() => setFilterStatus('pendentes')}
-              className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-colors flex items-center gap-1 ${
+              className={cn(
+                "px-3 py-1.5 text-xs font-bold rounded-lg transition-colors cursor-pointer flex items-center gap-1",
                 filterStatus === 'pendentes'
-                  ? 'bg-amber-600 text-white'
-                  : 'bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200'
-              }`}
+                  ? "bg-[#D97706] text-white"
+                  : "bg-[#FEF3EB] text-[#8C3A00] hover:bg-[#FDE68A] border border-[#F4B78A]"
+              )}
             >
               Pendentes ({stats.pending})
             </button>
@@ -533,28 +534,29 @@ export function ContagemEstoqueView({
               type="button"
               id="filter-inventory-counted"
               onClick={() => setFilterStatus('contados')}
-              className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-colors flex items-center gap-1 ${
+              className={cn(
+                "px-3 py-1.5 text-xs font-bold rounded-lg transition-colors cursor-pointer flex items-center gap-1",
                 filterStatus === 'contados'
-                  ? 'bg-emerald-600 text-white'
-                  : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200'
-              }`}
+                  ? "bg-[#0E7A53] text-white"
+                  : "bg-[#E6F4EC] text-[#0B6445] hover:bg-[#C9E7D6] border border-[#0E7A53]/20"
+              )}
             >
               Contados ({stats.counted})
             </button>
           </div>
         </div>
-      </div>
+      </Card>
 
       {/* Product Items Table / Cards */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden" id="inventory-items-container">
+      <div className="bg-white rounded-2xl border border-[#E1E9E4] shadow-2xs overflow-hidden" id="inventory-items-container">
         {filteredItems.length === 0 ? (
-          <div className="p-12 text-center text-slate-400">
-            <Package className="w-10 h-10 mx-auto mb-2 opacity-40" />
+          <div className="p-12 text-center text-[#56675E]">
+            <Package className="w-10 h-10 mx-auto mb-2 opacity-40 text-[#56675E]" />
             <p className="text-sm font-medium">Nenhum produto encontrado com os filtros atuais.</p>
           </div>
         ) : (
-          <div className="divide-y divide-slate-100">
-            {filteredItems.map((item, index) => {
+          <div className="divide-y divide-[#E1E9E4]">
+            {filteredItems.map((item) => {
               const state = localCounts[item.productId] || { quantity: '', isCounted: false };
               const isItemCounted = state.isCounted;
               const numericQty = state.quantity !== '' ? Number(state.quantity) : null;
@@ -563,36 +565,37 @@ export function ContagemEstoqueView({
                 <div
                   key={item.productId}
                   id={`inventory-item-row-${item.productId}`}
-                  className={`p-4 md:p-5 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
+                  className={cn(
+                    "p-4 md:p-5 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4",
                     isItemCounted
                       ? numericQty === 0
-                        ? 'bg-amber-50/40 hover:bg-amber-50/70'
-                        : 'bg-emerald-50/30 hover:bg-emerald-50/60'
-                      : 'hover:bg-slate-50'
-                  }`}
+                        ? "bg-[#FEF3EB]/40 hover:bg-[#FEF3EB]/70"
+                        : "bg-[#E6F4EC]/30 hover:bg-[#E6F4EC]/60"
+                      : "hover:bg-[#F3F7F4]/40"
+                  )}
                 >
                   {/* Product Info */}
                   <div className="space-y-1 max-w-xl">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-xs font-mono font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
+                      <span className="text-xs font-mono font-bold text-[#56675E] bg-[#F3F7F4] border border-[#E1E9E4] px-2 py-0.5 rounded-md">
                         {item.productCode}
                       </span>
                       {item.ean && (
-                        <span className="text-xs font-mono text-slate-400 flex items-center gap-1">
-                          <Barcode className="w-3 h-3" />
+                        <span className="text-xs font-mono text-[#56675E] flex items-center gap-1">
+                          <Barcode className="w-3.5 h-3.5" />
                           {item.ean}
                         </span>
                       )}
-                      <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
+                      <span className="text-xs font-semibold text-[#56675E] bg-[#F3F7F4] border border-[#E1E9E4] px-2 py-0.5 rounded-md">
                         {item.category}
                       </span>
                     </div>
 
-                    <h3 className="text-sm md:text-base font-bold text-slate-900 leading-snug">
+                    <h3 className="text-sm md:text-base font-bold text-[#13231B] leading-snug">
                       {item.productName}
                     </h3>
                     {item.presentation && (
-                      <p className="text-xs text-slate-500">{item.presentation}</p>
+                      <p className="text-xs text-[#56675E]">{item.presentation}</p>
                     )}
                   </div>
 
@@ -602,33 +605,31 @@ export function ContagemEstoqueView({
                     <div className="hidden md:block text-right min-w-[110px]">
                       {isItemCounted ? (
                         numericQty === 0 ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-100 text-amber-800 text-xs font-bold rounded-lg border border-amber-200">
-                            <Check className="w-3 h-3" />
+                          <Badge variant="warn" icon={Check}>
                             0 Unidades
-                          </span>
+                          </Badge>
                         ) : (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-lg border border-emerald-200">
-                            <Check className="w-3 h-3" />
+                          <Badge variant="ok" icon={Check}>
                             {numericQty} un contadas
-                          </span>
+                          </Badge>
                         )
                       ) : (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-slate-100 text-slate-500 text-xs font-semibold rounded-lg">
+                        <Badge variant="neutral">
                           Pendente
-                        </span>
+                        </Badge>
                       )}
                     </div>
 
                     {/* Numeric Stepper and Direct Input */}
-                    <div className="flex items-center gap-1.5 bg-slate-50 p-1.5 rounded-xl border border-slate-200">
+                    <div className="flex items-center gap-1.5 bg-[#F3F7F4] p-1.5 rounded-xl border border-[#E1E9E4]">
                       <button
                         type="button"
                         id={`btn-minus-${item.productId}`}
                         disabled={isLockedForCount}
                         onClick={() => handleStepQuantity(item.productId, -1)}
-                        className="w-8 h-8 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center justify-center font-bold active:scale-95 disabled:opacity-40 transition-transform"
+                        className="w-8 h-8 rounded-lg bg-white border border-[#E1E9E4] text-[#13231B] hover:bg-[#E1E9E4]/60 flex items-center justify-center font-bold active:scale-95 disabled:opacity-40 transition-transform cursor-pointer"
                       >
-                        <Minus className="w-3.5 h-3.5" />
+                        <Minus className="w-3.5 h-3.5 text-[#56675E]" />
                       </button>
 
                       <input
@@ -639,7 +640,7 @@ export function ContagemEstoqueView({
                         placeholder="--"
                         value={state.quantity}
                         onChange={(e) => handleQuantityChange(item.productId, e.target.value)}
-                        className="w-16 h-8 text-center bg-white border border-slate-300 rounded-lg text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-slate-100"
+                        className="w-16 h-8 text-center bg-white border border-[#E1E9E4] rounded-lg text-sm font-black text-[#13231B] focus:outline-none focus:ring-2 focus:ring-[#0E7A53]/20 focus:border-[#0E7A53] disabled:bg-[#F3F7F4]"
                       />
 
                       <button
@@ -647,9 +648,9 @@ export function ContagemEstoqueView({
                         id={`btn-plus-${item.productId}`}
                         disabled={isLockedForCount}
                         onClick={() => handleStepQuantity(item.productId, 1)}
-                        className="w-8 h-8 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center justify-center font-bold active:scale-95 disabled:opacity-40 transition-transform"
+                        className="w-8 h-8 rounded-lg bg-white border border-[#E1E9E4] text-[#13231B] hover:bg-[#E1E9E4]/60 flex items-center justify-center font-bold active:scale-95 disabled:opacity-40 transition-transform cursor-pointer"
                       >
-                        <Plus className="w-3.5 h-3.5" />
+                        <Plus className="w-3.5 h-3.5 text-[#56675E]" />
                       </button>
                     </div>
 
@@ -659,7 +660,7 @@ export function ContagemEstoqueView({
                         type="button"
                         id={`btn-zero-${item.productId}`}
                         onClick={() => handleSetZero(item.productId)}
-                        className="px-2.5 py-1.5 bg-slate-100 hover:bg-amber-100 hover:text-amber-800 text-slate-600 text-xs font-bold rounded-lg border border-slate-200 transition-colors whitespace-nowrap"
+                        className="px-2.5 py-1.5 bg-[#F3F7F4] hover:bg-[#FEF3EB] hover:text-[#8C3A00] text-[#56675E] text-xs font-bold rounded-lg border border-[#E1E9E4] transition-colors whitespace-nowrap cursor-pointer"
                         title="Marcar explicitamente 0 unidades físicas encontradas"
                       >
                         Marcar 0
@@ -675,22 +676,22 @@ export function ContagemEstoqueView({
 
       {/* Confirmation Modal for Finalization */}
       {showConfirmModal && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" id="modal-confirm-inventory-completion">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 animate-scaleUp">
-            <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto">
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4" id="modal-confirm-inventory-completion">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 border border-[#E1E9E4]">
+            <div className="w-12 h-12 rounded-2xl bg-[#E6F4EC] text-[#0E7A53] flex items-center justify-center mx-auto">
               <CheckCircle2 className="w-6 h-6" />
             </div>
 
             <div className="text-center space-y-1">
-              <h3 className="text-lg font-bold text-slate-900">
+              <h3 className="text-lg font-black text-[#13231B]">
                 Confirmar Finalização de Contagem
               </h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-[#56675E]">
                 Você preencheu a contagem física de todos os <strong>{stats.total}</strong> produtos deste inventário.
               </p>
             </div>
 
-            <div className="bg-slate-50 p-3.5 rounded-xl text-xs space-y-2 text-slate-700 border border-slate-200">
+            <div className="bg-[#F3F7F4] p-3.5 rounded-xl text-xs space-y-2 text-[#13231B] border border-[#E1E9E4]">
               <div className="flex justify-between">
                 <span>Total de Itens:</span>
                 <span className="font-bold">{stats.total} produtos</span>
@@ -699,43 +700,47 @@ export function ContagemEstoqueView({
                 <span>Operador:</span>
                 <span className="font-bold">{currentUser?.name || 'Operador'}</span>
               </div>
-              <p className="text-slate-500 pt-1 border-t border-slate-200">
+              <p className="text-[#56675E] pt-1.5 border-t border-[#E1E9E4]">
                 Após a confirmação, os dados serão travados para conferência da gerência. Nenhuma alteração de estoque é feita automaticamente sem aprovação do administrador.
               </p>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
-                Observações Operacionais (Opcional):
+              <label className="block text-xs font-bold text-[#13231B] mb-1.5">
+                Observações Operacionais:
               </label>
               <textarea
                 value={completionNotes}
                 onChange={(e) => setCompletionNotes(e.target.value)}
                 placeholder="Ex: Contagem realizada nas prateleiras A1 a B4. Nenhum lote danificado encontrado."
                 rows={2}
-                className="w-full p-2.5 text-xs bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full p-3 text-xs bg-white border border-[#E1E9E4] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0E7A53]/20 focus:border-[#0E7A53] outline-none"
               />
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2">
-              <button
+            <div className="flex items-center justify-end gap-2.5 pt-2">
+              <Button
                 type="button"
                 id="btn-cancel-completion-modal"
+                variant="ghost"
+                size="sm"
                 disabled={isFinishing}
                 onClick={() => setShowConfirmModal(false)}
-                className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition-colors"
               >
                 Voltar e Revisar
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
                 id="btn-confirm-completion-modal"
+                variant="primary"
+                size="sm"
                 disabled={isFinishing}
+                loading={isFinishing}
                 onClick={handleConfirmCompletion}
-                className="px-5 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow transition-colors flex items-center gap-1.5"
+                icon={CheckCircle2}
               >
-                {isFinishing ? 'Concluindo...' : 'Confirmar e Enviar'}
-              </button>
+                Confirmar e Enviar
+              </Button>
             </div>
           </div>
         </div>
@@ -743,3 +748,4 @@ export function ContagemEstoqueView({
     </div>
   );
 }
+
